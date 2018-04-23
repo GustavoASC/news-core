@@ -6,6 +6,7 @@
 package news.core;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Notícia
@@ -51,6 +52,43 @@ public class News {
 
     public void setPublisher(User publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.title);
+        hash = 53 * hash + Objects.hashCode(this.content);
+        hash = 53 * hash + Objects.hashCode(this.publicationDate);
+        hash = 53 * hash + Objects.hashCode(this.publisher);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final News other = (News) obj;
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (!Objects.equals(this.content, other.content)) {
+            return false;
+        }
+        if (!Objects.equals(this.publicationDate, other.publicationDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.publisher, other.publisher)) {
+            return false;
+        }
+        return true;
     }
 
 }
