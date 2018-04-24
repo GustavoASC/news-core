@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Interface representando um servidor de notícias
  *
  * @author 0145022
  */

@@ -9,7 +9,7 @@ import java.rmi.Remote;
 
 /**
  * Operações ofeceridas pelo cliente e que serão chamadas pelo servidor de
- * notícias.
+ * notícias
  *
  * @author 0145022
  */

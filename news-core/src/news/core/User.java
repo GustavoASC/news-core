@@ -19,7 +19,7 @@ public class User {
     private String username;
     /* Senha */
     private char[] password;
-    /* Permite escrever notícias */
+    /* Tem permissão para escrever notícias */
     private boolean publisher;
     /* Tópicos em que este usuário está inscrito */
     private final List<Topic> subscriptions;
@@ -45,26 +45,47 @@ public class User {
         this.subscriptions = new LinkedList<>();
     }
 
+    /**
+     * Retorna o nome do usuário
+     *
+     * @return String
+     */
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    /**
+     * Retorna a senha do usuário
+     *
+     * @return char[]
+     */
     public char[] getPassword() {
         return password;
     }
 
+    /**
+     * Define a senha do usuário
+     *
+     * @param password
+     */
     public void setPassword(char[] password) {
         this.password = password;
     }
 
+    /**
+     * Retorna {@code true} se tem permissão para escrever notícias
+     *
+     * @return boolean
+     */
     public boolean isPublisher() {
         return publisher;
     }
 
+    /**
+     * Define se tem permissão para escrever notícias
+     *
+     * @param publisher
+     */
     public void setPublisher(boolean publisher) {
         this.publisher = publisher;
     }
@@ -88,18 +109,38 @@ public class User {
         subscriptions.add(topic);
     }
 
+    /**
+     * Retorna o IP de origem do usuário para conexão RMI
+     *
+     * @return String
+     */
     public String getIp() {
         return ip;
     }
 
+    /**
+     * Define o IP de origem do usuário para conexão RMI
+     *
+     * @param ip
+     */
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * Retorna a porta para conexão RMI com o usuário
+     *
+     * @return int
+     */
     public int getPort() {
         return port;
     }
 
+    /**
+     * Define a porta para conexão RMI com o usuário
+     *
+     * @param port
+     */
     public void setPort(int port) {
         this.port = port;
     }

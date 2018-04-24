@@ -22,34 +22,74 @@ public class News {
     /* Usuário que publicou a notícia */
     private User publisher;
 
+    /**
+     * Retorna o título da notícia
+     *
+     * @return String
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Define o título da notícia
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Retorna o conteúdo da notícia
+     * 
+     * @return String
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * Define o conteúdo da notícia
+     * 
+     * @param content 
+     */
     public void setContent(String content) {
         this.content = content;
     }
 
+    /**
+     * Retorna a data de publicação
+     * 
+     * @return Date
+     */
     public Date getPublicationDate() {
         return publicationDate;
     }
 
+    /**
+     * Define a data de publicação
+     * 
+     * @param publicationDate 
+     */
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
     }
 
+    /**
+     * Retorna o usuário que publicou a notícia
+     * 
+     * @return User
+     */
     public User getPublisher() {
         return publisher;
     }
 
+    /**
+     * Define o usuário que publicou a notícia
+     * 
+     * @param publisher 
+     */
     public void setPublisher(User publisher) {
         this.publisher = publisher;
     }

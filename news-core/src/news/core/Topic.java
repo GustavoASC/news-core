@@ -20,14 +20,27 @@ public class Topic {
     /* Notícias associadas a este tópico */
     private final List<News> associatedNews;
 
+    /**
+     * Cria um tópico de notícia
+     */
     public Topic() {
         this.associatedNews = new LinkedList<>();
     }
 
+    /**
+     * Retorna as notícias associadas a este tópico
+     *
+     * @return lista com as notícias associadas
+     */
     public List<News> getAssociatedNews() {
         return associatedNews;
     }
 
+    /**
+     * Adiciona uma notícia ao tópico
+     *
+     * @param news notícia que será adicionada
+     */
     public void addNews(News news) {
         // TODO: identificar se estourou o limite de notícias associadas
         associatedNews.add(news);

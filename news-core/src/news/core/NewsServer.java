@@ -49,8 +49,8 @@ public class NewsServer implements Server {
             publishedNews.add(news);
             topic.addNews(news);
             registeredUsers.parallelStream()
-                           .filter(user -> user.isSubscribed(topic))
-                           .forEach(user -> sendNewsToUser(news, user));
+                    .filter(user -> user.isSubscribed(topic))
+                    .forEach(user -> sendNewsToUser(news, user));
         }
     }
 

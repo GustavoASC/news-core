@@ -5,14 +5,8 @@
  */
 package news.core;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Date;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,26 +14,7 @@ import static org.junit.Assert.*;
  * Testes do servidor de notícias
  */
 public class NewsServerTest {
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
-    /**
-     * Test of addTopic method, of class NewsServer.
-     */
     @Test
     public void testAddTopic() {
         //
@@ -59,9 +34,6 @@ public class NewsServerTest {
         assertEquals(news, lastNews);
     }
 
-    /**
-     * Test of addNews method, of class NewsServer.
-     */
     @Test
     public void testAddNews() {
         System.out.println("addNews");
@@ -73,9 +45,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of retrieveAvailableTopics method, of class NewsServer.
-     */
     @Test
     public void testRetrieveAvailableTopics() {
         System.out.println("retrieveAvailableTopics");
@@ -87,9 +56,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of retrievePublishedNews method, of class NewsServer.
-     */
     @Test
     public void testRetrievePublishedNews() {
         System.out.println("retrievePublishedNews");
@@ -102,9 +68,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of retrieveNews method, of class NewsServer.
-     */
     @Test
     public void testRetrieveNews() {
         System.out.println("retrieveNews");
@@ -119,9 +82,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of retrieveLastNews method, of class NewsServer.
-     */
     @Test
     public void testRetrieveLastNews() {
         System.out.println("retrieveLastNews");
@@ -134,9 +94,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of subscribe method, of class NewsServer.
-     */
     @Test
     public void testSubscribe() {
         System.out.println("subscribe");
@@ -148,9 +105,6 @@ public class NewsServerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of addUser method, of class NewsServer.
-     */
     @Test
     public void testAddUser() {
         System.out.println("addUser");
@@ -160,5 +114,5 @@ public class NewsServerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }

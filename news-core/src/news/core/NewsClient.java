@@ -5,8 +5,6 @@
  */
 package news.core;
 
-import java.util.List;
-
 /**
  * Client que receberá notícias do servidor
  */
