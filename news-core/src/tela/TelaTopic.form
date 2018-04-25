@@ -37,7 +37,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPublicacao" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jTextLogin" min="-2" pref="88" max="-2" attributes="0"/>
+                      <Component id="jUsuLogado" min="-2" pref="88" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLogout" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -57,7 +57,7 @@
                   <Component id="jTopico" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jPublicacao" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLogout" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextLogin" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jUsuLogado" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
               <Component id="jInscricao" min="-2" max="-2" attributes="0"/>
@@ -110,13 +110,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPublicacaoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextLogin">
+    <Component class="javax.swing.JTextField" name="jUsuLogado">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="Ola Fulano"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextLoginActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jUsuLogadoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jLogout">
@@ -205,7 +205,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jComboNovoTopic" min="-2" pref="508" max="-2" attributes="0"/>
+                  <Component id="jTopicNovo" min="-2" pref="508" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jAdicionar" max="32767" attributes="0"/>
               </Group>
@@ -216,8 +216,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jComboNovoTopic" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jAdicionar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTopicNovo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="23" max="32767" attributes="0"/>
               </Group>
@@ -225,24 +225,14 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JComboBox" name="jComboNovoTopic">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
         <Component class="javax.swing.JButton" name="jAdicionar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Adicionar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTopicNovo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Esporte"/>
           </Properties>
         </Component>
       </SubComponents>

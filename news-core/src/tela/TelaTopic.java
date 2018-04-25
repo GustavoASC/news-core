@@ -33,14 +33,14 @@ public class TelaTopic extends javax.swing.JFrame {
         jPesquisa = new javax.swing.JButton();
         jTopico = new javax.swing.JButton();
         jPublicacao = new javax.swing.JButton();
-        jTextLogin = new javax.swing.JTextField();
+        jUsuLogado = new javax.swing.JTextField();
         jLogout = new javax.swing.JButton();
         jInscricao = new javax.swing.JPanel();
         jInscrever = new javax.swing.JButton();
         jComboInsc = new javax.swing.JComboBox<>();
         jNovoTopic = new javax.swing.JPanel();
-        jComboNovoTopic = new javax.swing.JComboBox<>();
         jAdicionar = new javax.swing.JButton();
+        jTopicNovo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Topico");
@@ -72,11 +72,11 @@ public class TelaTopic extends javax.swing.JFrame {
             }
         });
 
-        jTextLogin.setEditable(false);
-        jTextLogin.setText("Ola Fulano");
-        jTextLogin.addActionListener(new java.awt.event.ActionListener() {
+        jUsuLogado.setEditable(false);
+        jUsuLogado.setText("Ola Fulano");
+        jUsuLogado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextLoginActionPerformed(evt);
+                jUsuLogadoActionPerformed(evt);
             }
         });
 
@@ -115,9 +115,9 @@ public class TelaTopic extends javax.swing.JFrame {
 
         jNovoTopic.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Novo topico"));
 
-        jComboNovoTopic.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jAdicionar.setText("Adicionar");
+
+        jTopicNovo.setText("Esporte");
 
         javax.swing.GroupLayout jNovoTopicLayout = new javax.swing.GroupLayout(jNovoTopic);
         jNovoTopic.setLayout(jNovoTopicLayout);
@@ -125,7 +125,7 @@ public class TelaTopic extends javax.swing.JFrame {
             jNovoTopicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jNovoTopicLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboNovoTopic, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTopicNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -134,8 +134,8 @@ public class TelaTopic extends javax.swing.JFrame {
             .addGroup(jNovoTopicLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jNovoTopicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboNovoTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jAdicionar))
+                    .addComponent(jAdicionar)
+                    .addComponent(jTopicNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -156,7 +156,7 @@ public class TelaTopic extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jUsuLogado, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLogout)
                         .addContainerGap())
@@ -172,7 +172,7 @@ public class TelaTopic extends javax.swing.JFrame {
                     .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPublicacao)
                     .addComponent(jLogout)
-                    .addComponent(jTextLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jUsuLogado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -192,16 +192,16 @@ public class TelaTopic extends javax.swing.JFrame {
     }//GEN-LAST:event_jTopicoActionPerformed
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
-        // Cria janela para dados de translação
+        // Cria janela para publicação
         TelaPublic framePublic = new TelaPublic();
         // Define metodo de fechamento da janela
         framePublic.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         framePublic.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jPublicacaoActionPerformed
 
-    private void jTextLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextLoginActionPerformed
+    private void jUsuLogadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsuLogadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextLoginActionPerformed
+    }//GEN-LAST:event_jUsuLogadoActionPerformed
 
     private void jComboInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboInscActionPerformed
         // TODO add your handling code here:
@@ -245,7 +245,6 @@ public class TelaTopic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jAdicionar;
     private javax.swing.JComboBox<String> jComboInsc;
-    private javax.swing.JComboBox<String> jComboNovoTopic;
     private javax.swing.JButton jInicio;
     private javax.swing.JButton jInscrever;
     private javax.swing.JPanel jInscricao;
@@ -253,7 +252,8 @@ public class TelaTopic extends javax.swing.JFrame {
     private javax.swing.JPanel jNovoTopic;
     private javax.swing.JButton jPesquisa;
     private javax.swing.JButton jPublicacao;
-    private javax.swing.JTextField jTextLogin;
+    private javax.swing.JTextField jTopicNovo;
     private javax.swing.JButton jTopico;
+    private javax.swing.JTextField jUsuLogado;
     // End of variables declaration//GEN-END:variables
 }
