@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
  */
 public class NewsServer implements Server {
 
-    /* Notícias publicadas pelos escritores */
-    private final List<News> publishedNews;
     /* Tópicos existentes nas notícias */
     private final List<Topic> topics;
     /* Lista de usuários registrados no sistema */
@@ -33,7 +31,6 @@ public class NewsServer implements Server {
      * Cria o servidor de notícias
      */
     public NewsServer() {
-        publishedNews = new LinkedList<>();
         topics = new LinkedList<>();
         registeredUsers = new LinkedList<>();
     }
@@ -45,13 +42,7 @@ public class NewsServer implements Server {
 
     @Override
     public void addNews(News news, Topic topic) {
-        if (topics.contains(topic)) {
-            publishedNews.add(news);
-            topic.addNews(news);
-            registeredUsers.parallelStream()
-                    .filter(user -> user.isSubscribed(topic))
-                    .forEach(user -> sendNewsToUser(news, user));
-        }
+        addNews(news, topic, this::sendNewsToUser);
     }
 
     /**
@@ -70,22 +61,52 @@ public class NewsServer implements Server {
         }
     }
 
+    /**
+     * Envia a notícia ao usuário utilizando o dispatcher especificado
+     *
+     * @param news notícia que será enviada
+     * @param topic 
+     * @param dispatcher
+     */
+    public void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
+        if (topics.contains(topic)) {
+            topic.addNews(news);
+            registeredUsers.parallelStream()
+                    .filter(user -> user.isSubscribed(topic))
+                    .forEach(user -> dispatcher.sendNewsToUser(news, user));
+        }
+    }
+
     @Override
     public List<Topic> retrieveAvailableTopics() {
         return topics;
     }
 
+    /**
+     * Retorna a lista de notícias publicada pelo nome de usuário especificado
+     *
+     * @param username usuário para filtro
+     * @return lista de notícias
+     */
+    public List<News> retrievePublishedNews(String username) {
+        return retrievePublishedNews(new User(username));
+    }
+
     @Override
     public List<News> retrievePublishedNews(User user) {
-        return publishedNews.stream()
-                .filter(news -> news.getPublisher().equals(user))
-                .collect(Collectors.toList());
+        List<News> publishedNews = new LinkedList<>();
+        topics.stream().forEach(
+                t -> publishedNews.addAll(t.getNews().stream()
+                        .filter(news -> news.getPublisher().equals(user))
+                        .collect(Collectors.toList())
+                ));
+        return publishedNews;
     }
 
     @Override
     public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) {
-        List<News> associated = topic.getAssociatedNews();
-        return associated.stream()
+        List<News> topicNews = topic.getNews();
+        return topicNews.stream()
                 .filter(news -> !news.getPublicationDate().before(initialDate))
                 .filter(news -> !news.getPublicationDate().after(finalDate))
                 .collect(Collectors.toList());
@@ -93,8 +114,8 @@ public class NewsServer implements Server {
 
     @Override
     public News retrieveLastNews(Topic topic) {
-        List<News> associated = topic.getAssociatedNews();
-        return associated.stream()
+        List<News> topicNews = topic.getNews();
+        return topicNews.stream()
                 .sorted(new NewsDateSorter())
                 .findFirst()
                 .get();
@@ -113,7 +134,22 @@ public class NewsServer implements Server {
     }
 
     /**
-     * Classe para ordenar as notícias por ordem decrescente de data
+     * Interface para efetuar o despacho da notícia para o destino
+     */
+    public interface NewsDispatcher {
+
+        /**
+         * Envia via RMI a notícia para o usuário especificado
+         *
+         * @param news notícia que será enviada
+         * @param user usuário que receberá a notícia
+         */
+        public void sendNewsToUser(News news, User user);
+
+    }
+
+    /**
+     * Classe para ordenar as notícias por ordem crescente de data
      */
     private class NewsDateSorter implements Comparator<News> {
 
@@ -122,10 +158,10 @@ public class NewsServer implements Server {
             Date firstDate = first.getPublicationDate();
             Date secondDate = second.getPublicationDate();
             if (firstDate.after(secondDate)) {
-                return 1;
+                return -1;
             }
             if (firstDate.before(secondDate)) {
-                return -1;
+                return 1;
             }
             return 0;
         }

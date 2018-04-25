@@ -23,6 +23,35 @@ public class News {
     private User publisher;
 
     /**
+     * Cria uma notícia
+     */
+    public News() {
+        this("");
+    }
+
+    /**
+     * Cria notícia com o título especificado
+     *
+     * @param title título da notíca
+     */
+    public News(String title) {
+        this(title, null, null);
+    }
+
+    /**
+     * Cria notícia com o título especificado, data e usuário especificados
+     *
+     * @param title título da notíca
+     * @param publicationDate data de publicação
+     * @param publisher usuário que publicou a notícia
+     */
+    public News(String title, Date publicationDate, String publisher) {
+        this.title = title;
+        this.publicationDate = publicationDate;
+        this.publisher = new User(publisher);
+    }
+
+    /**
      * Retorna o título da notícia
      *
      * @return String
@@ -42,7 +71,7 @@ public class News {
 
     /**
      * Retorna o conteúdo da notícia
-     * 
+     *
      * @return String
      */
     public String getContent() {
@@ -51,8 +80,8 @@ public class News {
 
     /**
      * Define o conteúdo da notícia
-     * 
-     * @param content 
+     *
+     * @param content
      */
     public void setContent(String content) {
         this.content = content;
@@ -60,7 +89,7 @@ public class News {
 
     /**
      * Retorna a data de publicação
-     * 
+     *
      * @return Date
      */
     public Date getPublicationDate() {
@@ -69,8 +98,8 @@ public class News {
 
     /**
      * Define a data de publicação
-     * 
-     * @param publicationDate 
+     *
+     * @param publicationDate
      */
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
@@ -78,7 +107,7 @@ public class News {
 
     /**
      * Retorna o usuário que publicou a notícia
-     * 
+     *
      * @return User
      */
     public User getPublisher() {
@@ -87,11 +116,25 @@ public class News {
 
     /**
      * Define o usuário que publicou a notícia
-     * 
-     * @param publisher 
+     *
+     * @param publisher nome do usuário que publicoua notícia
+     */
+    public void setPublisher(String publisher) {
+        this.publisher = new User(publisher);
+    }
+
+    /**
+     * Define o usuário que publicou a notícia
+     *
+     * @param publisher
      */
     public void setPublisher(User publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public String toString() {
+        return "News{" + "title=" + title + ", content=" + content + ", publicationDate=" + publicationDate + ", publisher=" + publisher + '}';
     }
 
     @Override

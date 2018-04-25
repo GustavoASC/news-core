@@ -5,7 +5,6 @@
  */
 package news.core;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -146,14 +145,14 @@ public class User {
     }
 
     @Override
+    public String toString() {
+        return "User{" + "username=" + username + ", password=" + password + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", ip=" + ip + ", port=" + port + '}';
+    }
+
+    @Override
     public int hashCode() {
         int hash = 5;
-        hash = 61 * hash + Objects.hashCode(this.username);
-        hash = 61 * hash + Arrays.hashCode(this.password);
-        hash = 61 * hash + (this.publisher ? 1 : 0);
-        hash = 61 * hash + Objects.hashCode(this.subscriptions);
-        hash = 61 * hash + Objects.hashCode(this.ip);
-        hash = 61 * hash + this.port;
+        hash = 67 * hash + Objects.hashCode(this.username);
         return hash;
     }
 
@@ -169,22 +168,7 @@ public class User {
             return false;
         }
         final User other = (User) obj;
-        if (this.publisher != other.publisher) {
-            return false;
-        }
-        if (this.port != other.port) {
-            return false;
-        }
         if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        if (!Objects.equals(this.ip, other.ip)) {
-            return false;
-        }
-        if (!Arrays.equals(this.password, other.password)) {
-            return false;
-        }
-        if (!Objects.equals(this.subscriptions, other.subscriptions)) {
             return false;
         }
         return true;

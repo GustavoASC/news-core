@@ -18,13 +18,13 @@ public class Topic {
     /* Nome do tópico */
     private String name;
     /* Notícias associadas a este tópico */
-    private final List<News> associatedNews;
+    private final List<News> news;
 
     /**
      * Cria um tópico de notícia
      */
     public Topic() {
-        this.associatedNews = new LinkedList<>();
+        this.news = new LinkedList<>();
     }
 
     /**
@@ -32,8 +32,8 @@ public class Topic {
      *
      * @return lista com as notícias associadas
      */
-    public List<News> getAssociatedNews() {
-        return associatedNews;
+    public List<News> getNews() {
+        return news;
     }
 
     /**
@@ -43,7 +43,12 @@ public class Topic {
      */
     public void addNews(News news) {
         // TODO: identificar se estourou o limite de notícias associadas
-        associatedNews.add(news);
+        this.news.add(news);
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{" + "name=" + name + ", associatedNews=" + news + '}';
     }
 
 }
