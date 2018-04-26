@@ -29,12 +29,6 @@ public class TelaTopic extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jInicio = new javax.swing.JButton();
-        jPesquisa = new javax.swing.JButton();
-        jTopico = new javax.swing.JButton();
-        jPublicacao = new javax.swing.JButton();
-        jUsuLogado = new javax.swing.JTextField();
-        jLogout = new javax.swing.JButton();
         jInscricao = new javax.swing.JPanel();
         jInscrever = new javax.swing.JButton();
         jComboInsc = new javax.swing.JComboBox<>();
@@ -45,46 +39,14 @@ public class TelaTopic extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Topico");
 
-        jInicio.setText("Inicio");
-        jInicio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jInicioActionPerformed(evt);
-            }
-        });
-
-        jPesquisa.setText("Pesquisa");
-        jPesquisa.setMaximumSize(new java.awt.Dimension(83, 23));
-        jPesquisa.setMinimumSize(new java.awt.Dimension(83, 23));
-
-        jTopico.setText("Topico");
-        jTopico.setMaximumSize(new java.awt.Dimension(83, 23));
-        jTopico.setMinimumSize(new java.awt.Dimension(83, 23));
-        jTopico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTopicoActionPerformed(evt);
-            }
-        });
-
-        jPublicacao.setText("Publicacao");
-        jPublicacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPublicacaoActionPerformed(evt);
-            }
-        });
-
-        jUsuLogado.setEditable(false);
-        jUsuLogado.setText("Ola Fulano");
-        jUsuLogado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jUsuLogadoActionPerformed(evt);
-            }
-        });
-
-        jLogout.setText("Sair");
-
-        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscricao"));
+        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
 
         jInscrever.setText("Inscrever-se");
+        jInscrever.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jInscreverActionPerformed(evt);
+            }
+        });
 
         jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboInsc.addActionListener(new java.awt.event.ActionListener() {
@@ -98,22 +60,23 @@ public class TelaTopic extends javax.swing.JFrame {
         jInscricaoLayout.setHorizontalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInscricaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jInscrever))
+                .addGap(20, 20, 20)
+                .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jInscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jInscricaoLayout.setVerticalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInscricaoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addGroup(jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInscrever))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
-        jNovoTopic.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Novo topico"));
+        jNovoTopic.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Novo tópico"));
 
         jAdicionar.setText("Adicionar");
 
@@ -124,88 +87,53 @@ public class TelaTopic extends javax.swing.JFrame {
         jNovoTopicLayout.setHorizontalGroup(
             jNovoTopicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jNovoTopicLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTopicNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jTopicNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jNovoTopicLayout.setVerticalGroup(
             jNovoTopicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jNovoTopicLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(jNovoTopicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jAdicionar)
                     .addComponent(jTopicNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jInscricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jUsuLogado, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLogout)
-                        .addContainerGap())
-                    .addComponent(jNovoTopic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jNovoTopic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jInicio)
-                    .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPublicacao)
-                    .addComponent(jLogout)
-                    .addComponent(jUsuLogado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addContainerGap(106, Short.MAX_VALUE)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addComponent(jNovoTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInicioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jInicioActionPerformed
-
-    private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTopicoActionPerformed
-
-    private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
-        // Cria janela para publicação
-        TelaPublic framePublic = new TelaPublic();
-        // Define metodo de fechamento da janela
-        framePublic.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        framePublic.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_jPublicacaoActionPerformed
-
-    private void jUsuLogadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsuLogadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jUsuLogadoActionPerformed
-
     private void jComboInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboInscActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboInscActionPerformed
+
+    private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jInscreverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,15 +173,9 @@ public class TelaTopic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jAdicionar;
     private javax.swing.JComboBox<String> jComboInsc;
-    private javax.swing.JButton jInicio;
     private javax.swing.JButton jInscrever;
     private javax.swing.JPanel jInscricao;
-    private javax.swing.JButton jLogout;
     private javax.swing.JPanel jNovoTopic;
-    private javax.swing.JButton jPesquisa;
-    private javax.swing.JButton jPublicacao;
     private javax.swing.JTextField jTopicNovo;
-    private javax.swing.JButton jTopico;
-    private javax.swing.JTextField jUsuLogado;
     // End of variables declaration//GEN-END:variables
 }
