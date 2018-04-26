@@ -5,6 +5,7 @@
  */
 package news.core;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 /**
  * Usuário do sistema de notícias
  */
-public class User {
+public class User implements Serializable {
 
     /* Nome do usuário */
     private String username;

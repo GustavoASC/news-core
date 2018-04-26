@@ -5,13 +5,14 @@
  */
 package news.core;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Tópico de notícia
  */
-public class Topic {
+public class Topic implements Serializable {
 
     /* Número máximo de notícias que podem ser associadas a este tópico */
     private static final int MAXIMUM_NEWS = 10;

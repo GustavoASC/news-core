@@ -154,23 +154,38 @@ public class NewsServerTest {
 
     @Test
     public void testSubscribe() {
-        System.out.println("subscribe");
-        User user = null;
-        Topic topic = null;
-        NewsServer instance = new NewsServer();
-        instance.subscribe(user, topic);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        User firstUser = new User("Usuário não inscrito");
+        Topic firstTopic = new Topic();
+        firstUser.subscribe(firstTopic);
+        //
+        User user = new User("Gustavo");
+        News news = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
+        Topic topic = new Topic();
+        //
+        NewsServer server = new NewsServer();
+        server.addUser(user);
+        server.addTopic(topic);
+        //
+        server.subscribe(firstUser, firstTopic);
+        assertTrue(firstUser.isSubscribed(firstTopic));
+        assertFalse(firstUser.isSubscribed(topic));
+        //
+        server.subscribe(firstUser, topic); // Não deve fazer nada porque o usuário não foi adicionado ao server
+        server.subscribe(user, topic);
+        assertTrue(user.isSubscribed(topic));
+        //
+        server.addNews(news, topic, (News news1, User user1) -> {
+            assertEquals("User{username=Gustavo, password=null, publisher=false, subscriptions=[Topic{name=null, associatedNews=[News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}]}], ip=null, port=0}", user1.toString());
+            assertEquals("News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}", news1.toString());
+        });
+        server.addNews(news, topic, (News news1, User user1) -> {
+            assertEquals("User{username=Gustavo, password=null, publisher=false, subscriptions=[Topic{name=null, associatedNews=[News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}, News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}]}], ip=null, port=0}", user1.toString());
+            assertEquals("News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}", news1.toString());
+        });
+        server.addNews(news, firstTopic, (News news1, User user1) -> {
+            fail("Não deve cair aqui porque o tópico não foi adicionado ao server");
+        });
     }
-
-    @Test
-    public void testAddUser() {
-        System.out.println("addUser");
-        User user = null;
-        NewsServer instance = new NewsServer();
-        instance.addUser(user);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    
 
 }

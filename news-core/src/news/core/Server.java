@@ -5,6 +5,7 @@
  */
 package news.core;
 
+import java.rmi.Remote;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author 0145022
  */
-public interface Server {
+public interface Server extends Remote {
 
     /**
      * Adiciona um tópico

@@ -13,8 +13,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -57,7 +55,7 @@ public class NewsServer implements Server {
             Client service = (Client) registry.lookup("news");
             service.retrieveNews(news);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(Starter.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -68,7 +66,7 @@ public class NewsServer implements Server {
      * @param topic 
      * @param dispatcher
      */
-    public void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
+    protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
         if (topics.contains(topic)) {
             topic.addNews(news);
             registeredUsers.parallelStream()
@@ -136,7 +134,7 @@ public class NewsServer implements Server {
     /**
      * Interface para efetuar o despacho da notícia para o destino
      */
-    public interface NewsDispatcher {
+    protected interface NewsDispatcher {
 
         /**
          * Envia via RMI a notícia para o usuário especificado
