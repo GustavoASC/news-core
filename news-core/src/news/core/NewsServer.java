@@ -24,6 +24,8 @@ public class NewsServer implements Server {
     private final List<Topic> topics;
     /* Lista de usuários registrados no sistema */
     private final List<User> registeredUsers;
+    /* Servidor de bakcup */
+    private final BackupServer backupServer;
 
     /**
      * Cria o servidor de notícias
@@ -31,6 +33,15 @@ public class NewsServer implements Server {
     public NewsServer() {
         topics = new LinkedList<>();
         registeredUsers = new LinkedList<>();
+        backupServer = new BackupServerImpl();
+    }
+
+    /**
+     * Inicia o gerenciamento de backup
+     */
+    public void startBackupManagement() {
+        Thread thread = new Thread(new BackupManager());
+        thread.start();
     }
 
     @Override
@@ -63,7 +74,7 @@ public class NewsServer implements Server {
      * Envia a notícia ao usuário utilizando o dispatcher especificado
      *
      * @param news notícia que será enviada
-     * @param topic 
+     * @param topic
      * @param dispatcher
      */
     protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
@@ -162,6 +173,26 @@ public class NewsServer implements Server {
                 return 1;
             }
             return 0;
+        }
+
+    }
+
+    /**
+     * Runnable para gerenciar o backup automático do servidor
+     */
+    private class BackupManager implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    Thread.sleep(60000);
+                    BackupData data = new BackupData(registeredUsers, topics);
+                    backupServer.createBackup(data);
+                }
+            } catch (InterruptedException | RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
     }

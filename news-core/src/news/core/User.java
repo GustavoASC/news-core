@@ -6,6 +6,7 @@
 package news.core;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -147,7 +148,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", ip=" + ip + ", port=" + port + '}';
+        return "User{" + "username=" + username + ", password=" + Arrays.toString(password) + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", ip=" + ip + ", port=" + port + '}';
     }
 
     @Override

@@ -5,13 +5,14 @@
  */
 package news.core;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  * Notícia
  */
-public class News {
+public class News implements Serializable {
 
     /* Título da notícia */
     private String title;

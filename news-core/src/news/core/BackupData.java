@@ -7,6 +7,7 @@ package news.core;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Dados que são manipulados pelo servidor de backup
@@ -47,6 +48,40 @@ public class BackupData implements Serializable {
      */
     public List<Topic> getTopics() {
         return topics;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupData{" + "users=" + users + ", topics=" + topics + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.users);
+        hash = 67 * hash + Objects.hashCode(this.topics);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BackupData other = (BackupData) obj;
+        if (!users.equals(users)) {
+            return false;
+        }
+        if (!topics.equals(topics)) {
+            return false;
+        }
+        return true;
     }
 
 }
