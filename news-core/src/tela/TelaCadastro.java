@@ -5,17 +5,28 @@
  */
 package tela;
 
+import news.core.NewsServer;
+import news.core.Server;
+import news.core.User;
+
 /**
  *
  * @author Chen
  */
 public class TelaCadastro extends javax.swing.JFrame {
 
+    Server newServer;
     /**
      * Creates new form TelaPublic
      */
     public TelaCadastro() {
         initComponents();
+    }
+
+
+    TelaCadastro(Server server) {
+        initComponents();
+        newServer = server;
     }
 
     /**
@@ -149,6 +160,14 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     private void jCriarCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCriarCadActionPerformed
         // TODO add your handling code here:
+        // Cria o usuário
+        String finalidade = (String) jFinalidade.getSelectedItem();
+        boolean publisher = false;
+        if(finalidade.equals("Publicacao")){
+            publisher = true;
+        }
+        User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
+        newServer.addUser(user);
         this.setVisible(false);
     }//GEN-LAST:event_jCriarCadActionPerformed
 

@@ -5,8 +5,16 @@
  */
 package tela;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import news.core.NewsServer;
+import news.core.Server;
 
 /**
  *
@@ -15,13 +23,15 @@ import javax.swing.table.DefaultTableModel;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel modelTable = new DefaultTableModel();
-    
+    Server server;
     
     /**
      * Creates new form TelaTopic
      */
     @SuppressWarnings("empty-statement")
-    public TelaPrincipal() {
+    public TelaPrincipal() throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1", Registry.REGISTRY_PORT);
+        server = (Server) registry.lookup("127.0.0.1/service");
         
         initComponents();
         
@@ -166,7 +176,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCadastrarActionPerformed
         // Cria janela para aceitar novo cadastro
-        TelaCadastro tela = new TelaCadastro();
+        TelaCadastro tela = new TelaCadastro(server);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jCadastrarActionPerformed
@@ -213,7 +223,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                try {
+                    new TelaPrincipal().setVisible(true);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

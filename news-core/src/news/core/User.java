@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
+    
+    
     /* Nome do usuário */
     private String username;
     /* Senha */
@@ -35,6 +37,16 @@ public class User implements Serializable {
     public User() {
         this("");
     }
+
+    public User(String username, char[] password, boolean publisher) {
+        this.username = username;
+        this.password = password;
+        this.publisher = publisher;
+        this.subscriptions = null;
+        this.ip = " ";
+        this.port = 0;
+    }
+
 
     /**
      * Cria usuário com o nome especificado
