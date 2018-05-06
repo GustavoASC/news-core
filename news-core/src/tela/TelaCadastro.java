@@ -171,7 +171,8 @@ public class TelaCadastro extends javax.swing.JFrame {
                 publisher = true;
             }
             User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
-            newServer.addUser(user);
+            String text = newServer.addUser(user);
+            System.out.println(text);
             this.setVisible(false);
         } catch (RemoteException ex) {
             // CASSEL: coloquei esse try-catch para compilar o RemoteException, mas
