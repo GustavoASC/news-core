@@ -139,9 +139,8 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public String addUser(User user) throws RemoteException {
+    public void addUser(User user) throws RemoteException {
         registeredUsers.add(user);
-        return("Usuário adicionado");
     }
 
     /**

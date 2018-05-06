@@ -23,18 +23,16 @@ import news.core.Server;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel modelTable = new DefaultTableModel();
+   
     Server server;
-    
     /**
      * Creates new form TelaTopic
      */
     @SuppressWarnings("empty-statement")
-    public TelaPrincipal() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", Registry.REGISTRY_PORT);
-        server = (Server) registry.lookup("127.0.0.1/service");
-        
+    public TelaPrincipal(Server serv, String userName) throws RemoteException, NotBoundException {
+        this.server = serv; 
         initComponents();
-        
+        jUserName.setText(userName);
         String linha [] = {"teste", "12/02/2018", "Fernanda", "Teste de notícia Teste de notícia Teste de notícia"};
         
         modelTable.addColumn("Tópico");
@@ -49,6 +47,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
     }
 
+    private TelaPrincipal() {
+        initComponents();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,11 +63,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPesquisa = new javax.swing.JButton();
         jTopico = new javax.swing.JButton();
         jPublicacao = new javax.swing.JButton();
-        jEntrar = new javax.swing.JButton();
-        jCadastrar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jUserName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Topico");
@@ -96,26 +98,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jEntrar.setText("Entrar");
-        jEntrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jEntrarActionPerformed(evt);
-            }
-        });
-
-        jCadastrar.setText("Cadastrar-se");
-        jCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCadastrarActionPerformed(evt);
-            }
-        });
-
         jTable1.setModel(modelTable);
         jTable1.setEnabled(false);
         jScrollPane2.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Últimas notícias");
+
+        jLabel2.setText("User");
+
+        jUserName.setEditable(false);
+        jUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUserNameActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -124,7 +121,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -132,13 +135,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCadastrar)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jEntrar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +148,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPublicacao)
-                    .addComponent(jEntrar)
-                    .addComponent(jCadastrar))
+                    .addComponent(jLabel2)
+                    .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -174,23 +174,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jPublicacaoActionPerformed
 
-    private void jCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCadastrarActionPerformed
-        // Cria janela para aceitar novo cadastro
-        TelaCadastro tela = new TelaCadastro(server);
-        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        tela.setVisible(true);
-    }//GEN-LAST:event_jCadastrarActionPerformed
-
     private void jPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPesquisaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPesquisaActionPerformed
 
-    private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
-        // Cria janela para aceitar login
-        TelaLogin tela = new TelaLogin();
-        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        tela.setVisible(true);
-    }//GEN-LAST:event_jEntrarActionPerformed
+    private void jUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUserNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUserNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,25 +210,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new TelaPrincipal().setVisible(true);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new TelaPrincipal().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jCadastrar;
-    private javax.swing.JButton jEntrar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jPesquisa;
     private javax.swing.JButton jPublicacao;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton jTopico;
+    private javax.swing.JTextField jUserName;
     // End of variables declaration//GEN-END:variables
 }

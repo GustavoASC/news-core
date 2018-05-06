@@ -8,7 +8,6 @@ package tela;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import news.core.NewsServer;
 import news.core.Server;
 import news.core.User;
 
@@ -171,8 +170,9 @@ public class TelaCadastro extends javax.swing.JFrame {
                 publisher = true;
             }
             User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
-            String text = newServer.addUser(user);
-            System.out.println(text);
+            // Adiciona usuário no servidor
+            newServer.addUser(user);
+            // Desabilita a tela atual
             this.setVisible(false);
         } catch (RemoteException ex) {
             // CASSEL: coloquei esse try-catch para compilar o RemoteException, mas
