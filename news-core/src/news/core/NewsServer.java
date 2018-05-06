@@ -45,12 +45,12 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public void addTopic(Topic topic) {
+    public void addTopic(Topic topic) throws RemoteException {
         topics.add(topic);
     }
 
     @Override
-    public void addNews(News news, Topic topic) {
+    public void addNews(News news, Topic topic) throws RemoteException {
         addNews(news, topic, this::sendNewsToUser);
     }
 
@@ -87,7 +87,7 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public List<Topic> retrieveAvailableTopics() {
+    public List<Topic> retrieveAvailableTopics() throws RemoteException {
         return topics;
     }
 
@@ -96,13 +96,14 @@ public class NewsServer implements Server {
      *
      * @param username usuário para filtro
      * @return lista de notícias
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public List<News> retrievePublishedNews(String username) {
+    public List<News> retrievePublishedNews(String username) throws RemoteException {
         return retrievePublishedNews(new User(username));
     }
 
     @Override
-    public List<News> retrievePublishedNews(User user) {
+    public List<News> retrievePublishedNews(User user) throws RemoteException {
         List<News> publishedNews = new LinkedList<>();
         topics.stream().forEach(
                 t -> publishedNews.addAll(t.getNews().stream()
@@ -113,7 +114,7 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) {
+    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) throws RemoteException {
         List<News> topicNews = topic.getNews();
         return topicNews.stream()
                 .filter(news -> !news.getPublicationDate().before(initialDate))
@@ -122,7 +123,7 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public News retrieveLastNews(Topic topic) {
+    public News retrieveLastNews(Topic topic) throws RemoteException {
         List<News> topicNews = topic.getNews();
         return topicNews.stream()
                 .sorted(new NewsDateSorter())
@@ -131,14 +132,14 @@ public class NewsServer implements Server {
     }
 
     @Override
-    public void subscribe(User user, Topic topic) {
+    public void subscribe(User user, Topic topic) throws RemoteException {
         if (registeredUsers.contains(user) && topics.contains(topic)) {
             user.subscribe(topic);
         }
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(User user) throws RemoteException {
         registeredUsers.add(user);
     }
 

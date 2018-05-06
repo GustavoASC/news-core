@@ -6,6 +6,7 @@
 package news.core;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Operações ofeceridas pelo cliente e que serão chamadas pelo servidor de
@@ -19,7 +20,8 @@ public interface Client extends Remote {
      * Recebe a lista de notícias especificada
      *
      * @param news
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void retrieveNews(News news);
+    public void retrieveNews(News news) throws RemoteException;
 
 }

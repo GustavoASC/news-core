@@ -5,6 +5,9 @@
  */
 package tela;
 
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import news.core.NewsServer;
 import news.core.Server;
 import news.core.User;
@@ -159,16 +162,22 @@ public class TelaCadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void jCriarCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCriarCadActionPerformed
-        // TODO add your handling code here:
-        // Cria o usuário
-        String finalidade = (String) jFinalidade.getSelectedItem();
-        boolean publisher = false;
-        if(finalidade.equals("Publicacao")){
-            publisher = true;
+        try {
+            // TODO add your handling code here:
+            // Cria o usuário
+            String finalidade = (String) jFinalidade.getSelectedItem();
+            boolean publisher = false;
+            if(finalidade.equals("Publicacao")){
+                publisher = true;
+            }
+            User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
+            newServer.addUser(user);
+            this.setVisible(false);
+        } catch (RemoteException ex) {
+            // CASSEL: coloquei esse try-catch para compilar o RemoteException, mas
+            // de repente precisa exibir uma mensagem amigável ao usuário
+            ex.printStackTrace();
         }
-        User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
-        newServer.addUser(user);
-        this.setVisible(false);
     }//GEN-LAST:event_jCriarCadActionPerformed
 
     /**

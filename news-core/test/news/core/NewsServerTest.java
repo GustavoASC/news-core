@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class NewsServerTest {
 
     @Test
-    public void testAddTopic() {
+    public void testAddTopic() throws Exception {
         //
         News news = new News("Título de teste");
         news.setPublisher("Gustavo Cassel");
@@ -54,7 +54,7 @@ public class NewsServerTest {
     }
 
     @Test
-    public void testRetrieveAvailableTopics() {
+    public void testRetrieveAvailableTopics() throws Exception {
         //
         Topic topic = new Topic();
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel"));
@@ -79,7 +79,7 @@ public class NewsServerTest {
     }
 
     @Test
-    public void testRetrievePublishedNews() {
+    public void testRetrievePublishedNews() throws Exception {
         //
         Topic topic = new Topic();
         News first = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
@@ -110,7 +110,7 @@ public class NewsServerTest {
     }
 
     @Test
-    public void testRetrieveNews() {
+    public void testRetrieveNews() throws Exception {
         Topic topic = new Topic();
         //
         News first = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
@@ -153,7 +153,7 @@ public class NewsServerTest {
     }
 
     @Test
-    public void testSubscribe() {
+    public void testSubscribe() throws Exception {
         User firstUser = new User("Usuário não inscrito");
         Topic firstTopic = new Topic();
         firstUser.subscribe(firstTopic);

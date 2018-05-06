@@ -5,6 +5,8 @@
  */
 package news.core;
 
+import java.rmi.RemoteException;
+
 /**
  * Client que receberá notícias do servidor
  */
@@ -23,7 +25,7 @@ public class NewsClient implements Client {
     }
 
     @Override
-    public void retrieveNews(News news) {
+    public void retrieveNews(News news) throws RemoteException {
 //        currentUser
 
     }
