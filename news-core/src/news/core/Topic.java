@@ -52,4 +52,8 @@ public class Topic implements Serializable {
         return "Topic{" + "name=" + name + ", associatedNews=" + news + '}';
     }
 
+    public String getName() {
+        return name;
+    }
+
 }

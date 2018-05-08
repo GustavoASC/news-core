@@ -207,5 +207,10 @@ public class NewsServer implements Server {
         }
 
     }
+    
+    @Override
+    public List<Topic> getTopics() {
+        return topics;
+    }    
 
 }
