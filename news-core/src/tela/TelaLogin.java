@@ -9,8 +9,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import news.core.Server;
+import news.core.User;
 
 /**
  *
@@ -169,20 +171,29 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
-        // TODO add your handling code here:
-        // Ir para tela principal
-        TelaPrincipal tela = null;
         try {
-            tela = new TelaPrincipal(newServer, jUsuario.getText());
+            // TODO add your handling code here:
+            User user = newServer.retUser(jUsuario.getText());
+            if(user == null){
+                JOptionPane.showMessageDialog(null,"Usuario invalido!");
+            }else{
+                // Ir para tela principal
+                TelaPrincipal tela = null;
+                try {
+                    tela = new TelaPrincipal(newServer, jUsuario.getText());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                tela.setVisible(true);
+                // Desabilita a tela atual
+                this.setVisible(false);
+            }
         } catch (RemoteException ex) {
-            Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        tela.setVisible(true);
-        // Desabilita a tela atual
-        this.setVisible(false);
     }//GEN-LAST:event_jEntrarActionPerformed
 
     /**

@@ -88,4 +88,12 @@ public interface Server extends Remote {
      */
     public void addUser(User user) throws RemoteException;
 
+    /**
+     * Retorna o usuário
+     *
+     * @param userName
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public User retUser(String userName) throws RemoteException;
+
 }

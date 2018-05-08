@@ -143,6 +143,16 @@ public class NewsServer implements Server {
         registeredUsers.add(user);
     }
 
+    @Override
+    public User retUser(String userName) throws RemoteException {
+        for(int i=0; i < registeredUsers.size(); i++){
+            if(registeredUsers.get(i).getUsername().equals(userName)){
+                return registeredUsers.get(i);
+            }
+        }
+        return null;
+    }
+
     /**
      * Interface para efetuar o despacho da notícia para o destino
      */
