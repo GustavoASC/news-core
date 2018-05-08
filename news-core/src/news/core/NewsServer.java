@@ -24,8 +24,6 @@ public class NewsServer implements Server {
     private final List<Topic> topics;
     /* Lista de usuários registrados no sistema */
     private final List<User> registeredUsers;
-    /* Servidor de bakcup */
-    private final BackupServer backupServer;
 
     /**
      * Cria o servidor de notícias
@@ -33,14 +31,15 @@ public class NewsServer implements Server {
     public NewsServer() {
         topics = new LinkedList<>();
         registeredUsers = new LinkedList<>();
-        backupServer = new BackupServerImpl();
     }
 
     /**
      * Inicia o gerenciamento de backup
+     *
+     * @param backup instância do servidor de backup
      */
-    public void startBackupManagement() {
-        Thread thread = new Thread(new BackupManager());
+    public void startBackupManagement(BackupServer backup) {
+        Thread thread = new Thread(new BackupManager(backup));
         thread.start();
     }
 
@@ -192,6 +191,18 @@ public class NewsServer implements Server {
      * Runnable para gerenciar o backup automático do servidor
      */
     private class BackupManager implements Runnable {
+
+        /* Servidor de bakcup */
+        private final BackupServer backupServer;
+
+        /**
+         * Cria runnable para gerenciar o backup
+         * 
+         * @param backupServer servidor de bakcup
+         */
+        public BackupManager(BackupServer backupServer) {
+            this.backupServer = backupServer;
+        }
 
         @Override
         public void run() {
