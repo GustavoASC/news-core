@@ -5,7 +5,14 @@
  */
 package tela;
 
-import javax.swing.WindowConstants;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import news.core.Server;
+import news.core.User;
+import news.core.Topic;
 
 /**
  *
@@ -13,12 +20,29 @@ import javax.swing.WindowConstants;
  */
 public class TelaTopic extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaTopic
-     */
+    Server newServer;
+    
+    // Construtores
+    
     public TelaTopic() {
         initComponents();
     }
+    public TelaTopic(Server server) {
+        initComponents();
+        newServer = server;
+        
+        //Popula a lista de opções com os tópicos existentes
+        List<Topic> topics;
+        try {
+            topics = newServer.getTopics();
+            List<String> opcoes = null;
+            topics.forEach((t) -> opcoes.add(t.getName()));
+            jComboInsc.setModel((ComboBoxModel<String>) opcoes);
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

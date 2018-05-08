@@ -95,5 +95,12 @@ public interface Server extends Remote {
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
     public User retUser(String userName) throws RemoteException;
+    
+    /**
+     * Retorna a lista de tópicos disponíveis
+     *
+     * @return Lista de tópicos disponíveis 
+     */
+    public List<Topic> getTopics() throws RemoteException;
 
 }
