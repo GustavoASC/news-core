@@ -65,13 +65,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPesquisa = new javax.swing.JButton();
-        jTopico = new javax.swing.JButton();
+        jInscricao = new javax.swing.JButton();
         jPublicacao = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jUserName = new javax.swing.JTextField();
+        jTopico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Topico");
@@ -86,12 +87,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jTopico.setText("Tópicos");
-        jTopico.setMaximumSize(new java.awt.Dimension(83, 23));
-        jTopico.setMinimumSize(new java.awt.Dimension(83, 23));
-        jTopico.addActionListener(new java.awt.event.ActionListener() {
+        jInscricao.setText("Inscrição");
+        jInscricao.setMaximumSize(new java.awt.Dimension(83, 23));
+        jInscricao.setMinimumSize(new java.awt.Dimension(83, 23));
+        jInscricao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTopicoActionPerformed(evt);
+                jInscricaoActionPerformed(evt);
             }
         });
 
@@ -118,6 +119,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jTopico.setText("Tópicos");
+        jTopico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTopicoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,7 +143,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -150,10 +160,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPublicacao)
                     .addComponent(jLabel2)
-                    .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTopico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -164,12 +175,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
-        // Cria janela para aceitar tópicos
-        TelaTopic tela = new TelaTopic();
+    private void jInscricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscricaoActionPerformed
+        // Cria janela para inscrição de tópicos
+        TelaInscricao tela = new TelaInscricao();
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
-    }//GEN-LAST:event_jTopicoActionPerformed
+    }//GEN-LAST:event_jInscricaoActionPerformed
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
         // Cria janela para aceitar nova publicação
@@ -185,6 +196,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUserNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jUserNameActionPerformed
+
+    private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
+        // Cria janela cadastrar tópicos
+        TelaTopic tela = new TelaTopic(server);
+        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jTopicoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,6 +238,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jInscricao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jPesquisa;
