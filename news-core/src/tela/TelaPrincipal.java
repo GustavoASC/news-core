@@ -15,6 +15,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import news.core.Server;
+import news.core.User;
 
 /**
  *
@@ -25,26 +26,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
     DefaultTableModel modelTable = new DefaultTableModel();
    
     Server server;
+    User logUser;
     /**
      * Creates new form TelaTopic
      */
     @SuppressWarnings("empty-statement")
-    public TelaPrincipal(Server serv, String userName) throws RemoteException, NotBoundException {
+    public TelaPrincipal(Server serv, User user) throws RemoteException, NotBoundException {
         this.server = serv; 
+        this.logUser = user;
         initComponents();
-        jUserName.setText(userName);
-        String linha [] = {"teste", "12/02/2018", "Fernanda", "Teste de notícia Teste de notícia Teste de notícia"};
-        
+        jUserName.setText(user.getUsername());
+        //Desabilita o botão "Publicar" caso usuário não for publisher
+        if(logUser.isPublisher()){
+            jPublicacao.setEnabled(true);
+        }else{
+            jPublicacao.setEnabled(false);
+        }
+        String linha [] = {"teste", "12/02/2018", "Fernanda", "Teste de notícia Teste de notícia Teste de notícia"};    
         modelTable.addColumn("Tópico");
         modelTable.addColumn("Data");
         modelTable.addColumn("Escritor");
-        modelTable.addColumn("Notícia");
-        
-        
+        modelTable.addColumn("Notícia");                
         modelTable.addRow(linha);
-        modelTable.addRow(linha);
-        
-        
+        modelTable.addRow(linha);               
     }
 
     private TelaPrincipal() {
@@ -169,7 +173,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
         // Cria janela para aceitar nova publicação
-        TelaPublic tela = new TelaPublic();
+        TelaPublic tela = new TelaPublic(server, logUser);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jPublicacaoActionPerformed

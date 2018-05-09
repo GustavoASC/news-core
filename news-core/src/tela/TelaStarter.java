@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.WindowConstants;
 import news.core.Server;
 import news.core.Starter;
+import news.core.User;
 
 /**
  *
@@ -128,8 +129,9 @@ public class TelaStarter extends javax.swing.JFrame {
         // TODO add your handling code here:
         // Ir para tela principal
         TelaPrincipal tela = null;
+        User user = new User("Anonimo");
         try {
-            tela = new TelaPrincipal(server, "Anonimo");
+            tela = new TelaPrincipal(server, user);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {

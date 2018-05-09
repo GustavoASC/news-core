@@ -179,19 +179,15 @@ public class TelaLogin extends javax.swing.JFrame {
             }else{
                 // Ir para tela principal
                 TelaPrincipal tela = null;
-                try {
-                    tela = new TelaPrincipal(newServer, jUsuario.getText());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                tela = new TelaPrincipal(newServer, user);
                 tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 tela.setVisible(true);
                 // Desabilita a tela atual
                 this.setVisible(false);
             }
         } catch (RemoteException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jEntrarActionPerformed
