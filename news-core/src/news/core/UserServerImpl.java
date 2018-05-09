@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 /**
  * Client que receberá notícias do servidor
  */
-public class NewsClient implements Client {
+public class UserServerImpl implements UserServer {
 
     /* Usuário logado no sistema */
     private final User currentUser;
@@ -20,7 +20,7 @@ public class NewsClient implements Client {
      *
      * @param currentUser
      */
-    public NewsClient(User currentUser) {
+    public UserServerImpl(User currentUser) {
         this.currentUser = currentUser;
     }
 

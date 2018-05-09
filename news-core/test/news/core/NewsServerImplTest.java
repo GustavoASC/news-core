@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * Testes do servidor de notícias
  */
-public class NewsServerTest {
+public class NewsServerImplTest {
 
     @Test
     public void testAddTopic() throws Exception {
@@ -26,7 +26,7 @@ public class NewsServerTest {
         Topic topic = new Topic();
         topic.addNews(news);
         //
-        NewsServer server = new NewsServer();
+        NewsServerImpl server = new NewsServerImpl();
         server.addTopic(topic);
         //
         News lastNews;
@@ -59,7 +59,7 @@ public class NewsServerTest {
         Topic topic = new Topic();
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel"));
         //
-        NewsServer server = new NewsServer();
+        NewsServerImpl server = new NewsServerImpl();
         server.addTopic(topic);
         //
         List<Topic> availableTopics;
@@ -91,7 +91,7 @@ public class NewsServerTest {
         topic.addNews(second);
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Edilse"));
         //
-        NewsServer server = new NewsServer();
+        NewsServerImpl server = new NewsServerImpl();
         server.addTopic(topic);
         //
         List<News> publishedNews;
@@ -121,7 +121,7 @@ public class NewsServerTest {
         topic.addNews(second);
         topic.addNews(third);
         //
-        NewsServer server = new NewsServer();
+        NewsServerImpl server = new NewsServerImpl();
         server.addTopic(topic);
         //
         List<News> filteredNews;
@@ -162,7 +162,7 @@ public class NewsServerTest {
         News news = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
         Topic topic = new Topic();
         //
-        NewsServer server = new NewsServer();
+        NewsServerImpl server = new NewsServerImpl();
         server.addUser(user);
         server.addTopic(topic);
         //

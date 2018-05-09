@@ -8,8 +8,8 @@ package tela;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import news.core.Server;
 import news.core.User;
+import news.core.NewsServer;
 
 /**
  *
@@ -17,7 +17,7 @@ import news.core.User;
  */
 public class TelaCadastro extends javax.swing.JFrame {
 
-    Server newServer;
+    NewsServer newServer;
     /**
      * Creates new form TelaPublic
      */
@@ -26,7 +26,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
 
-    TelaCadastro(Server server) {
+    TelaCadastro(NewsServer server) {
         initComponents();
         newServer = server;
     }
