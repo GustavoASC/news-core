@@ -16,8 +16,6 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
-    
-    
     /* Nome do usuário */
     private String username;
     /* Senha */
@@ -26,8 +24,6 @@ public class User implements Serializable {
     private boolean publisher;
     /* Tópicos em que este usuário está inscrito */
     private final List<Topic> subscriptions;
-    /* IP de origem do usuário para conexão RMI */
-    private String ip;
     /* Porta para conexão RMI com o usuário */
     private int port;
 
@@ -43,10 +39,8 @@ public class User implements Serializable {
         this.password = password;
         this.publisher = publisher;
         this.subscriptions = null;
-        this.ip = " ";
         this.port = 0;
     }
-
 
     /**
      * Cria usuário com o nome especificado
@@ -123,24 +117,6 @@ public class User implements Serializable {
     }
 
     /**
-     * Retorna o IP de origem do usuário para conexão RMI
-     *
-     * @return String
-     */
-    public String getIp() {
-        return ip;
-    }
-
-    /**
-     * Define o IP de origem do usuário para conexão RMI
-     *
-     * @param ip
-     */
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    /**
      * Retorna a porta para conexão RMI com o usuário
      *
      * @return int
@@ -160,7 +136,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "username=" + username + ", password=" + Arrays.toString(password) + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", ip=" + ip + ", port=" + port + '}';
+        return "User{" + "username=" + username + ", password=" + Arrays.toString(password) + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", port=" + port + '}';
     }
 
     @Override

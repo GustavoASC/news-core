@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import news.core.Server;
+import news.core.NewsServer;
 import news.core.Topic;
 
 /**
@@ -19,7 +19,7 @@ import news.core.Topic;
  */
 public class TelaInscricao extends javax.swing.JFrame {
 
-    Server newServer;
+    NewsServer newServer;
     String opcoes [] = null;
     
     // Construtores
@@ -28,7 +28,7 @@ public class TelaInscricao extends javax.swing.JFrame {
         initComponents();
     }
     
-    public TelaInscricao(Server server) {
+    public TelaInscricao(NewsServer server) {
         
         newServer = server;
         

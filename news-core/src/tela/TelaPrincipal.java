@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import news.core.Server;
 import news.core.User;
+import news.core.NewsServer;
 
 /**
  *
@@ -25,13 +25,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel modelTable = new DefaultTableModel();
    
-    Server server;
+    NewsServer server;
     User logUser;
     /**
      * Creates new form TelaTopic
      */
     @SuppressWarnings("empty-statement")
-    public TelaPrincipal(Server serv, User user) throws RemoteException, NotBoundException {
+    public TelaPrincipal(NewsServer serv, User user) throws RemoteException, NotBoundException {
         this.server = serv; 
         this.logUser = user;
         initComponents();

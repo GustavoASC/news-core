@@ -26,13 +26,10 @@ public class BackupServerImplTest {
     @Test
     public void testCreateBackup() {
         User user1 = new User("Gustavo");
-        user1.setIp("192.168.1.1");
         user1.setPort(50);
         User user2 = new User("Fernanda");
-        user2.setIp("192.168.1.2");
         user2.setPort(27);
         User user3 = new User("Chen");
-        user3.setIp("192.168.1.3");
         user3.setPort(40);
         user3.setPublisher(true);
         user3.setPassword("12345".toCharArray());

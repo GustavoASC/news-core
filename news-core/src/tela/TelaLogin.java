@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
-import news.core.Server;
 import news.core.User;
+import news.core.NewsServer;
 
 /**
  *
@@ -20,14 +20,14 @@ import news.core.User;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
-    Server newServer;
+    NewsServer newServer;
     /**
      * Creates new form jLogin
      */
     public TelaLogin() {
         initComponents();
     }
-    public TelaLogin(Server server) {
+    public TelaLogin(NewsServer server) {
         initComponents();
         newServer = server;
     }

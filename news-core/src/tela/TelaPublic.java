@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import news.core.News;
-import news.core.Server;
 import news.core.Topic;
 import news.core.User;
+import news.core.NewsServer;
 
 /**
  *
@@ -21,7 +21,7 @@ import news.core.User;
  */
 public class TelaPublic extends javax.swing.JFrame {
 
-    Server server;
+    NewsServer server;
     User logUser;
     /**
      * Creates new form TelaPublic
@@ -30,7 +30,7 @@ public class TelaPublic extends javax.swing.JFrame {
         initComponents();
     }
 
-    TelaPublic(Server serv, User user) {
+    TelaPublic(NewsServer serv, User user) {
         this.server = serv; 
         this.logUser = user;
         initComponents();

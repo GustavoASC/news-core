@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import news.core.Server;
 import news.core.Topic;
+import news.core.NewsServer;
 
 /**
  *
@@ -19,15 +19,13 @@ import news.core.Topic;
  */
 public class TelaTopic extends javax.swing.JFrame {
 
-    Server newServer;
-    
-    // Construtores
+    NewsServer newServer;
     
     public TelaTopic() {
         initComponents();
     }
     
-    public TelaTopic(Server server) {
+    public TelaTopic(NewsServer server) {
         newServer = server;
         initComponents();
     }

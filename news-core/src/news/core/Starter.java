@@ -23,7 +23,7 @@ public class Starter {
     /** Nome usado pelo servidor de notícias */
     public static final String NEWS_SERVER_NAME = "service";
     /* Instância do servidor de notícias */
-    private NewsServer newsServer;
+    private NewsServerImpl newsServer;
 
     /**
      * @param args the command line arguments
@@ -55,11 +55,11 @@ public class Starter {
         BackupServer backupServer = findBackupServer();
         BackupData backup = backupServer.restoreBackup();
         //
-        newsServer = new NewsServer(backup.getTopics(), backup.getUsers());
+        newsServer = new NewsServerImpl(backup.getTopics(), backup.getUsers());
         newsServer.startBackupManagement(backupServer);
         //
         Registry registry = LocateRegistry.createRegistry(NEWS_SERVER_PORT);
-        Server server = (Server) UnicastRemoteObject.exportObject(newsServer, 0);
+        NewsServer server = (NewsServer) UnicastRemoteObject.exportObject(newsServer, 0);
         registry.rebind("127.0.0.1/" + NEWS_SERVER_NAME, server);
         System.out.println("Servidor no ar!");
     }

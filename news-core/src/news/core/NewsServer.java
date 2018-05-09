@@ -5,233 +5,113 @@
  */
 package news.core;
 
-import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Servidor de notícias
+ * Interface representando um servidor de notícias
+ *
+ * @author 0145022
  */
-public class NewsServer implements Server {
-
-    /* Tópicos existentes nas notícias */
-    private final List<Topic> topics;
-    /* Lista de usuários registrados no sistema */
-    private final List<User> registeredUsers;
+public interface NewsServer extends Remote {
 
     /**
-     * Cria o servidor de notícias
-     */
-    public NewsServer() {
-        this(new LinkedList<>(), new LinkedList<>());
-    }
-
-    /**
-     * Cria o servidor de notícias
-     * 
-     * @param topics tópicos existentes nas notícias
-     * @param registeredUsers Lista de usuários registrados no sistema
-     */
-    public NewsServer(List<Topic> topics, List<User> registeredUsers) {
-        this.topics = topics;
-        this.registeredUsers = registeredUsers;
-    }
-
-    /**
-     * Inicia o gerenciamento de backup
+     * Adiciona um tópico
      *
-     * @param backup instância do servidor de backup
+     * @param topic tópico a ser adicionado
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void startBackupManagement(BackupServer backup) {
-        Thread thread = new Thread(new BackupManager(backup));
-        thread.start();
-    }
-
-    @Override
-    public void addTopic(Topic topic) throws RemoteException {
-        topics.add(topic);
-    }
-
-    @Override
-    public void addNews(News news, Topic topic) throws RemoteException {
-        addNews(news, topic, this::sendNewsToUser);
-    }
+    public void addTopic(Topic topic) throws RemoteException;
 
     /**
-     * Envia via RMI a notícia para o usuário especificado
+     * Adiciona uma notícia
      *
-     * @param news notícia que será enviada
-     * @param user usuário que receberá a notícia
+     * @param news notícia a ser adicionada
+     * @param topic tópico ao qual a notícia está associada
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    private void sendNewsToUser(News news, User user) {
-        try {
-            Registry registry = LocateRegistry.getRegistry(user.getIp(), user.getPort());
-            Client service = (Client) registry.lookup("news");
-            service.retrieveNews(news);
-        } catch (RemoteException | NotBoundException ex) {
-            ex.printStackTrace();
-        }
-    }
+    public void addNews(News news, Topic topic) throws RemoteException;
 
     /**
-     * Envia a notícia ao usuário utilizando o dispatcher especificado
+     * Retorna lista com todos os tópicos existentes
      *
-     * @param news notícia que será enviada
-     * @param topic
-     * @param dispatcher
+     * @return lista com todos os tópicos existentes
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
-        if (topics.contains(topic)) {
-            topic.addNews(news);
-            registeredUsers.parallelStream()
-                    .filter(user -> user.isSubscribed(topic))
-                    .forEach(user -> dispatcher.sendNewsToUser(news, user));
-        }
-    }
-
-    @Override
-    public List<Topic> retrieveAvailableTopics() throws RemoteException {
-        return topics;
-    }
+    public List<Topic> retrieveAvailableTopics() throws RemoteException;
 
     /**
-     * Retorna a lista de notícias publicada pelo nome de usuário especificado
+     * Retorna a lista de notícias publicada pelo usuário especificado
      *
-     * @param username usuário para filtro
+     * @param user usuário para filtro
      * @return lista de notícias
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public List<News> retrievePublishedNews(String username) throws RemoteException {
-        return retrievePublishedNews(new User(username));
-    }
-
-    @Override
-    public List<News> retrievePublishedNews(User user) throws RemoteException {
-        List<News> publishedNews = new LinkedList<>();
-        topics.stream().forEach(
-                t -> publishedNews.addAll(t.getNews().stream()
-                        .filter(news -> news.getPublisher().equals(user))
-                        .collect(Collectors.toList())
-                ));
-        return publishedNews;
-    }
-
-    @Override
-    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) throws RemoteException {
-        List<News> topicNews = topic.getNews();
-        return topicNews.stream()
-                .filter(news -> !news.getPublicationDate().before(initialDate))
-                .filter(news -> !news.getPublicationDate().after(finalDate))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public News retrieveLastNews(Topic topic) throws RemoteException {
-        List<News> topicNews = topic.getNews();
-        return topicNews.stream()
-                .sorted(new NewsDateSorter())
-                .findFirst()
-                .get();
-    }
-
-    @Override
-    public void subscribe(User user, Topic topic) throws RemoteException {
-        if (registeredUsers.contains(user) && topics.contains(topic)) {
-            user.subscribe(topic);
-        }
-    }
-
-    @Override
-    public void addUser(User user) throws RemoteException {
-        registeredUsers.add(user);
-    }
-
-    @Override
-    public User retUser(String userName) throws RemoteException {
-        for(int i=0; i < registeredUsers.size(); i++){
-            if(registeredUsers.get(i).getUsername().equals(userName)){
-                return registeredUsers.get(i);
-            }
-        }
-        return null;
-    }
+    public List<News> retrievePublishedNews(User user) throws RemoteException;
 
     /**
-     * Interface para efetuar o despacho da notícia para o destino
+     * Solicita as notícias do tópico {@code topic} dentro do intervalo de datas especificado.
+     *
+     * @param topic tópíco para retornar as notícias
+     * @param initialDate data inicial para filtrar as notícias
+     * @param finalDate data final para filtrar as notícias
+     * @return lista de notícias de acordo com os filtros especificados. Se não encontrar nenhuma notícia então retorna uma lista vazia.
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    protected interface NewsDispatcher {
-
-        /**
-         * Envia via RMI a notícia para o usuário especificado
-         *
-         * @param news notícia que será enviada
-         * @param user usuário que receberá a notícia
-         */
-        public void sendNewsToUser(News news, User user);
-
-    }
+    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) throws RemoteException;
 
     /**
-     * Classe para ordenar as notícias por ordem crescente de data
+     * Solicita a última notícia de um determinado tópico
+     *
+     * @param topic
+     * @return notícia encontrada ou {@code null} se não encontrar nenhuma
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    private class NewsDateSorter implements Comparator<News> {
-
-        @Override
-        public int compare(News first, News second) {
-            Date firstDate = first.getPublicationDate();
-            Date secondDate = second.getPublicationDate();
-            if (firstDate.after(secondDate)) {
-                return -1;
-            }
-            if (firstDate.before(secondDate)) {
-                return 1;
-            }
-            return 0;
-        }
-
-    }
+    public News retrieveLastNews(Topic topic) throws RemoteException;
 
     /**
-     * Runnable para gerenciar o backup automático do servidor
+     * Inscreve o usuário em um tópico
+     *
+     * @param user usuário
+     * @param topic tópico onde o usuário será inscrito
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    private class BackupManager implements Runnable {
+    public void subscribe(User user, Topic topic) throws RemoteException;
 
-        /* Servidor de bakcup */
-        private final BackupServer backupServer;
+    /**
+     * Adiciona um usuário
+     *
+     * @param user
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public void addUser(User user) throws RemoteException;
 
-        /**
-         * Cria runnable para gerenciar o backup
-         * 
-         * @param backupServer servidor de bakcup
-         */
-        public BackupManager(BackupServer backupServer) {
-            this.backupServer = backupServer;
-        }
+    /**
+     * Efetua o logon do usuário no servidor de notícias
+     *
+     * @param user usuário que está fazendo logon
+     * @param ip IP de origam do usuário
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public void addLoggedUser(User user, String ip) throws RemoteException;
 
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    Thread.sleep(10000);
-                    BackupData data = new BackupData(registeredUsers, topics);
-                    backupServer.createBackup(data);
-                }
-            } catch (InterruptedException | RemoteException e) {
-                e.printStackTrace();
-            }
-        }
+    /**
+     * Retorna o usuário a partir de seu nome
+     *
+     * @param userName
+     * @return usuário
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public User retUser(String userName) throws RemoteException;
 
-    }
-    
-    @Override
-    public List<Topic> getTopics() {
-        return topics;
-    }    
+    /**
+     * Retorna a lista de tópicos disponíveis
+     *
+     * @return Lista de tópicos disponíveis
+     * @throws RemoteException
+     */
+    public List<Topic> getTopics() throws RemoteException;
 
 }

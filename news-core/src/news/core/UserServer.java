@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  *
  * @author 0145022
  */
-public interface Client extends Remote {
+public interface UserServer extends Remote {
 
     /**
      * Recebe a lista de notícias especificada
