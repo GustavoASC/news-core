@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.WindowConstants;
 import news.core.Server;
+import news.core.Starter;
 
 /**
  *
@@ -20,13 +21,15 @@ import news.core.Server;
  */
 public class TelaStarter extends javax.swing.JFrame {
 
-    Server server;
+    /* Servidor de notícias */
+    private final Server server;
+    
     /**
      * Creates new form TelaStarter
      */
     public TelaStarter() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", Registry.REGISTRY_PORT);
-        server = (Server) registry.lookup("127.0.0.1/service");
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1", Starter.NEWS_SERVER_PORT);
+        server = (Server) registry.lookup("127.0.0.1/" + Starter.NEWS_SERVER_NAME);
         initComponents();
     }
 

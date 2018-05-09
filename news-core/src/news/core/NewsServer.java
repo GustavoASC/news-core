@@ -29,8 +29,18 @@ public class NewsServer implements Server {
      * Cria o servidor de notícias
      */
     public NewsServer() {
-        topics = new LinkedList<>();
-        registeredUsers = new LinkedList<>();
+        this(new LinkedList<>(), new LinkedList<>());
+    }
+
+    /**
+     * Cria o servidor de notícias
+     * 
+     * @param topics tópicos existentes nas notícias
+     * @param registeredUsers Lista de usuários registrados no sistema
+     */
+    public NewsServer(List<Topic> topics, List<User> registeredUsers) {
+        this.topics = topics;
+        this.registeredUsers = registeredUsers;
     }
 
     /**
@@ -208,7 +218,7 @@ public class NewsServer implements Server {
         public void run() {
             try {
                 while (true) {
-                    Thread.sleep(60000);
+                    Thread.sleep(10000);
                     BackupData data = new BackupData(registeredUsers, topics);
                     backupServer.createBackup(data);
                 }
