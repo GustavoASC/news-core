@@ -6,6 +6,7 @@
 package news.core;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,13 @@ public class BackupData implements Serializable {
     private final List<User> users;
     /* Tópicos manipulados pelo servidor de backup */
     private final List<Topic> topics;
+
+    /**
+     * Cria objeto vazio com dados que são manipulados pelo servidor de backup
+     */
+    public BackupData() {
+        this(new LinkedList<>(), new LinkedList<>());
+    }
 
     /**
      * Cria objeto com dados que são manipulados pelo servidor de backup

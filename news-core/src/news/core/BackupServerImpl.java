@@ -5,6 +5,7 @@
  */
 package news.core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,13 +34,12 @@ public class BackupServerImpl implements BackupServer {
 
     @Override
     public BackupData restoreBackup() throws RemoteException {
-        try {
-            FileInputStream fis = new FileInputStream(BACKUP_FILE_NAME);
+        try (FileInputStream fis = new FileInputStream(BACKUP_FILE_NAME)) {
             try (ObjectInputStream in = new ObjectInputStream(fis)) {
                 return (BackupData) in.readObject();
             }
-        } catch (Exception ex) {
-            throw new RemoteException("", ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            return new BackupData();
         }
     }
 
