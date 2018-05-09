@@ -46,10 +46,10 @@ public class News implements Serializable {
      * @param publicationDate data de publicação
      * @param publisher usuário que publicou a notícia
      */
-    public News(String title, Date publicationDate, String publisher) {
+    public News(String title, Date publicationDate, User publisher) {
         this.title = title;
         this.publicationDate = publicationDate;
-        this.publisher = new User(publisher);
+        this.publisher = publisher;
     }
 
     /**
