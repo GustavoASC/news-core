@@ -20,7 +20,6 @@ import news.core.Topic;
 public class TelaTopic extends javax.swing.JFrame {
 
     Server newServer;
-    String opcoes [] = null;
     
     // Construtores
     
@@ -29,27 +28,8 @@ public class TelaTopic extends javax.swing.JFrame {
     }
     
     public TelaTopic(Server server) {
-        
         newServer = server;
-        
-        //Popula a lista de opções com os tópicos existentes
-        List<Topic> topics;
-        try {
-            topics = newServer.getTopics();
-            int i=0;
-            for(Topic t: topics){
-                opcoes[i] = t.getName();
-                i++;
-            }
-            
-            JOptionPane.showMessageDialog(null,"montou opc");
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
         initComponents();
-
     }
 
 
@@ -63,41 +43,39 @@ public class TelaTopic extends javax.swing.JFrame {
     private void initComponents() {
 
         jInscricao = new javax.swing.JPanel();
-        jInscrever = new javax.swing.JButton();
-        jComboInsc = new javax.swing.JComboBox<>();
+        jTopicName = new javax.swing.JTextField();
+        jAdicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Topico");
 
         jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
 
-        jInscrever.setText("Inscrever-se");
-        jInscrever.addActionListener(new java.awt.event.ActionListener() {
+        jAdicionar.setText("Adicionar");
+        jAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jInscreverActionPerformed(evt);
+                jAdicionarActionPerformed(evt);
             }
         });
-
-        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(opcoes));
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
         jInscricaoLayout.setHorizontalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInscricaoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(jInscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(26, 26, 26)
+                .addComponent(jTopicName, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jInscricaoLayout.setVerticalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInscricaoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jInscrever))
+                    .addComponent(jTopicName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jAdicionar))
                 .addGap(20, 20, 20))
         );
 
@@ -121,10 +99,18 @@ public class TelaTopic extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
+    private void jAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAdicionarActionPerformed
+        
+        if (jTopicName.getText().isEmpty())
+            return;
         
         
-    }//GEN-LAST:event_jInscreverActionPerformed
+        try {
+            newServer.addTopic(new Topic(jTopicName.getText()));
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jAdicionarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +138,9 @@ public class TelaTopic extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaTopic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -162,8 +151,8 @@ public class TelaTopic extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboInsc;
-    private javax.swing.JButton jInscrever;
+    private javax.swing.JButton jAdicionar;
     private javax.swing.JPanel jInscricao;
+    private javax.swing.JTextField jTopicName;
     // End of variables declaration//GEN-END:variables
 }
