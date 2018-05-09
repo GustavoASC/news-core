@@ -27,6 +27,12 @@ public class Topic implements Serializable {
     public Topic() {
         this.news = new LinkedList<>();
     }
+    
+    public Topic(String name) {
+        this.news = new LinkedList<>();
+        this.name = name;
+    }
+    
 
     /**
      * Retorna as notícias associadas a este tópico
