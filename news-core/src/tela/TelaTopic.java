@@ -6,10 +6,8 @@
 package tela;
 
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import news.core.Topic;
 import news.core.NewsServer;
 
@@ -105,6 +103,8 @@ public class TelaTopic extends javax.swing.JFrame {
         
         try {
             newServer.addTopic(new Topic(jTopicName.getText()));
+            this.dispose();
+            
         } catch (RemoteException ex) {
             Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
         }

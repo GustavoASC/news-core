@@ -20,7 +20,7 @@ import news.core.Topic;
 public class TelaInscricao extends javax.swing.JFrame {
 
     NewsServer newServer;
-    String opcoes [] = null;
+    String[] opcoes = null;
     
     // Construtores
     
@@ -30,6 +30,7 @@ public class TelaInscricao extends javax.swing.JFrame {
     
     public TelaInscricao(NewsServer server) {
         
+        
         newServer = server;
         
         //Popula a lista de opções com os tópicos existentes
@@ -37,16 +38,20 @@ public class TelaInscricao extends javax.swing.JFrame {
         try {
             topics = newServer.getTopics();
             int i=0;
+            
+            opcoes = new String[topics.size()];
+
             for(Topic t: topics){
                 opcoes[i] = t.getName();
                 i++;
             }
-            
-            JOptionPane.showMessageDialog(null,"montou opc");
 
         } catch (RemoteException ex) {
             Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
+
         
         initComponents();
 
@@ -78,7 +83,7 @@ public class TelaInscricao extends javax.swing.JFrame {
             }
         });
 
-        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(opcoes));
+        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<String>(opcoes));
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
