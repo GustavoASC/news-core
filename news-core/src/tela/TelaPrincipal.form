@@ -43,7 +43,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jPesquisa" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTopico" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="jInscricao" min="-2" pref="90" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jTopico" min="-2" pref="84" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPublicacao" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
@@ -62,10 +64,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jPesquisa" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTopico" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jInscricao" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jPublicacao" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jUserName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTopico" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -91,9 +94,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPesquisaActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jTopico">
+    <Component class="javax.swing.JButton" name="jInscricao">
       <Properties>
-        <Property name="text" type="java.lang.String" value="T&#xf3;picos"/>
+        <Property name="text" type="java.lang.String" value="Inscri&#xe7;&#xe3;o"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[83, 23]"/>
         </Property>
@@ -102,7 +105,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTopicoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jInscricaoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jPublicacao">
@@ -149,6 +152,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jUserNameActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jTopico">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="T&#xf3;picos"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTopicoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
