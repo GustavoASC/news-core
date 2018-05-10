@@ -1,21 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tela;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import news.core.Starter;
+import news.core.BackupServer;
+import news.core.NewsConfigs;
 import news.core.User;
 import news.core.NewsServer;
+import news.core.UserServerImpl;
 
 /**
  *
@@ -23,16 +22,48 @@ import news.core.NewsServer;
  */
 public class TelaStarter extends javax.swing.JFrame {
 
-    /* Servidor de notícias */
-    private final NewsServer server;
+    /* Servidor de notícias remoto */
+    private final NewsServer newsServer;
+    /* Servidor deste usuário que será invocado pelo servidor de notícias */
+    private UserServerImpl userServerImpl;
 
     /**
      * Creates new form TelaStarter
      */
-    public TelaStarter() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", Starter.NEWS_SERVER_PORT);
-        server = (NewsServer) registry.lookup("127.0.0.1/" + Starter.NEWS_SERVER_NAME);
+    public TelaStarter() throws IOException, NotBoundException {
+        newsServer = findNewsServer();
+        startUserServer();
         initComponents();
+    }
+
+    /**
+     * Busca a instância do servidor de nóticas
+     *
+     * @return instâncias recém encontrada
+     * @throws RemoteException
+     * @throws NotBoundException
+     */
+    private NewsServer findNewsServer() throws IOException, NotBoundException {
+        NewsConfigs configs = new NewsConfigs();
+        //
+        Registry registry = LocateRegistry.getRegistry(configs.getNewsServerIp(), configs.getNewsServerPort());
+        return (NewsServer) registry.lookup(configs.getNewsServerIp() + "/" + configs.getNewsServerService());
+    }
+
+    /**
+     * Levanta e inicia o servidor referente a este usuário
+     * 
+     * @return servidor recém levantado
+     */
+    private void startUserServer() throws IOException {
+        //
+        NewsConfigs configs = new NewsConfigs();
+        // CASSEL: aqui não é o ponto certo para levantar esse servidor... porque nem temos a instância do usuário...
+        this.userServerImpl = new UserServerImpl(null);
+        Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
+        BackupServer server = (BackupServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
+        registry.rebind("127.0.0.1/" + configs.getUserServerService(), server);
+        System.out.println("Servidor do usuário no ar!");
     }
 
     /**
@@ -109,7 +140,7 @@ public class TelaStarter extends javax.swing.JFrame {
     private void jCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCadastrarActionPerformed
         // TODO add your handling code here:
         // Cria janela para aceitar novo cadastr
-        TelaCadastro tela = new TelaCadastro(server);
+        TelaCadastro tela = new TelaCadastro(newsServer);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jCadastrarActionPerformed
@@ -117,7 +148,7 @@ public class TelaStarter extends javax.swing.JFrame {
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
         // TODO add your handling code here:
         // Cria janela para aceitar login
-        TelaLogin tela = new TelaLogin(server);
+        TelaLogin tela = new TelaLogin(newsServer);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
         // Desabilita a tela atual
@@ -128,7 +159,7 @@ public class TelaStarter extends javax.swing.JFrame {
         // Ir para tela principal
         TelaPrincipal tela = null;
         try {
-            tela = new TelaPrincipal(server, null);
+            tela = new TelaPrincipal(newsServer, null);
             tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             tela.setVisible(true);
         } catch (RemoteException | NotBoundException ex) {
@@ -166,7 +197,7 @@ public class TelaStarter extends javax.swing.JFrame {
             public void run() {
                 try {
                     new TelaStarter().setVisible(true);
-                } catch (RemoteException ex) {
+                } catch (IOException ex) {
                     Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NotBoundException ex) {
                     Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);

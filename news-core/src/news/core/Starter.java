@@ -5,6 +5,7 @@
  */
 package news.core;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,11 +18,7 @@ import java.rmi.server.UnicastRemoteObject;
  * @author 0145022
  */
 public class Starter {
-    
-    /** Porta usada pelo servidor de notícias */
-    public static final int NEWS_SERVER_PORT = 10999;
-    /** Nome usado pelo servidor de notícias */
-    public static final String NEWS_SERVER_NAME = "service";
+
     /* Instância do servidor de notícias */
     private NewsServerImpl newsServer;
 
@@ -38,7 +35,7 @@ public class Starter {
                     e.printStackTrace();
                 }
             }
-        } catch (RemoteException | NotBoundException ex) {
+        } catch (IOException | NotBoundException ex) {
             ex.printStackTrace();
         }
     }
@@ -47,10 +44,12 @@ public class Starter {
      * Inicia o servidor de notícias
      *
      * @param backup instância do servidor de backup
-     * @throws RemoteException se não conseguir levantar o servidor
+     * @throws IOException se não conseguir levantar o servidor
      * @throws NotBoundException se não conseguir encontrar o servidor de backup
      */
-    private void startNewsServer() throws RemoteException, NotBoundException {
+    private void startNewsServer() throws IOException, NotBoundException {
+        //
+        NewsConfigs configs = new NewsConfigs();
         //
         BackupServer backupServer = findBackupServer();
         BackupData backup = backupServer.restoreBackup();
@@ -58,21 +57,23 @@ public class Starter {
         newsServer = new NewsServerImpl(backup.getTopics(), backup.getUsers());
         newsServer.startBackupManagement(backupServer);
         //
-        Registry registry = LocateRegistry.createRegistry(NEWS_SERVER_PORT);
+        Registry registry = LocateRegistry.createRegistry(configs.getNewsServerPort());
         NewsServer server = (NewsServer) UnicastRemoteObject.exportObject(newsServer, 0);
-        registry.rebind("127.0.0.1/" + NEWS_SERVER_NAME, server);
+        registry.rebind(configs.getNewsServerIp() + "/" + configs.getNewsServerService(), server);
         System.out.println("Servidor no ar!");
     }
 
     /**
      * Busca a instância do servidor de backup via RMI
-     * 
+     *
      * @return instância encontrada
-     * @throws RemoteException se não conseguir levantar o servidor
+     * @throws IOException se não conseguir levantar o servidor
+     * @throws NotBoundException se não conseguir levantar o servidor
      */
-    private BackupServer findBackupServer() throws RemoteException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", BackupServerStarter.BACKUP_SERVER_PORT);
-        BackupServer backup = (BackupServer) registry.lookup("127.0.0.1/" + BackupServerStarter.BACKUP_SERVER_NAME);
+    private BackupServer findBackupServer() throws IOException, NotBoundException {
+        NewsConfigs configs = new NewsConfigs();
+        Registry registry = LocateRegistry.getRegistry(configs.getBackupServerIp(), configs.getBackupServerPort());
+        BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerIp() + "/" + configs.getBackupServerService());
         return backup;
     }
 

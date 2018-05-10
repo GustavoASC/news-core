@@ -5,10 +5,13 @@
  */
 package news.core;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Properties;
 
 /**
  * Classe para iniciar e levantar o servidor de backup
@@ -17,10 +20,6 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class BackupServerStarter {
 
-    /* Porta usada pelo servidor de backup */
-    public static final int BACKUP_SERVER_PORT = 10998;
-    /* Nome usado pelo servidor de backup */
-    public static final String BACKUP_SERVER_NAME = "backup";
     /* Instância do servidor de backup */
     private BackupServerImpl serverImpl;
 
@@ -37,7 +36,7 @@ public class BackupServerStarter {
                     e.printStackTrace();
                 }
             }
-        } catch (RemoteException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -47,11 +46,13 @@ public class BackupServerStarter {
      *
      * @throws RemoteException se não conseguir levantar o servidor
      */
-    private void startBackupServer() throws RemoteException {
+    private void startBackupServer() throws IOException {
+        NewsConfigs configs = new NewsConfigs();
+        //
         this.serverImpl = new BackupServerImpl();
-        Registry registry = LocateRegistry.createRegistry(BACKUP_SERVER_PORT);
+        Registry registry = LocateRegistry.createRegistry(configs.getBackupServerPort());
         BackupServer server = (BackupServer) UnicastRemoteObject.exportObject(serverImpl, 0);
-        registry.rebind("127.0.0.1/" + BACKUP_SERVER_NAME, server);
+        registry.rebind(configs.getBackupServerIp() + "/" + configs.getBackupServerService(), server);
         System.out.println("Servidor de backup no ar!");
     }
 
