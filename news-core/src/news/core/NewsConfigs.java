@@ -7,8 +7,11 @@ package news.core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe para carregar as configurações do projeto de Notícias
@@ -33,9 +36,8 @@ public class NewsConfigs {
      * Retorna o IP do servidor de backup
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public String getBackupServerIp() throws IOException {
+    public String getBackupServerIp() {
         return retrieveProperties().getProperty("backup.server.ip", "127.0.0.1");
     }
     
@@ -43,9 +45,8 @@ public class NewsConfigs {
      * Retorna a porta do servidor de backup
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public int getBackupServerPort() throws IOException {
+    public int getBackupServerPort() {
         String port = retrieveProperties().getProperty("backup.server.port", Integer.toString(DEFAULT_BACKUP_PORT));
         try {
             return Integer.parseInt(port);
@@ -58,9 +59,8 @@ public class NewsConfigs {
      * Retorna o nome do serviço do servidor de backup
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public String getBackupServerService() throws IOException {
+    public String getBackupServerService() {
         return retrieveProperties().getProperty("backup.server.service", "backup");
     }
     
@@ -68,9 +68,8 @@ public class NewsConfigs {
      * Retorna o IP do servidor de notícias
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public String getNewsServerIp() throws IOException {
+    public String getNewsServerIp() {
         return retrieveProperties().getProperty("news.server.ip", "127.0.0.1");
     }
     
@@ -78,9 +77,8 @@ public class NewsConfigs {
      * Retorna a porta do servidor de notícias
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public int getNewsServerPort() throws IOException {
+    public int getNewsServerPort() {
         String port = retrieveProperties().getProperty("news.server.port", Integer.toString(DEFAULT_NEWS_PORT));
         try {
             return Integer.parseInt(port);
@@ -93,9 +91,8 @@ public class NewsConfigs {
      * Retorna o nome do serviço do servidor de notícias
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public String getNewsServerService() throws IOException {
+    public String getNewsServerService() {
         return retrieveProperties().getProperty("news.server.service", "news");
     }
     
@@ -103,9 +100,8 @@ public class NewsConfigs {
      * Retorna a porta do usuário
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public int getUserServerPort() throws IOException {
+    public int getUserServerPort() {
         String port = retrieveProperties().getProperty("user.server.port", Integer.toString(DEFAULT_USER_PORT));
         try {
             return Integer.parseInt(port);
@@ -118,9 +114,8 @@ public class NewsConfigs {
      * Retorna o nome do serviço do usuário
      *
      * @return IP do servidor de backup
-     * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    public String getUserServerService() throws IOException {
+    public String getUserServerService() {
         return retrieveProperties().getProperty("user.server.service", "user");
     }
     
@@ -130,14 +125,27 @@ public class NewsConfigs {
      * @return Properties
      * @throws IOException se não conseguir buscar o IP do servidor de backup
      */
-    private Properties retrieveProperties() throws IOException {
+    private synchronized Properties retrieveProperties() {
         if (props == null ) {
             props = new Properties();
-            if (new File(PROPERTIES_NAME).exists()) {
-                props.load(new FileInputStream(PROPERTIES_NAME));
-            }
+            loadPropertiesIfNeeded();
         }
         return props;
+    }
+
+    /**
+     * Carrega o arquivo de configurações se necessário
+     */
+    private void loadPropertiesIfNeeded() {
+        File propertiesFile = new File(PROPERTIES_NAME);
+        if (!propertiesFile.exists()) {
+            return;
+        }
+        try {
+            props.load(new FileInputStream(propertiesFile));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     

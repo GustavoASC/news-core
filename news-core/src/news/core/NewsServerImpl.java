@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
  */
 public class NewsServerImpl implements NewsServer {
 
+    /* Número máximo de tentativas para enviar a notícia ao usuário */
+    private static final int MAX_SENDING_ATTEMPTS = 5;
     /* Tópicos existentes nas notícias */
     private final List<Topic> topics;
     /* Lista de usuários registrados no sistema */
@@ -75,13 +77,17 @@ public class NewsServerImpl implements NewsServer {
      * @param user usuário que receberá a notícia
      */
     private void sendNewsToUser(News news, User user) {
-        try {
-            String ip = loggedUsers.get(user);
-            Registry registry = LocateRegistry.getRegistry(ip, user.getPort());
-            UserServer service = (UserServer) registry.lookup("news");
-            service.retrieveNews(news);
-        } catch (RemoteException | NotBoundException ex) {
-            ex.printStackTrace();
+        NewsConfigs configs = new NewsConfigs();
+        String ip = loggedUsers.get(user);
+        for (int i = 0; i < MAX_SENDING_ATTEMPTS; i++) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(ip, configs.getUserServerPort());
+                UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
+                service.retrieveNews(news);
+                break;
+            } catch (RemoteException | NotBoundException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

@@ -24,8 +24,6 @@ public class User implements Serializable {
     private boolean publisher;
     /* Tópicos em que este usuário está inscrito */
     private final List<Topic> subscriptions;
-    /* Porta para conexão RMI com o usuário */
-    private int port;
 
     /**
      * Cria usuário do sistema de notícias
@@ -39,7 +37,6 @@ public class User implements Serializable {
         this.password = password;
         this.publisher = publisher;
         this.subscriptions = null;
-        this.port = 0;
     }
 
     /**
@@ -116,29 +113,11 @@ public class User implements Serializable {
         subscriptions.add(topic);
     }
 
-    /**
-     * Retorna a porta para conexão RMI com o usuário
-     *
-     * @return int
-     */
-    public int getPort() {
-        return port;
-    }
-
-    /**
-     * Define a porta para conexão RMI com o usuário
-     *
-     * @param port
-     */
-    public void setPort(int port) {
-        this.port = port;
-    }
-
     @Override
     public String toString() {
-        return "User{" + "username=" + username + ", password=" + Arrays.toString(password) + ", publisher=" + publisher + ", subscriptions=" + subscriptions + ", port=" + port + '}';
+        return "User{" + "username=" + username + ", password=" + Arrays.toString(password) + ", publisher=" + publisher + ", subscriptions=" + subscriptions + '}';
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 5;

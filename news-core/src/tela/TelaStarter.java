@@ -62,7 +62,7 @@ public class TelaStarter extends javax.swing.JFrame {
         this.userServerImpl = new UserServerImpl(null);
         Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
         BackupServer server = (BackupServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
-        registry.rebind("127.0.0.1/" + configs.getUserServerService(), server);
+        registry.rebind(configs.getUserServerService(), server);
         System.out.println("Servidor do usuário no ar!");
     }
 
