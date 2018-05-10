@@ -6,8 +6,10 @@
 package tela;
 
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import news.core.Topic;
 import news.core.NewsServer;
 
@@ -43,7 +45,7 @@ public class TelaTopic extends javax.swing.JFrame {
         jAdicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Topico");
+        setTitle("Tópicos");
 
         jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
 
@@ -96,15 +98,23 @@ public class TelaTopic extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAdicionarActionPerformed
-        
-        if (jTopicName.getText().isEmpty())
+        // Se o campo está vazio
+        if (jTopicName.getText().isEmpty()){
             return;
-        
-        
+        }
         try {
+            // Valida se o tópico já existe
+            List<Topic> topics = newServer.getTopics();
+            topics.forEach((t) -> {
+                if (t.getName().equals(jTopicName.getText())){
+                    JOptionPane.showMessageDialog(null, "Tópico já existente!");
+                    return;
+                }
+            });
+            //Adiciona o tópico
             newServer.addTopic(new Topic(jTopicName.getText()));
+            //Fecha a janela 
             this.dispose();
-            
         } catch (RemoteException ex) {
             Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
         }

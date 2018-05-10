@@ -75,7 +75,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTopico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Topico");
+        setTitle("Tela inicial");
         setPreferredSize(new java.awt.Dimension(700, 400));
 
         jPesquisa.setText("Pesquisar");
@@ -177,7 +177,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jInscricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscricaoActionPerformed
         // Cria janela para inscrição de tópicos
-        TelaInscricao tela = new TelaInscricao();
+        TelaInscricao tela = new TelaInscricao(server);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jInscricaoActionPerformed

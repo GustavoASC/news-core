@@ -7,8 +7,10 @@ package tela;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import news.core.NewsServer;
 import news.core.Topic;
@@ -20,43 +22,32 @@ import news.core.Topic;
 public class TelaInscricao extends javax.swing.JFrame {
 
     NewsServer newServer;
-    String[] opcoes = null;
-    
-    // Construtores
     
     public TelaInscricao() {
         initComponents();
     }
     
     public TelaInscricao(NewsServer server) {
-        
-        
+        initComponents();
         newServer = server;
         
-        //Popula a lista de opções com os tópicos existentes
-        List<Topic> topics;
+        jComboInsc.enableInputMethods(false);
+        jInscrever.enableInputMethods(false);
+        
+        // Popula a combo-box com as opções disponíveis
         try {
-            topics = newServer.getTopics();
-            int i=0;
-            
-            opcoes = new String[topics.size()];
-
-            for(Topic t: topics){
-                opcoes[i] = t.getName();
-                i++;
+            List<Topic> topics = newServer.getTopics();
+            Vector<String> entries = new Vector<>();
+            topics.forEach((t) -> {entries.add(t.getName());});
+            if (!entries.isEmpty()){
+                jComboInsc.setModel(new DefaultComboBoxModel(entries));
+                jComboInsc.enableInputMethods(true);
+                jInscrever.enableInputMethods(true);
             }
-
         } catch (RemoteException ex) {
             Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-
-        
-        initComponents();
-
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,7 +63,7 @@ public class TelaInscricao extends javax.swing.JFrame {
         jComboInsc = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Topico");
+        setTitle("Inscrição");
 
         jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
 
@@ -83,7 +74,7 @@ public class TelaInscricao extends javax.swing.JFrame {
             }
         });
 
-        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<String>(opcoes));
+        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos cadastrados" }));
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
