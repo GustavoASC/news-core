@@ -35,13 +35,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
         this.server = serv; 
         this.logUser = user;
         initComponents();
-        jUserName.setText(user.getUsername());
-        //Desabilita o botão "Publicar" caso usuário não for publisher
-        if(logUser.isPublisher()){
-            jPublicacao.setEnabled(true);
-        }else{
+        // Se não tem usuário logado
+        if (logUser == null){
+            //Não exibe o campo de nome de usuário
+            jUserName.setVisible(false);
+            jUserLabel.setVisible(false);
+            // Desabilita botões que nao poderão ser acessados por usuários anônimos
             jPublicacao.setEnabled(false);
+            jTopico.setEnabled(false);
+            jInscricao.setEnabled(false);
+        }else{
+            // Adiciona o nome do usuário
+            jUserName.setText(user.getUsername());
+            //Desabilita os botões que são exclusivos para escritores
+            if(!logUser.isPublisher()){
+                jPublicacao.setEnabled(false);
+                jTopico.setEnabled(false);
+            }
         }
+        
+        
         String linha [] = {"teste", "12/02/2018", "Fernanda", "Teste de notícia Teste de notícia Teste de notícia"};    
         modelTable.addColumn("Tópico");
         modelTable.addColumn("Data");
@@ -70,7 +83,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jUserLabel = new javax.swing.JLabel();
         jUserName = new javax.swing.JTextField();
         jTopico = new javax.swing.JButton();
 
@@ -110,7 +123,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Últimas notícias");
 
-        jLabel2.setText("User");
+        jUserLabel.setText("User");
 
         jUserName.setEditable(false);
         jUserName.addActionListener(new java.awt.event.ActionListener() {
@@ -149,7 +162,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
+                        .addComponent(jUserLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53))))
@@ -162,7 +175,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPublicacao)
-                    .addComponent(jLabel2)
+                    .addComponent(jUserLabel)
                     .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTopico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -240,12 +253,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jInscricao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jPesquisa;
     private javax.swing.JButton jPublicacao;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton jTopico;
+    private javax.swing.JLabel jUserLabel;
     private javax.swing.JTextField jUserName;
     // End of variables declaration//GEN-END:variables
 }

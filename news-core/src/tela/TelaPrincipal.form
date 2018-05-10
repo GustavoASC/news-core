@@ -49,7 +49,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPublicacao" min="-2" pref="90" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jUserLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jUserName" min="-2" pref="79" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
@@ -66,7 +66,7 @@
                   <Component id="jPesquisa" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jInscricao" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jPublicacao" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jUserLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jUserName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTopico" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -141,7 +141,7 @@
         <Property name="text" type="java.lang.String" value="&#xda;ltimas not&#xed;cias"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="jUserLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="User"/>
       </Properties>

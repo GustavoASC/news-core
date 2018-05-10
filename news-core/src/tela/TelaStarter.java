@@ -125,19 +125,15 @@ public class TelaStarter extends javax.swing.JFrame {
     }//GEN-LAST:event_jEntrarActionPerformed
 
     private void jAnonimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnonimoActionPerformed
-        // TODO add your handling code here:
         // Ir para tela principal
         TelaPrincipal tela = null;
-        User user = new User("Anonimo");
         try {
-            tela = new TelaPrincipal(server, user);
-        } catch (RemoteException ex) {
-            Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+            tela = new TelaPrincipal(server, null);
+            tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            tela.setVisible(true);
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        tela.setVisible(true);
         // Desabilita a tela atual
         this.setVisible(false);
     }//GEN-LAST:event_jAnonimoActionPerformed

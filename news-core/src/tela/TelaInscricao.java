@@ -30,10 +30,9 @@ public class TelaInscricao extends javax.swing.JFrame {
     public TelaInscricao(NewsServer server) {
         initComponents();
         newServer = server;
-        
-        jComboInsc.enableInputMethods(false);
-        jInscrever.enableInputMethods(false);
-        
+        //Desabilita os campos até que haja dados para exibição
+        jComboInsc.setEnabled(false);
+        jInscrever.setEnabled(false);
         // Popula a combo-box com as opções disponíveis
         try {
             List<Topic> topics = newServer.getTopics();
@@ -41,8 +40,8 @@ public class TelaInscricao extends javax.swing.JFrame {
             topics.forEach((t) -> {entries.add(t.getName());});
             if (!entries.isEmpty()){
                 jComboInsc.setModel(new DefaultComboBoxModel(entries));
-                jComboInsc.enableInputMethods(true);
-                jInscrever.enableInputMethods(true);
+                jComboInsc.setEnabled(true);
+                jInscrever.setEnabled(true);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
