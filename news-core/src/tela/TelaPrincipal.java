@@ -9,13 +9,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import news.core.News;
 import news.core.User;
 import news.core.NewsServer;
+import news.core.Topic;
 
 /**
  *
@@ -24,9 +29,9 @@ import news.core.NewsServer;
 public class TelaPrincipal extends javax.swing.JFrame {
 
     DefaultTableModel modelTable = new DefaultTableModel();
-   
     NewsServer server;
     User logUser;
+    
     /**
      * Creates new form TelaTopic
      */
@@ -35,6 +40,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         this.server = serv; 
         this.logUser = user;
         initComponents();
+        
         // Se não tem usuário logado
         if (logUser == null){
             //Não exibe o campo de nome de usuário
@@ -54,14 +60,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         }
         
-        
-        String linha [] = {"teste", "12/02/2018", "Fernanda", "Teste de notícia Teste de notícia Teste de notícia"};    
+        //Colunas da tabela de notícias
         modelTable.addColumn("Tópico");
         modelTable.addColumn("Data");
         modelTable.addColumn("Escritor");
         modelTable.addColumn("Notícia");                
-        modelTable.addRow(linha);
-        modelTable.addRow(linha);               
+        
+        // Insere as notícias na janela principal
+        insereNoticias();
+        
     }
 
     private TelaPrincipal() {
@@ -128,7 +135,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Últimas notícias");
 
-        jUserLabel.setText("User");
+        jUserLabel.setText("Usuário");
 
         jUserName.setEditable(false);
         jUserName.addActionListener(new java.awt.event.ActionListener() {
@@ -151,13 +158,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -169,8 +173,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jUserLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53))))
+                        .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,4 +275,46 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jUserLabel;
     private javax.swing.JTextField jUserName;
     // End of variables declaration//GEN-END:variables
+
+
+    // Insere as notícias na tabela para exibição
+    private void insereNoticias() {
+        //Remove as linhas da tabela de notícias
+        for(int i=1; i<modelTable.getRowCount(); i++)
+            modelTable.removeRow(i);
+        
+        try {
+            
+            // Busca os tópicos disponíveis
+            List<Topic> topics = server.getTopics();
+            topics.forEach((t) -> {
+                if (topicoValido(t)){
+                    try {
+                        News n = server.retrieveLastNews(t);
+                        if (n != null){
+                            String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher().getUsername(), n.getContent()};
+                            modelTable.addRow(linha);
+                        }
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // Valida o tópico para inserção na tela principal
+    private boolean topicoValido(Topic t) {
+        // Se entrar com usuário anônimo, todos os tópicos são válidos
+        if (logUser == null)
+            return true;
+        // Se o usuário for inscrito neste tópico
+        if (logUser.isSubscribed(t))
+            return true;
+        // Retorna inválido
+        return false;
+    }
 }
+

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import javax.swing.JOptionPane;
 
 /**
  * Usuário do sistema de notícias
@@ -101,7 +102,16 @@ public class User implements Serializable {
      * @return boolean
      */
     public boolean isSubscribed(Topic topic) {
-        return subscriptions.contains(topic);
+        // Se o usuario não tem inscrições
+        if (subscriptions == null)
+            return false;
+        // Busca o nome do tópico para inscrição
+        for(Topic t: subscriptions){
+            if (t.getName().equals(topic.getName()))
+                return true;
+        }
+        // Retorna que não encontrou a inscrição
+        return false;
     }
 
     /**

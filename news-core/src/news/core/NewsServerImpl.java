@@ -151,10 +151,14 @@ public class NewsServerImpl implements NewsServer {
     @Override
     public News retrieveLastNews(Topic topic) throws RemoteException {
         List<News> topicNews = topic.getNews();
-        return topicNews.stream()
-                .sorted(new NewsDateSorter())
-                .findFirst()
-                .get();
+        try{
+            return topicNews.stream()
+                    .sorted(new NewsDateSorter())
+                    .findFirst()
+                    .get();
+        } catch(Exception e) {
+            return null;
+        }
     }
 
     @Override
