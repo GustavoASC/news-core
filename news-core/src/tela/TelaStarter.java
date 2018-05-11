@@ -10,10 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import news.core.BackupServer;
 import news.core.NewsConfigs;
-import news.core.User;
 import news.core.NewsServer;
+import news.core.UserServer;
 import news.core.UserServerImpl;
 
 /**
@@ -61,7 +60,7 @@ public class TelaStarter extends javax.swing.JFrame {
         // CASSEL: aqui não é o ponto certo para levantar esse servidor... porque nem temos a instância do usuário...
         this.userServerImpl = new UserServerImpl(null);
         Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
-        BackupServer server = (BackupServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
+        UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
         registry.rebind(configs.getUserServerService(), server);
         System.out.println("Servidor do usuário no ar!");
     }

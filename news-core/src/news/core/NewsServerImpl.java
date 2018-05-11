@@ -84,8 +84,11 @@ public class NewsServerImpl implements NewsServer {
                 Registry registry = LocateRegistry.getRegistry(ip, configs.getUserServerPort());
                 UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
                 service.retrieveNews(news);
+                Thread.sleep(5000);
+                // CASSEL: se atingiu 5 tentativas deve deslogar o usuário
                 break;
-            } catch (RemoteException | NotBoundException ex) {
+            } catch (RemoteException | NotBoundException | InterruptedException ex) {
+                // CASSEL: deve exibir a stack mesmo se não atingiu as N retentativas?
                 ex.printStackTrace();
             }
         }

@@ -5,13 +5,11 @@
  */
 package news.core;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Properties;
 
 /**
  * Classe para iniciar e levantar o servidor de backup
