@@ -39,7 +39,7 @@ public class TelaPublic extends javax.swing.JFrame {
         //Desabilita os campos até que haja dados para exibição
         jTopic.setEnabled(false);
         jTitle.setEnabled(false);
-       // jMensagem.setEnabled(false);
+        jMensagem.setEnabled(false);
         jPublicar.setEnabled(false);
         // Popula a combo-box com as opções disponíveis
         try {
