@@ -104,7 +104,7 @@ public interface NewsServer extends Remote {
      * @return usuário
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public User retUser(String userName) throws RemoteException;
+    public User retUser(String userName, char[] userPassword) throws RemoteException;
 
     /**
      * Retorna a lista de tópicos disponíveis
