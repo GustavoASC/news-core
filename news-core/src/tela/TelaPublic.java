@@ -8,8 +8,10 @@ package tela;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import news.core.News;
 import news.core.Topic;
 import news.core.User;
@@ -31,9 +33,29 @@ public class TelaPublic extends javax.swing.JFrame {
     }
 
     TelaPublic(NewsServer serv, User user) {
+        initComponents();
         this.server = serv; 
         this.logUser = user;
-        initComponents();
+        //Desabilita os campos até que haja dados para exibição
+        jTopic.setEnabled(false);
+        jTitle.setEnabled(false);
+       // jMensagem.setEnabled(false);
+        jPublicar.setEnabled(false);
+        // Popula a combo-box com as opções disponíveis
+        try {
+            List<Topic> topics = server.getTopics();
+            Vector<String> entries = new Vector<>();
+            topics.forEach((t) -> {entries.add(t.getName());});
+            if (!entries.isEmpty()){
+                jTopic.setModel(new DefaultComboBoxModel(entries));
+                jTopic.setEnabled(true);
+                jTitle.setEnabled(true);
+                jMensagem.setEnabled(true);
+                jPublicar.setEnabled(true);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -47,7 +69,7 @@ public class TelaPublic extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jMensagem = new javax.swing.JTextArea();
         jPublicar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTopic = new javax.swing.JComboBox<>();
@@ -64,10 +86,15 @@ public class TelaPublic extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Nova publicação"));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("A copa do mundo 2018 será na Russia.");
-        jScrollPane1.setViewportView(jTextArea1);
+        jMensagem.setColumns(20);
+        jMensagem.setRows(5);
+        jMensagem.setText("A copa do mundo 2018 será na Russia.");
+        jMensagem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jMensagemKeyTyped(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jMensagem);
 
         jPublicar.setText("Publicar");
         jPublicar.addActionListener(new java.awt.event.ActionListener() {
@@ -164,8 +191,7 @@ public class TelaPublic extends javax.swing.JFrame {
     private void jPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicarActionPerformed
         // TODO add your handling code here:
         Topic topic = null;
-        Date publishDate = new Date();
-	News news = new News(jTitle.getText(), publishDate, logUser);
+	News news = new News(jTitle.getText(), logUser);
         try {
             List<Topic> topicList = server.getTopics();
             for(int i=0; i < topicList.size(); i++){
@@ -178,11 +204,20 @@ public class TelaPublic extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.setVisible(false);
     }//GEN-LAST:event_jPublicarActionPerformed
 
     private void jTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTitleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTitleActionPerformed
+
+    private void jMensagemKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jMensagemKeyTyped
+        // TODO add your handling code here:
+        // limita 180 caracteres
+        if (jMensagem.getText().length() >= 180 ){
+                evt.consume();
+        }
+    }//GEN-LAST:event_jMensagemKeyTyped
 
     /**
      * @param args the command line arguments
@@ -221,10 +256,10 @@ public class TelaPublic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextArea jMensagem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jPublicar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTitle;
     private javax.swing.JComboBox<String> jTopic;
     // End of variables declaration//GEN-END:variables

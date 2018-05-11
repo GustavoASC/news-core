@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -105,6 +106,7 @@ public class NewsServerImpl implements NewsServer {
      */
     protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
         if (topics.contains(topic)) {
+            news.setPublicationDate(Calendar.getInstance().getTime());
             topic.addNews(news);
             loggedUsers.keySet().parallelStream()
                     .filter(user -> user.isSubscribed(topic))

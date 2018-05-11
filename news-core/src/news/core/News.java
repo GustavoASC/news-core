@@ -62,6 +62,17 @@ public class News implements Serializable {
         this.publicationDate = publicationDate;
         this.publisher = publisher;
     }
+    /**
+     * Cria notícia com o título especificado e usuário especificados
+     *
+     * @param title título da notícia
+     * @param publisher usuário que publicou a notícia
+     */
+    public News(String title, User publisher) {
+        this.title = title;
+        this.publicationDate = null;
+        this.publisher = publisher;
+    }
 
     /**
      * Retorna o título da notícia

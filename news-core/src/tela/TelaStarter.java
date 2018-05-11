@@ -78,11 +78,6 @@ public class TelaStarter extends javax.swing.JFrame {
         jAnonimo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Writer and Reader Problems");
@@ -172,11 +167,6 @@ public class TelaStarter extends javax.swing.JFrame {
         // Desabilita a tela atual
         this.setVisible(false);
     }//GEN-LAST:event_jAnonimoActionPerformed
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
