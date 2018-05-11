@@ -9,6 +9,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 
 /**
  * Servidor de notícias
@@ -176,12 +178,18 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public User retUser(String userName) throws RemoteException {
+    public User retUser(String userName, char[] userPassword) throws RemoteException {
         for (int i = 0; i < registeredUsers.size(); i++) {
             if (registeredUsers.get(i).getUsername().equals(userName)) {
-                return registeredUsers.get(i);
+                if(Arrays.equals(userPassword, registeredUsers.get(i).getPassword())){
+                    return registeredUsers.get(i);
+                }else{
+                    JOptionPane.showMessageDialog(null,"Senha inválido!");
+                    return null;
+                }
             }
         }
+        JOptionPane.showMessageDialog(null,"Usuario invalido!");
         return null;
     }
 
