@@ -90,6 +90,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela inicial");
         setPreferredSize(new java.awt.Dimension(700, 400));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPesquisa.setText("Pesquisar");
         jPesquisa.setMaximumSize(new java.awt.Dimension(83, 23));
@@ -216,6 +221,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jTopicoActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
