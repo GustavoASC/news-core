@@ -11,9 +11,9 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import news.core.NewsServer;
 import news.core.Topic;
+import news.core.User;
 
 /**
  *
@@ -40,16 +40,38 @@ public class TelaInscricao extends javax.swing.JFrame {
         //Desabilita os campos até que haja dados para exibição
         jComboInsc.setEnabled(false);
         jInscrever.setEnabled(false);
-        // Popula a combo-box com as opções disponíveis
         try {
+            // Busca o usuário
+            User user = server.getUserByName(username);
+            // Se não encontrou o usuário
+            if (user == null)
+                return;
+            // Popula a combo-box com as opções disponíveis
             List<Topic> topics = this.server.getTopics();
             Vector<String> opcoes = new Vector<>();
-            topics.forEach((t) -> {opcoes.add(t.getName());});
+            String opc = "";
+            for(Topic t:topics){
+                if (!user.isSubscribed(t)){
+                   opcoes.add(t.getName());
+                }else{
+                    if (!opc.isEmpty()){
+                        opc = opc + ", ";
+                    } else{
+                        opc = "Inscrições: ";
+                    }
+                    opc = opc + t.getName();
+                }
+                
+            }
+            // Se não tem opções disponíveis
             if (!opcoes.isEmpty()){
                 jComboInsc.setModel(new DefaultComboBoxModel(opcoes));
                 jComboInsc.setEnabled(true);
                 jInscrever.setEnabled(true);
             }
+            // Mostra já inscritos
+            if (!opc.isEmpty())
+                jInsc.setText(opc);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,6 +89,7 @@ public class TelaInscricao extends javax.swing.JFrame {
         jInscricao = new javax.swing.JPanel();
         jInscrever = new javax.swing.JButton();
         jComboInsc = new javax.swing.JComboBox<>();
+        jInsc = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inscrição");
@@ -80,7 +103,7 @@ public class TelaInscricao extends javax.swing.JFrame {
             }
         });
 
-        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos cadastrados" }));
+        jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos disponíveis para inscrição" }));
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
@@ -88,10 +111,10 @@ public class TelaInscricao extends javax.swing.JFrame {
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInscricaoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jInscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
         jInscricaoLayout.setVerticalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,16 +131,22 @@ public class TelaInscricao extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(106, Short.MAX_VALUE)
+                .addContainerGap(42, Short.MAX_VALUE)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
+                .addComponent(jInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -174,6 +203,7 @@ public class TelaInscricao extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboInsc;
+    private javax.swing.JLabel jInsc;
     private javax.swing.JButton jInscrever;
     private javax.swing.JPanel jInscricao;
     // End of variables declaration//GEN-END:variables

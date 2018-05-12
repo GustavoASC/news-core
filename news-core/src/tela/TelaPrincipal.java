@@ -72,7 +72,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         modelTable.addColumn("Tópico");
         modelTable.addColumn("Data");
         modelTable.addColumn("Escritor");
-        modelTable.addColumn("Notícia");                
+        modelTable.addColumn("Título");
+        modelTable.addColumn("Notícia");
         // Insere as notícias na janela principal
         insereNoticias();
     }
@@ -234,7 +235,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         try {
                             News n = server.retrieveLastNews(t);
                             if (n != null){
-                                String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getContent()};
+                                String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
                                 modelTable.addRow(linha);
                             }
                         } catch (RemoteException ex) {
