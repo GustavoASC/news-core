@@ -185,7 +185,6 @@ public class TelaPublic extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        this.setVisible(false);
     }//GEN-LAST:event_formWindowClosed
 
     private void jPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicarActionPerformed
@@ -204,7 +203,7 @@ public class TelaPublic extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jPublicarActionPerformed
 
     private void jTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTitleActionPerformed

@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import news.core.NewsServer;
 import news.core.Topic;
+import news.core.User;
 
 /**
  *
@@ -22,12 +23,13 @@ import news.core.Topic;
 public class TelaInscricao extends javax.swing.JFrame {
 
     NewsServer newServer;
+    User logUser;
     
     public TelaInscricao() {
         initComponents();
     }
     
-    public TelaInscricao(NewsServer server) {
+    public TelaInscricao(NewsServer server, User user) {
         initComponents();
         newServer = server;
         //Desabilita os campos até que haja dados para exibição
@@ -117,7 +119,22 @@ public class TelaInscricao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
-        
+               
+        Topic topic = null;
+        try {
+            List<Topic> topicList = newServer.getTopics();
+            for(int i=0; i < topicList.size(); i++){
+                if(topicList.get(i).getName().equals(jComboInsc.getSelectedItem())){
+                    topic = topicList.get(i);
+                    break;
+                }
+            }
+            newServer.subscribe(logUser, topic);
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+
         
     }//GEN-LAST:event_jInscreverActionPerformed
 

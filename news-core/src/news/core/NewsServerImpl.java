@@ -163,7 +163,7 @@ public class NewsServerImpl implements NewsServer {
 
     @Override
     public void subscribe(User user, Topic topic) throws RemoteException {
-        if (registeredUsers.contains(user) && topics.contains(topic)) {
+        if (registeredUsers.contains(user)) {
             user.subscribe(topic);
         }
     }

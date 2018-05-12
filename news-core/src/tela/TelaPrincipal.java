@@ -5,6 +5,8 @@
  */
 package tela;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -199,19 +201,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jInscricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscricaoActionPerformed
         // Cria janela para inscrição de tópicos
-        TelaInscricao tela = new TelaInscricao(server);
+        TelaInscricao tela = new TelaInscricao(server, logUser);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        // Insere as notícias na janela principal
-        insereNoticias();
-        tela.setVisible(true);
-    }//GEN-LAST:event_jInscricaoActionPerformed
+        tela.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+            // Insere as notícias na janela principal
+                insereNoticias();
+            }
+        });
+        tela.setVisible(true);    }//GEN-LAST:event_jInscricaoActionPerformed
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
         // Cria janela para aceitar nova publicação
         TelaPublic tela = new TelaPublic(server, logUser);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        // Insere as notícias na janela principal
-        insereNoticias();
+        tela.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+            // Insere as notícias na janela principal
+                insereNoticias();
+            }
+        });
         tela.setVisible(true);
     }//GEN-LAST:event_jPublicacaoActionPerformed
 
@@ -292,16 +301,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
             // Busca os tópicos disponíveis
             List<Topic> topics = server.getTopics();
             topics.forEach((t) -> {
-                if (topicoValido(t)){
-                    try {
-                        News n = server.retrieveLastNews(t);
-                        if (n != null){
-                            String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher().getUsername(), n.getContent()};
-                            modelTable.addRow(linha);
+                try {
+                    if (topicoValido(t)){
+                        try {
+                            News n = server.retrieveLastNews(t);
+                            if (n != null){
+                                String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher().getUsername(), n.getContent()};
+                                modelTable.addRow(linha);
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         } catch (RemoteException ex) {
@@ -310,10 +323,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Valida o tópico para inserção na tela principal
-    private boolean topicoValido(Topic t) {
+    private boolean topicoValido(Topic t) throws RemoteException {
         // Se entrar com usuário anônimo, todos os tópicos são válidos
         if (logUser == null)
             return true;
+        logUser = server.retUser(logUser.getUsername(), logUser.getPassword());
         // Se o usuário for inscrito neste tópico
         if (logUser.isSubscribed(t))
             return true;
