@@ -53,7 +53,6 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Publicacao");
-        setPreferredSize(new java.awt.Dimension(700, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -62,19 +61,19 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Dados cadastrais"));
 
-        jUsuario.setText("Fulano");
+        jUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUsuarioActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Usuario");
+        jLabel1.setText("Usuário");
 
         jLabel2.setText("Senha");
 
         jLabel3.setText("Confirmar senha");
 
-        jSenha.setText("jPasswordField1");
-
-        jConfirmaSenha.setText("jPasswordField1");
-
-        jFinalidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Leitura", "Publicacao" }));
+        jFinalidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Leitura", "Publicação" }));
 
         jLabel4.setText("Finalidade");
 
@@ -140,16 +139,16 @@ public class TelaCadastro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(151, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(115, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -180,6 +179,10 @@ public class TelaCadastro extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jCriarCadActionPerformed
+
+    private void jUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
