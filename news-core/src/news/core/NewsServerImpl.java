@@ -105,13 +105,11 @@ public class NewsServerImpl implements NewsServer {
      * @param dispatcher
      */
     protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
-        if (topics.contains(topic)) {
-            news.setPublicationDate(Calendar.getInstance().getTime());
-            topic.addNews(news);
-            loggedUsers.keySet().parallelStream()
-                    .filter(user -> user.isSubscribed(topic))
-                    .forEach(user -> dispatcher.sendNewsToUser(news, user));
-        }
+        news.setPublicationDate(Calendar.getInstance().getTime());
+        topic.addNews(news);
+        loggedUsers.keySet().parallelStream()
+                   .filter(user -> user.isSubscribed(topic))
+                   .forEach(user -> dispatcher.sendNewsToUser(news, user));
     }
 
     @Override

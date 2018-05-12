@@ -201,6 +201,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // Cria janela para inscrição de tópicos
         TelaInscricao tela = new TelaInscricao(server);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // Insere as notícias na janela principal
+        insereNoticias();
         tela.setVisible(true);
     }//GEN-LAST:event_jInscricaoActionPerformed
 
@@ -208,6 +210,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // Cria janela para aceitar nova publicação
         TelaPublic tela = new TelaPublic(server, logUser);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // Insere as notícias na janela principal
+        insereNoticias();
         tela.setVisible(true);
     }//GEN-LAST:event_jPublicacaoActionPerformed
 

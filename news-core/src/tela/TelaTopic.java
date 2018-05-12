@@ -104,12 +104,29 @@ public class TelaTopic extends javax.swing.JFrame {
             return;
         }
         try {
+            boolean erro = false;
+            try {
+                // Busca os tópicos existentes
+                List<Topic> topics = newServer.getTopics();
+                // Verifica se já tem um tópico com este mesmo nome
+                for(Topic t: topics){
+                    if (t.getName().equalsIgnoreCase(jTopicName.getText())){
+                        JOptionPane.showMessageDialog(null, "Tópico já existente!");
+                        erro = true;
+                        break;
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             // Se o tópico ainda não existe
-            if (!topicoExistente()){
+            if (!erro){
                 //Adiciona o tópico
                 newServer.addTopic(new Topic(jTopicName.getText()));
                 //Fecha a janela 
                 this.dispose();
+                
             } else{
                 //Limpa o campo para digitar um novo tópico para inserir
                 jTopicName.setText("");
@@ -163,21 +180,4 @@ public class TelaTopic extends javax.swing.JFrame {
     private javax.swing.JTextField jTopicName;
     // End of variables declaration//GEN-END:variables
 
-    // Valida se o tópico já existe
-    private boolean topicoExistente() {
-        try {
-            // Busca os tópicos existentes
-            List<Topic> topics = newServer.getTopics();
-            // Verifica se já tem um tópico com este mesmo nome
-            for(Topic t: topics){
-                if (t.getName().equals(jTopicName.getText())){
-                    JOptionPane.showMessageDialog(null, "Tópico já existente!");
-                    return true;
-                }
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
 }
