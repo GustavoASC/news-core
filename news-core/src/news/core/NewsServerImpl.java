@@ -106,7 +106,10 @@ public class NewsServerImpl implements NewsServer {
      */
     protected void addNews(News news, Topic topic, NewsDispatcher dispatcher) {
         news.setPublicationDate(Calendar.getInstance().getTime());
-        topic.addNews(news);
+        for (Topic t:topics){
+            if (t.getName().equals(topic.getName()))
+                t.addNews(news);
+        }
         loggedUsers.keySet().parallelStream()
                    .filter(user -> user.isSubscribed(topic))
                    .forEach(user -> dispatcher.sendNewsToUser(news, user));
@@ -158,12 +161,14 @@ public class NewsServerImpl implements NewsServer {
 
     @Override
     public void subscribe(String username, Topic topic) throws RemoteException {
-        // Busca o objeto do usuário
-        User user = this.getUserByName(username);
-        // Se encontrou o usuário
-        if (user != null) {
-            user.subscribe(topic);
+        // Atualiza usuários inscritos
+        for (User u :registeredUsers){
+            if (u.getUsername().equals(username))
+                u.subscribe(topic);
         }
+        
+        //TODO: falta atualizar o hashmap de usuários
+          
     }
 
     @Override

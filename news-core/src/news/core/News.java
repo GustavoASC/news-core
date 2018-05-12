@@ -33,7 +33,6 @@ public class News implements Serializable {
      * Cria notícia com o título especificado, data e usuário especificados
      *
      * @param title título da notíca
-     * @param publicationDate data de publicação
      * @param publisher usuário que publicou a notícia
      * @param content
      */

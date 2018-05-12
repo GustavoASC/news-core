@@ -97,12 +97,9 @@ public class TelaTopic extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAdicionarActionPerformed
-        
         // Se o campo está vazio
-        if (jTopicName.getText().isEmpty()){
+        if (jTopicName.getText().isEmpty())
             return;
-        }
-        
         try {
             boolean erro = false;
             try {
@@ -119,14 +116,12 @@ public class TelaTopic extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
             // Se o tópico ainda não existe
             if (!erro){
                 //Adiciona o tópico
                 server.addTopic(new Topic(jTopicName.getText()));
                 //Fecha a janela 
                 this.dispose();
-                
             } else{
                 //Limpa o campo para digitar um novo tópico para inserir
                 jTopicName.setText("");
