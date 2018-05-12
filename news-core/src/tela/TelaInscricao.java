@@ -11,10 +11,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import news.core.NewsServer;
 import news.core.Topic;
-import news.core.User;
 
 /**
  *
@@ -22,26 +20,31 @@ import news.core.User;
  */
 public class TelaInscricao extends javax.swing.JFrame {
 
-    NewsServer newServer;
-    User logUser;
+    NewsServer server;
+    String username;
     
     public TelaInscricao() {
         initComponents();
     }
     
-    public TelaInscricao(NewsServer server, User user) {
+    public TelaInscricao(NewsServer server, String username) {
         initComponents();
-        newServer = server;
+        this.server = server;
+        initTela();
+    }
+    
+    // Inicializações de tela para aceitação
+    public final void initTela(){
         //Desabilita os campos até que haja dados para exibição
         jComboInsc.setEnabled(false);
         jInscrever.setEnabled(false);
         // Popula a combo-box com as opções disponíveis
         try {
-            List<Topic> topics = newServer.getTopics();
-            Vector<String> entries = new Vector<>();
-            topics.forEach((t) -> {entries.add(t.getName());});
-            if (!entries.isEmpty()){
-                jComboInsc.setModel(new DefaultComboBoxModel(entries));
+            List<Topic> topics = this.server.getTopics();
+            Vector<String> opcoes = new Vector<>();
+            topics.forEach((t) -> {opcoes.add(t.getName());});
+            if (!opcoes.isEmpty()){
+                jComboInsc.setModel(new DefaultComboBoxModel(opcoes));
                 jComboInsc.setEnabled(true);
                 jInscrever.setEnabled(true);
             }
@@ -119,23 +122,19 @@ public class TelaInscricao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
-               
-        Topic topic = null;
         try {
-            List<Topic> topicList = newServer.getTopics();
-            for(int i=0; i < topicList.size(); i++){
-                if(topicList.get(i).getName().equals(jComboInsc.getSelectedItem())){
-                    topic = topicList.get(i);
+            // Busca o tópico na lista
+            List<Topic> topicList = server.getTopics();
+            for (Topic t: topicList){
+                if(t.getName().equals(jComboInsc.getSelectedItem())){
+                    server.subscribe(username, t);
                     break;
                 }
             }
-            newServer.subscribe(logUser, topic);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
-
-        
     }//GEN-LAST:event_jInscreverActionPerformed
 
     /**
@@ -154,15 +153,12 @@ public class TelaInscricao extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaInscricao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaInscricao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaInscricao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaInscricao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 

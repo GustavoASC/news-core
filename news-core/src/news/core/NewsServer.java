@@ -35,14 +35,6 @@ public interface NewsServer extends Remote {
     public void addNews(News news, Topic topic) throws RemoteException;
 
     /**
-     * Retorna lista com todos os tópicos existentes
-     *
-     * @return lista com todos os tópicos existentes
-     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
-     */
-    public List<Topic> retrieveAvailableTopics() throws RemoteException;
-
-    /**
      * Retorna a lista de notícias publicada pelo usuário especificado
      *
      * @param user usuário para filtro
@@ -78,16 +70,18 @@ public interface NewsServer extends Remote {
      * @param topic tópico onde o usuário será inscrito
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void subscribe(User user, Topic topic) throws RemoteException;
+    public void subscribe(String username, Topic topic) throws RemoteException;
 
     /**
      * Adiciona um usuário
      *
-     * @param user
+     * @param name nome do usuário
+     * @param senha senha do usuário
+     * @param finalidade escritor/leitor
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void addUser(User user) throws RemoteException;
-
+    public void addUser(String name, char[] senha, boolean finalidade) throws RemoteException;
+    
     /**
      * Efetua o logon do usuário no servidor de notícias
      *
@@ -98,13 +92,23 @@ public interface NewsServer extends Remote {
     public void addLoggedUser(User user, String ip) throws RemoteException;
 
     /**
-     * Retorna o usuário a partir de seu nome
+     * Valida o usuário e senha
      *
      * @param userName
+     * @param userPassword
      * @return usuário
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public User retUser(String userName, char[] userPassword) throws RemoteException;
+    public User validateLoginUser(String userName, char[] userPassword) throws RemoteException;
+
+    /**
+     * Busca o usuário a partir do nome de usuário 
+     *
+     * @param username
+     * @return usuário
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public User getUserByName(String username) throws RemoteException;
 
     /**
      * Retorna a lista de tópicos disponíveis

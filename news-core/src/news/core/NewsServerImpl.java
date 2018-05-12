@@ -112,11 +112,6 @@ public class NewsServerImpl implements NewsServer {
                    .forEach(user -> dispatcher.sendNewsToUser(news, user));
     }
 
-    @Override
-    public List<Topic> retrieveAvailableTopics() throws RemoteException {
-        return topics;
-    }
-
     /**
      * Retorna a lista de notícias publicada pelo nome de usuário especificado
      *
@@ -162,15 +157,21 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public void subscribe(User user, Topic topic) throws RemoteException {
-        if (registeredUsers.contains(user)) {
+    public void subscribe(String username, Topic topic) throws RemoteException {
+        // Busca o objeto do usuário
+        User user = this.getUserByName(username);
+        // Se encontrou o usuário
+        if (user != null) {
             user.subscribe(topic);
         }
     }
 
     @Override
-    public void addUser(User user) throws RemoteException {
-        registeredUsers.add(user);
+    public void addUser(String name, char[] senha, boolean finalidade) throws RemoteException {
+        // Cria o objeto de usuário
+        User newUser = new User(name, senha, finalidade);
+        // Adiciona o usuário como registrado
+        registeredUsers.add(newUser);
     }
 
     @Override
@@ -182,18 +183,27 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public User retUser(String userName, char[] userPassword) throws RemoteException {
+    public User validateLoginUser(String userName, char[] userPassword) throws RemoteException {
         for (int i = 0; i < registeredUsers.size(); i++) {
             if (registeredUsers.get(i).getUsername().equals(userName)) {
                 if(Arrays.equals(userPassword, registeredUsers.get(i).getPassword())){
                     return registeredUsers.get(i);
                 }else{
-                    JOptionPane.showMessageDialog(null,"Senha inválido!");
+                    JOptionPane.showMessageDialog(null,"Senha inválida!");
                     return null;
                 }
             }
         }
         JOptionPane.showMessageDialog(null,"Usuario invalido!");
+        return null;
+    }
+
+    @Override
+    public User getUserByName(String username) throws RemoteException {
+        for (User u:registeredUsers){
+            if (u.getUsername().equals(username)) 
+                return u;
+        }
         return null;
     }
 

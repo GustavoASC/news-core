@@ -19,17 +19,16 @@ import news.core.NewsServer;
  */
 public class TelaTopic extends javax.swing.JFrame {
 
-    NewsServer newServer;
+    NewsServer server;
     
     public TelaTopic() {
         initComponents();
     }
     
     public TelaTopic(NewsServer server) {
-        newServer = server;
+        this.server = server;
         initComponents();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,11 +102,12 @@ public class TelaTopic extends javax.swing.JFrame {
         if (jTopicName.getText().isEmpty()){
             return;
         }
+        
         try {
             boolean erro = false;
             try {
                 // Busca os tópicos existentes
-                List<Topic> topics = newServer.getTopics();
+                List<Topic> topics = server.getTopics();
                 // Verifica se já tem um tópico com este mesmo nome
                 for(Topic t: topics){
                     if (t.getName().equalsIgnoreCase(jTopicName.getText())){
@@ -123,7 +123,7 @@ public class TelaTopic extends javax.swing.JFrame {
             // Se o tópico ainda não existe
             if (!erro){
                 //Adiciona o tópico
-                newServer.addTopic(new Topic(jTopicName.getText()));
+                server.addTopic(new Topic(jTopicName.getText()));
                 //Fecha a janela 
                 this.dispose();
                 

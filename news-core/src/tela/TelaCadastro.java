@@ -6,9 +6,6 @@
 package tela;
 
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import news.core.User;
 import news.core.NewsServer;
 
 /**
@@ -16,19 +13,16 @@ import news.core.NewsServer;
  * @author Chen
  */
 public class TelaCadastro extends javax.swing.JFrame {
-
-    NewsServer newServer;
-    /**
-     * Creates new form TelaPublic
-     */
+  
+    NewsServer server;
+    
     public TelaCadastro() {
         initComponents();
     }
-
-
+    
     TelaCadastro(NewsServer server) {
         initComponents();
-        newServer = server;
+        this.server = server;
     }
 
     /**
@@ -60,12 +54,6 @@ public class TelaCadastro extends javax.swing.JFrame {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Dados cadastrais"));
-
-        jUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jUsuarioActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Usuário");
 
@@ -155,34 +143,27 @@ public class TelaCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_formWindowClosed
 
     private void jCriarCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCriarCadActionPerformed
         try {
-            // TODO add your handling code here:
-            // Cria o usuário
-            String finalidade = (String) jFinalidade.getSelectedItem();
+            // Verifica se é um escritor
             boolean publisher = false;
-            if(finalidade.equals("Publicacao")){
+            if(jFinalidade.getSelectedItem().equals("Publicação")){
                 publisher = true;
             }
-            User user = new User(jUsuario.getText(), jSenha.getPassword(), publisher);
             // Adiciona usuário no servidor
-            newServer.addUser(user);
+            server.addUser(jUsuario.getText(), jSenha.getPassword(), publisher);
             // Desabilita a tela atual
             this.setVisible(false);
         } catch (RemoteException ex) {
+            
             // CASSEL: coloquei esse try-catch para compilar o RemoteException, mas
             // de repente precisa exibir uma mensagem amigável ao usuário
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jCriarCadActionPerformed
-
-    private void jUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,7 +198,6 @@ public class TelaCadastro extends javax.swing.JFrame {
             new TelaCadastro().setVisible(true);
         });
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField jConfirmaSenha;

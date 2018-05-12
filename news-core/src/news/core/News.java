@@ -21,22 +21,12 @@ public class News implements Serializable {
     /* Data de publicação */
     private Date publicationDate;
     /* Usuário que publicou a notícia */
-    private User publisher;
+    private String publisher;
 
     /**
      * Cria uma notícia
      */
     public News() {
-        this("");
-    }
-
-    /**
-     * Cria notícia com o título especificado
-     *
-     * @param title título da notíca
-     */
-    public News(String title) {
-        this(title, null, "");
     }
     
     /**
@@ -45,33 +35,12 @@ public class News implements Serializable {
      * @param title título da notíca
      * @param publicationDate data de publicação
      * @param publisher usuário que publicou a notícia
+     * @param content
      */
-    public News(String title, Date publicationDate, String publisher) {
-        this(title, publicationDate, new User(publisher));
-    }
-
-    /**
-     * Cria notícia com o título especificado, data e usuário especificados
-     *
-     * @param title título da notíca
-     * @param publicationDate data de publicação
-     * @param publisher usuário que publicou a notícia
-     */
-    public News(String title, Date publicationDate, User publisher) {
+    public News(String title, String publisher, String content) {
         this.title = title;
-        this.publicationDate = publicationDate;
         this.publisher = publisher;
-    }
-    /**
-     * Cria notícia com o título especificado e usuário especificados
-     *
-     * @param title título da notícia
-     * @param publisher usuário que publicou a notícia
-     */
-    public News(String title, User publisher) {
-        this.title = title;
-        this.publicationDate = null;
-        this.publisher = publisher;
+        this.content = content;
     }
 
     /**
@@ -133,7 +102,7 @@ public class News implements Serializable {
      *
      * @return User
      */
-    public User getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
@@ -143,17 +112,9 @@ public class News implements Serializable {
      * @param publisher nome do usuário que publicoua notícia
      */
     public void setPublisher(String publisher) {
-        this.publisher = new User(publisher);
-    }
-
-    /**
-     * Define o usuário que publicou a notícia
-     *
-     * @param publisher
-     */
-    public void setPublisher(User publisher) {
         this.publisher = publisher;
     }
+
 
     @Override
     public String toString() {

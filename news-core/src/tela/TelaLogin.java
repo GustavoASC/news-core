@@ -9,7 +9,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import news.core.User;
 import news.core.NewsServer;
@@ -20,17 +19,17 @@ import news.core.NewsServer;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
-    NewsServer newServer;
-    /**
-     * Creates new form jLogin
-     */
+    NewsServer server;
+    
     public TelaLogin() {
         initComponents();
     }
+    
     public TelaLogin(NewsServer server) {
         initComponents();
-        newServer = server;
+        this.server = server;
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,12 +85,6 @@ public class TelaLogin extends javax.swing.JFrame {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Dados para acesso"));
-
-        jUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jUsuarioActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Usuario");
 
@@ -158,10 +151,6 @@ public class TelaLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jUsuarioActionPerformed
-
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -169,20 +158,18 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
         try {
-            // TODO add your handling code here:
-            User user = newServer.retUser(jUsuario.getText(), jPassword.getPassword());
+            // Retorna objeto com o usuário/senha
+            User user = server.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
+            // Se encontrou o usuário
             if(user!= null){
                 // Ir para tela principal
-                TelaPrincipal tela = null;
-                tela = new TelaPrincipal(newServer, user);
+                TelaPrincipal tela = new TelaPrincipal(server, user.getUsername());
                 tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 tela.setVisible(true);
                 // Desabilita a tela atual
                 this.setVisible(false);
             }
-        } catch (RemoteException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jEntrarActionPerformed

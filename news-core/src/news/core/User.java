@@ -37,7 +37,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.publisher = publisher;
-        this.subscriptions = null;
+        this.subscriptions = new LinkedList<>();
     }
 
     /**

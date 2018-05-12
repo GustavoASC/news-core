@@ -6,7 +6,6 @@
 package tela;
 
 import java.rmi.RemoteException;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import news.core.News;
 import news.core.Topic;
-import news.core.User;
 import news.core.NewsServer;
 
 /**
@@ -24,18 +22,21 @@ import news.core.NewsServer;
 public class TelaPublic extends javax.swing.JFrame {
 
     NewsServer server;
-    User logUser;
-    /**
-     * Creates new form TelaPublic
-     */
+    String username;
+    
     public TelaPublic() {
         initComponents();
     }
 
-    TelaPublic(NewsServer serv, User user) {
+    TelaPublic(NewsServer server, String username) {
+        this.server = server; 
+        this.username = username;
         initComponents();
-        this.server = serv; 
-        this.logUser = user;
+        initTela();
+    }
+        
+    // Inicializações de tela para aceitação
+    public final void initTela(){   
         //Desabilita os campos até que haja dados para exibição
         jTopic.setEnabled(false);
         jTitle.setEnabled(false);
@@ -44,10 +45,10 @@ public class TelaPublic extends javax.swing.JFrame {
         // Popula a combo-box com as opções disponíveis
         try {
             List<Topic> topics = server.getTopics();
-            Vector<String> entries = new Vector<>();
-            topics.forEach((t) -> {entries.add(t.getName());});
-            if (!entries.isEmpty()){
-                jTopic.setModel(new DefaultComboBoxModel(entries));
+            Vector<String> opcoes = new Vector<>();
+            topics.forEach((t) -> {opcoes.add(t.getName());});
+            if (!opcoes.isEmpty()){
+                jTopic.setModel(new DefaultComboBoxModel(opcoes));
                 jTopic.setEnabled(true);
                 jTitle.setEnabled(true);
                 jMensagem.setEnabled(true);
@@ -78,11 +79,6 @@ public class TelaPublic extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Publicacao");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Nova publicação"));
 
@@ -106,19 +102,8 @@ public class TelaPublic extends javax.swing.JFrame {
         jLabel1.setText("Tópico:");
 
         jTopic.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jTopic.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTopicActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Título:");
-
-        jTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTitleActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -173,49 +158,34 @@ public class TelaPublic extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTopicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTopicActionPerformed
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowClosed
-
     private void jPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicarActionPerformed
-        // TODO add your handling code here:
-        Topic topic = null;
-	News news = new News(jTitle.getText(), logUser);
+        // Cria a notícia
+        News n = new News(jTitle.getText(), username, jMensagem.getText());
         try {
+            // Busca o tópico e adiciona a notícia
             List<Topic> topicList = server.getTopics();
-            for(int i=0; i < topicList.size(); i++){
-                if(topicList.get(i).getName().equals(jTopic.getSelectedItem())){
-                    topic = topicList.get(i);
+            for (Topic t:topicList){
+                if(t.getName().equals(jTopic.getSelectedItem())){
+                    server.addNews(n, t);
                     break;
                 }
             }
-            server.addNews(news, topic);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_jPublicarActionPerformed
 
-    private void jTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTitleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTitleActionPerformed
-
     private void jMensagemKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jMensagemKeyTyped
-        // TODO add your handling code here:
-        // limita 180 caracteres
-        if (jMensagem.getText().length() >= 180 ){
-                evt.consume();
-        }
+        // Limita a mensagem em 180 caracteres
+        if (jMensagem.getText().length() >= 180 )
+            evt.consume();
     }//GEN-LAST:event_jMensagemKeyTyped
 
     /**
@@ -250,7 +220,6 @@ public class TelaPublic extends javax.swing.JFrame {
             new TelaPublic().setVisible(true);
         });
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
