@@ -28,8 +28,9 @@ public class TelaInscricao extends javax.swing.JFrame {
     }
     
     public TelaInscricao(NewsServer server, String username) {
-        initComponents();
         this.server = server;
+        this.username = username;
+        initComponents();
         initTela();
     }
     

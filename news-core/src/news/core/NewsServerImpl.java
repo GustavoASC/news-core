@@ -161,14 +161,15 @@ public class NewsServerImpl implements NewsServer {
 
     @Override
     public void subscribe(String username, Topic topic) throws RemoteException {
-        // Atualiza usuários inscritos
-        for (User u :registeredUsers){
-            if (u.getUsername().equals(username))
-                u.subscribe(topic);
-        }
+        // Cria objeto para o novo usuário
+        User newUser = this.getUserByName(username);
+        newUser.subscribe(topic);
+        // Atualiza o registro
+        registeredUsers.set(registeredUsers.indexOf(this.getUserByName(username)), newUser);
         
-        //TODO: falta atualizar o hashmap de usuários
-          
+        // TODO: Falta atualizar o hashmap
+        
+        return;
     }
 
     @Override
