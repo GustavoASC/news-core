@@ -23,7 +23,7 @@ public class NewsServerImplTest {
         news.setPublicationDate(new Date(2018 + 1900, 0, 13));
         news.setContent("Conteúdo da notícia");
         //
-        Topic topic = new Topic();
+        Topic topic = new Topic("Tópico");
         topic.addNews(news);
         //
         NewsServerImpl server = new NewsServerImpl();
@@ -56,7 +56,7 @@ public class NewsServerImplTest {
     @Test
     public void testRetrieveAvailableTopics() throws Exception {
         //
-        Topic topic = new Topic();
+        Topic topic = new Topic("Tópico");
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel"));
         //
         NewsServerImpl server = new NewsServerImpl();
@@ -64,15 +64,15 @@ public class NewsServerImplTest {
         //
         List<Topic> availableTopics;
         //
-        availableTopics = server.retrieveAvailableTopics();
+        availableTopics = server.getTopics();
         assertEquals(1, availableTopics.size());
         assertEquals(topic, availableTopics.get(0));
         //
-        Topic secondTopic = new Topic();
+        Topic secondTopic = new Topic(" ");
         secondTopic.addNews(new News("Título da segunda notícia", new Date(2016 + 1900, 0, 13), "Gãs"));
         server.addTopic(secondTopic);
         //
-        availableTopics = server.retrieveAvailableTopics();
+        availableTopics = server.getTopics();
         assertEquals(2, availableTopics.size());
         assertEquals(topic, availableTopics.get(0));
         assertEquals(secondTopic, availableTopics.get(1));
@@ -81,7 +81,7 @@ public class NewsServerImplTest {
     @Test
     public void testRetrievePublishedNews() throws Exception {
         //
-        Topic topic = new Topic();
+        Topic topic = new Topic("Mais um tópico");
         News first = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
         News second = new News("Outra notícia a", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
         News fernanda = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Fernanda");
@@ -111,7 +111,7 @@ public class NewsServerImplTest {
 
     @Test
     public void testRetrieveNews() throws Exception {
-        Topic topic = new Topic();
+        Topic topic = new Topic("Outro tópico");
         //
         News first = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
         News second = new News("Outra notícia a", new Date(2018 + 1900, 0, 15), "Gustavo Cassel");
@@ -155,24 +155,27 @@ public class NewsServerImplTest {
     @Test
     public void testSubscribe() throws Exception {
         User firstUser = new User("Usuário não inscrito");
-        Topic firstTopic = new Topic();
+        Topic firstTopic = new Topic("Meu tópico");
         firstUser.subscribe(firstTopic);
         //
         User user = new User("Gustavo");
         News news = new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel");
-        Topic topic = new Topic();
+        Topic topic = new Topic("Exemplo");
         //
         NewsServerImpl server = new NewsServerImpl();
-        server.addUser(user);
+        server.addUser("Usuário não inscrito", null, true);
+        server.addUser("Gustavo", null, true);
         server.addTopic(topic);
         //
-        server.subscribe(firstUser, firstTopic);
-        assertTrue(firstUser.isSubscribed(firstTopic));
-        assertFalse(firstUser.isSubscribed(topic));
+        server.subscribe("Usuário não inscrito", firstTopic);
+        
+//        assertTrue(firstUser.isSubscribed(firstTopic));
+//        assertFalse(firstUser.isSubscribed(topic));
         //
-        server.subscribe(firstUser, topic); // Não deve fazer nada porque o usuário não foi adicionado ao server
-        server.subscribe(user, topic);
-        assertTrue(user.isSubscribed(topic));
+        server.addLoggedUser(user, "localhost");
+        server.subscribe("Usuário não inscrito", topic); // Não deve fazer nada porque o usuário não foi adicionado ao server
+        server.subscribe("Gustavo", topic);
+        assertTrue(server.getUserByName("Gustavo").isSubscribed(topic));
         //
         server.addNews(news, topic, (News news1, User user1) -> {
             assertEquals("User{username=Gustavo, password=null, publisher=false, subscriptions=[Topic{name=null, associatedNews=[News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}]}], ip=null, port=0}", user1.toString());

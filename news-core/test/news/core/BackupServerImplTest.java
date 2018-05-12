@@ -9,8 +9,6 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -36,12 +34,12 @@ public class BackupServerImplTest {
         users.add(user2);
         users.add(user3);
         //
-        Topic topic = new Topic();
+        Topic topic = new Topic("Tópico");
         topic.addNews(new News("Minha noticia", new Date(2018 + 1900, 0, 13), "Gustavo"));
         topic.addNews(new News("Outra noticia", new Date(2017 + 1900, 0, 13), "Fernanda"));
         topic.addNews(new News("Terceira noticia", new Date(2016 + 1900, 0, 13), "Chen"));
         //
-        Topic secondTopic = new Topic();
+        Topic secondTopic = new Topic("Tópico 2");
         secondTopic.addNews(new News("Minha noticia dois", new Date(2019 + 1900, 2, 5), "Gustavo Cassel"));
         secondTopic.addNews(new News("Outra noticia dois", new Date(2020 + 1900, 3, 6), "Fernanda X"));
         secondTopic.addNews(new News("Terceira noticia dois", new Date(2021 + 1900, 4, 7), "Chen Y"));

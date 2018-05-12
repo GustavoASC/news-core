@@ -131,7 +131,7 @@ public class NewsServerImpl implements NewsServer {
         List<News> publishedNews = new LinkedList<>();
         topics.stream().forEach(
                 t -> publishedNews.addAll(t.getNews().stream()
-                        .filter(news -> news.getPublisher().equals(user))
+                        .filter(news -> news.getPublisher().equals(user.getUsername()))
                         .collect(Collectors.toList())
                 ));
         return publishedNews;
@@ -163,13 +163,12 @@ public class NewsServerImpl implements NewsServer {
     public void subscribe(String username, Topic topic) throws RemoteException {
         // Cria objeto para o novo usuário
         User newUser = this.getUserByName(username);
-        newUser.subscribe(topic);
-        // Atualiza o registro
-        registeredUsers.set(registeredUsers.indexOf(this.getUserByName(username)), newUser);
-        
-        // TODO: Falta atualizar o hashmap
-        
-        return;
+        if (newUser != null) {
+            newUser.subscribe(topic);
+            // Atualiza o registro
+            registeredUsers.set(registeredUsers.indexOf(this.getUserByName(username)), newUser);
+            // TODO: Falta atualizar o hashmap
+        }
     }
 
     @Override
