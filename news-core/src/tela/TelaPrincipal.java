@@ -222,8 +222,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Insere as notícias na tabela para exibição
     private void insereNoticias() {
+        int numRow = modelTable.getRowCount();
         //Remove as linhas da tabela de notícias
-        for(int i=1; i<modelTable.getRowCount(); i++){
+        for(int i=numRow - 1; i>=0; i--){
             modelTable.removeRow(i);
         }
         try {
