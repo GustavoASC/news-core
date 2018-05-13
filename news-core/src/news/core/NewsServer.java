@@ -52,7 +52,7 @@ public interface NewsServer extends Remote {
      * @return lista de notícias de acordo com os filtros especificados. Se não encontrar nenhuma notícia então retorna uma lista vazia.
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) throws RemoteException;
+    public List<News> retrieveNews(String topic, Date initialDate, Date finalDate) throws RemoteException;
 
     /**
      * Solicita a última notícia de um determinado tópico
