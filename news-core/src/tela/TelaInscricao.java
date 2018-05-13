@@ -49,29 +49,26 @@ public class TelaInscricao extends javax.swing.JFrame {
             // Popula a combo-box com as opções disponíveis
             List<Topic> topics = this.server.getTopics();
             Vector<String> opcoes = new Vector<>();
-            String opc = "";
+            String topicosInscritos = "";
             for(Topic t:topics){
                 if (!user.isSubscribed(t)){
                    opcoes.add(t.getName());
                 }else{
-                    if (!opc.isEmpty()){
-                        opc = opc + ", ";
-                    } else{
-                        opc = "Inscrições: ";
-                    }
-                    opc = opc + t.getName();
+                    if (!topicosInscritos.isEmpty())
+                        topicosInscritos = topicosInscritos + ", ";
+                    topicosInscritos = topicosInscritos + t.getName();
                 }
-                
             }
+            if (topicosInscritos.isEmpty())
+                topicosInscritos = "Nenhuma inscrição";
             // Se não tem opções disponíveis
             if (!opcoes.isEmpty()){
                 jComboInsc.setModel(new DefaultComboBoxModel(opcoes));
                 jComboInsc.setEnabled(true);
                 jInscrever.setEnabled(true);
             }
-            // Mostra já inscritos
-            if (!opc.isEmpty())
-                jInsc.setText(opc);
+            // Exibe as inscrições atuais
+            jTopicosInscritos.setText(topicosInscritos);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaInscricao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,11 +87,13 @@ public class TelaInscricao extends javax.swing.JFrame {
         jInscrever = new javax.swing.JButton();
         jComboInsc = new javax.swing.JComboBox<>();
         jInsc = new javax.swing.JLabel();
+        jInscricao1 = new javax.swing.JPanel();
+        jTopicosInscritos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inscrição");
 
-        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
+        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Nova inscrição"));
 
         jInscrever.setText("Inscrever-se");
         jInscrever.addActionListener(new java.awt.event.ActionListener() {
@@ -104,49 +103,81 @@ public class TelaInscricao extends javax.swing.JFrame {
         });
 
         jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos disponíveis para inscrição" }));
+        jComboInsc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboInscActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
         jInscricaoLayout.setHorizontalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInscricaoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+            .addGroup(jInscricaoLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jInscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jInscricaoLayout.setVerticalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInscricaoLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboInsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jInscrever))
-                .addGap(20, 20, 20))
+                .addContainerGap())
+        );
+
+        jInscricao1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Tópicos inscritos"));
+
+        jTopicosInscritos.setText("Inscrito: ");
+
+        javax.swing.GroupLayout jInscricao1Layout = new javax.swing.GroupLayout(jInscricao1);
+        jInscricao1.setLayout(jInscricao1Layout);
+        jInscricao1Layout.setHorizontalGroup(
+            jInscricao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInscricao1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTopicosInscritos, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jInscricao1Layout.setVerticalGroup(
+            jInscricao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInscricao1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTopicosInscritos)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(501, 501, 501)
+                                .addComponent(jInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jInscricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jInscricao1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jInscricao1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,6 +198,10 @@ public class TelaInscricao extends javax.swing.JFrame {
         }
         this.dispose();
     }//GEN-LAST:event_jInscreverActionPerformed
+
+    private void jComboInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboInscActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboInscActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,5 +241,7 @@ public class TelaInscricao extends javax.swing.JFrame {
     private javax.swing.JLabel jInsc;
     private javax.swing.JButton jInscrever;
     private javax.swing.JPanel jInscricao;
+    private javax.swing.JPanel jInscricao1;
+    private javax.swing.JLabel jTopicosInscritos;
     // End of variables declaration//GEN-END:variables
 }

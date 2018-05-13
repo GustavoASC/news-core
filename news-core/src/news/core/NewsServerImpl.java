@@ -142,7 +142,15 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public List<News> retrieveNews(Topic topic, Date initialDate, Date finalDate) throws RemoteException {
+    public List<News> retrieveNews(String topicName, Date initialDate, Date finalDate) throws RemoteException {
+        Topic topic = null;
+        for (Topic t:topics){
+            if (t.getName().equals(topicName))
+                topic = t;
+        }
+        // Se não encontrou o tópico
+        if (topic == null)
+            return null;
         List<News> topicNews = topic.getNews();
         return topicNews.stream()
                 .filter(news -> !news.getPublicationDate().before(initialDate))

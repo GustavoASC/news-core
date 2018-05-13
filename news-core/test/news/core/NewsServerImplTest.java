@@ -125,29 +125,29 @@ public class NewsServerImplTest {
         server.addTopic(topic);
         //
         List<News> filteredNews;
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 12), new Date(2018 + 1900, 0, 16));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 12), new Date(2018 + 1900, 0, 16));
         assertEquals(2, filteredNews.size());
         assertEquals(first, filteredNews.get(0));
         assertEquals(second, filteredNews.get(1));
         //
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 12), new Date(2018 + 1900, 0, 18));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 12), new Date(2018 + 1900, 0, 18));
         assertEquals(3, filteredNews.size());
         assertEquals(first, filteredNews.get(0));
         assertEquals(second, filteredNews.get(1));
         assertEquals(third, filteredNews.get(2));
         //
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 13), new Date(2018 + 1900, 0, 13));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 13), new Date(2018 + 1900, 0, 13));
         assertEquals(1, filteredNews.size());
         assertEquals(first, filteredNews.get(0));
         //
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 15), new Date(2018 + 1900, 0, 15));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 15), new Date(2018 + 1900, 0, 15));
         assertEquals(1, filteredNews.size());
         assertEquals(second, filteredNews.get(0));
         //
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 16), new Date(2018 + 1900, 0, 16));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 16), new Date(2018 + 1900, 0, 16));
         assertEquals(0, filteredNews.size());
         //
-        filteredNews = server.retrieveNews(topic, new Date(2018 + 1900, 0, 17), new Date(2018 + 1900, 0, 17));
+        filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 17), new Date(2018 + 1900, 0, 17));
         assertEquals(1, filteredNews.size());
         assertEquals(third, filteredNews.get(0));
     }

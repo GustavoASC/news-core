@@ -264,7 +264,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     private void jPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPesquisaActionPerformed
-        // TODO add your handling code here:
+        // Cria janela de pesquisa
+        TelaPesquisa tela = new TelaPesquisa(server);
+        tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        tela.setVisible(true);
     }//GEN-LAST:event_jPesquisaActionPerformed
 
     private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
@@ -275,7 +278,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTopicoActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
+        // Fecha o programa
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
 
