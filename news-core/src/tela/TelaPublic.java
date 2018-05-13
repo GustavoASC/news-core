@@ -168,14 +168,9 @@ public class TelaPublic extends javax.swing.JFrame {
         // Cria a notícia
         News n = new News(jTitle.getText(), username, jMensagem.getText());
         try {
-            // Busca o tópico e adiciona a notícia
-            List<Topic> topicList = server.getTopics();
-            for (Topic t:topicList){
-                if(t.getName().equals(jTopic.getSelectedItem())){
-                    server.addNews(n, t);
-                    break;
-                }
-            }
+            Topic topic = server.getTopicByName((String) jTopic.getSelectedItem());
+            if (topic!=null)
+                server.addNews(n, topic);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }

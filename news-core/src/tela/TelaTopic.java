@@ -6,7 +6,6 @@
 package tela;
 
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -40,13 +39,13 @@ public class TelaTopic extends javax.swing.JFrame {
     private void initComponents() {
 
         jInscricao = new javax.swing.JPanel();
-        jTopicName = new javax.swing.JTextField();
+        jTopic = new javax.swing.JTextField();
         jAdicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tópicos");
 
-        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Inscrição"));
+        jInscricao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Novo tópico"));
 
         jAdicionar.setText("Adicionar");
         jAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -60,18 +59,18 @@ public class TelaTopic extends javax.swing.JFrame {
         jInscricaoLayout.setHorizontalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInscricaoLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jTopicName, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(jTopic, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         jInscricaoLayout.setVerticalGroup(
             jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInscricaoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jInscricaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTopicName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jAdicionar))
                 .addGap(20, 20, 20))
         );
@@ -80,17 +79,17 @@ public class TelaTopic extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(106, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -98,34 +97,20 @@ public class TelaTopic extends javax.swing.JFrame {
 
     private void jAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAdicionarActionPerformed
         // Se o campo está vazio
-        if (jTopicName.getText().isEmpty())
+        if (jTopic.getText().isEmpty())
             return;
+        
         try {
-            boolean erro = false;
-            try {
-                // Busca os tópicos existentes
-                List<Topic> topics = server.getTopics();
-                // Verifica se já tem um tópico com este mesmo nome
-                for(Topic t: topics){
-                    if (t.getName().equalsIgnoreCase(jTopicName.getText())){
-                        JOptionPane.showMessageDialog(null, "Tópico já existente!");
-                        erro = true;
-                        break;
-                    }
-                }
-            } catch (RemoteException ex) {
-                Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
+            Topic topic = server.getTopicByName(jTopic.getText());
+            if (topic!=null){
+                JOptionPane.showMessageDialog(null, "Tópico já existente!");
+                jTopic.setText("");
+                return;
             }
             // Se o tópico ainda não existe
-            if (!erro){
-                //Adiciona o tópico
-                server.addTopic(new Topic(jTopicName.getText()));
-                //Fecha a janela 
-                this.dispose();
-            } else{
-                //Limpa o campo para digitar um novo tópico para inserir
-                jTopicName.setText("");
-            }
+            server.addTopic(new Topic(jTopic.getText()));
+            //Fecha a janela 
+            this.dispose();
         } catch (RemoteException ex) {
             Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -172,7 +157,7 @@ public class TelaTopic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jAdicionar;
     private javax.swing.JPanel jInscricao;
-    private javax.swing.JTextField jTopicName;
+    private javax.swing.JTextField jTopic;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -230,23 +230,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         try {
             // Busca os tópicos disponíveis
             List<Topic> topics = server.getTopics();
-            topics.forEach((t) -> {
-                try {
-                    if (topicoValido(t)){
-                        try {
-                            News n = server.retrieveLastNews(t);
-                            if (n != null){
-                                String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
-                                modelTable.addRow(linha);
-                            }
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+            for (Topic t:topics){
+                // Se o tópico for válido para o usuário
+                if (topicoValido(t)){
+                    News n = server.retrieveLastNews(t);
+                    if (n != null){
+                        // Insere a linha na tabela
+                        String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
+                        modelTable.addRow(linha);
                     }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            });
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

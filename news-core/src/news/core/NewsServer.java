@@ -111,6 +111,15 @@ public interface NewsServer extends Remote {
     public User getUserByName(String username) throws RemoteException;
 
     /**
+     * Busca o tópico a partir do nome
+     *
+     * @param name
+     * @return topico
+     * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
+     */
+    public Topic getTopicByName(String name) throws RemoteException;
+
+    /**
      * Retorna a lista de tópicos disponíveis
      *
      * @return Lista de tópicos disponíveis

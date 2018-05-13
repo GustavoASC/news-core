@@ -202,24 +202,25 @@ public class NewsServerImpl implements NewsServer {
 
     @Override
     public User validateLoginUser(String userName, char[] userPassword) throws RemoteException {
-        for (int i = 0; i < registeredUsers.size(); i++) {
-            if (registeredUsers.get(i).getUsername().equals(userName)) {
-                if(Arrays.equals(userPassword, registeredUsers.get(i).getPassword())){
-                    return registeredUsers.get(i);
-                }else{
-                    JOptionPane.showMessageDialog(null,"Senha inválida!");
-                    return null;
-                }
-            }
+        User user = getUserByName(userName);
+        // Se não encontrou o usuário
+        if (user == null){
+            JOptionPane.showMessageDialog(null,"Usuário inválido!");
+            return null;
         }
-        JOptionPane.showMessageDialog(null,"Usuario invalido!");
-        return null;
+        // Se a senha não confere
+        if (!Arrays.equals(user.getPassword(), userPassword)){
+            JOptionPane.showMessageDialog(null,"Senha inválida!");
+            return null;
+        }
+        // Retorna o usuário váldo
+        return user;
     }
 
     @Override
     public User getUserByName(String username) throws RemoteException {
         for (User u:registeredUsers){
-            if (u.getUsername().equals(username)) 
+            if (u.getUsername().equalsIgnoreCase(username)) 
                 return u;
         }
         return null;
@@ -296,5 +297,15 @@ public class NewsServerImpl implements NewsServer {
     public List<Topic> getTopics() {
         return topics;
     }
+    
+    @Override
+    public Topic getTopicByName(String name) throws RemoteException{
+        for (Topic topic: topics){
+            if (topic.getName().equalsIgnoreCase(name))
+                return topic;
+        }
+        return null;
+    }
+    
 
 }

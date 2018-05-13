@@ -63,9 +63,10 @@ public class TelaPesquisa extends javax.swing.JFrame {
         // Se tem opções disponíveis
         if (!opcoes.isEmpty()){
             jTopicos.setModel(new DefaultComboBoxModel(opcoes));
-            jTopicos.setEnabled(true);
         } else{
+            // Desabilita os tópicos e o botão de filtros
             jTopicos.setEnabled(false);
+            jFiltrar.setEnabled(false);
         }
         //Colunas da tabela de notícias
         modelTable.addColumn("Tópico");
@@ -97,11 +98,6 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pesquisa de notícias");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
 
         jTable1.setModel(modelTable);
         jTable1.setEnabled(false);
@@ -126,11 +122,6 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
         jDataInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         jDataInicial.setText("01/01/2018");
-        jDataInicial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jDataInicialActionPerformed(evt);
-            }
-        });
 
         jDataFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         jDataFinal.setText("31/12/2018");
@@ -214,21 +205,15 @@ public class TelaPesquisa extends javax.swing.JFrame {
         for(int i=numRow - 1; i>=0; i--)
             modelTable.removeRow(i);
         try {
-            // Busca os tópicos disponíveis
-            List<Topic> topics = server.getTopics();
-            for (Topic t: topics){
-                if (t.getName().equals(jTopicos.getSelectedItem())){
-                    try {
-                        for (News n:server.retrieveNews(t.getName(), initialDate, finalDate)){
-                            if (n != null){
-                                String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
-                                modelTable.addRow(linha);
-                            }
-                        }
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+            // Busca o tópico
+            Topic t = server.getTopicByName((String) jTopicos.getSelectedItem());
+            // Se encontrou o tópico
+            if (t != null){
+                for (News n:server.retrieveNews(t.getName(), initialDate, finalDate)){
+                    if (n != null){
+                        String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
+                        modelTable.addRow(linha);
                     }
-                    break;
                 }
             }
         } catch (RemoteException ex) {
@@ -240,14 +225,6 @@ public class TelaPesquisa extends javax.swing.JFrame {
         // Insere as notícias na janela 
         insereNoticias();
     }//GEN-LAST:event_jFiltrarActionPerformed
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowClosed
-
-    private void jDataInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDataInicialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jDataInicialActionPerformed
 
     /**
      * @param args the command line arguments

@@ -103,11 +103,6 @@ public class TelaInscricao extends javax.swing.JFrame {
         });
 
         jComboInsc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos disponíveis para inscrição" }));
-        jComboInsc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboInscActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jInscricaoLayout = new javax.swing.GroupLayout(jInscricao);
         jInscricao.setLayout(jInscricaoLayout);
@@ -185,23 +180,14 @@ public class TelaInscricao extends javax.swing.JFrame {
 
     private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
         try {
-            // Busca o tópico na lista
-            List<Topic> topicList = server.getTopics();
-            for (Topic t: topicList){
-                if(t.getName().equals(jComboInsc.getSelectedItem())){
-                    server.subscribe(username, t);
-                    break;
-                }
-            }
+            Topic topic = server.getTopicByName((String) jComboInsc.getSelectedItem());
+            if (topic!=null)
+                server.subscribe(username, topic);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_jInscreverActionPerformed
-
-    private void jComboInscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboInscActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboInscActionPerformed
 
     /**
      * @param args the command line arguments
