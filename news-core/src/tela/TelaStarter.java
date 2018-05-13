@@ -145,7 +145,6 @@ public class TelaStarter extends javax.swing.JFrame {
     }//GEN-LAST:event_jCadastrarActionPerformed
 
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
-        // TODO add your handling code here:
         // Cria janela para aceitar login
         TelaLogin tela = new TelaLogin(newsServer);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
