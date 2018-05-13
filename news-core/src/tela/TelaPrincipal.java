@@ -7,8 +7,12 @@ package tela;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,26 +20,35 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import news.core.News;
+import news.core.NewsConfigs;
 import news.core.NewsServer;
 import news.core.Topic;
 import news.core.User;
+import news.core.UserServer;
+import news.core.UserServerImpl;
 
 /**
- *
+ * Tela principal com as notícias apresentadas ao usuário
+ * 
  * @author Chen
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    DefaultTableModel modelTable = new DefaultTableModel();
-    NewsServer server;
-    String username;
+    /* Model da tabela/grid de notícias */
+    private DefaultTableModel modelTable = new DefaultTableModel();
+    /* Servidor de notícias */
+    private NewsServer newsServer;
+    /* Nome do usuário corrente */
+    private String username;
+    /* Servidor deste usuário que será invocado pelo servidor de notícias */
+    private UserServerImpl userServerImpl;
     
     private TelaPrincipal() {
         initComponents();
     }
     
     public TelaPrincipal(NewsServer server, String username) throws RemoteException, NotBoundException {
-        this.server = server; 
+        this.newsServer = server; 
         this.username = username;
         initComponents();
         initTela();
@@ -46,7 +59,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         User logUser = null;
         try {
             // Busca o usuário
-            logUser = server.getUserByName(username);
+            logUser = newsServer.getUserByName(username);
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,6 +73,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             jTopico.setEnabled(false);
             jInscricao.setEnabled(false);
         }else{
+            // Desabilita botão para consultar últimas notícias
+            jAtualizar.setVisible(false);
             // Adiciona o nome do usuário
             jUserName.setText(username);
             //Desabilita os botões que são exclusivos para escritores
@@ -75,8 +90,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
         modelTable.addColumn("Título");
         modelTable.addColumn("Notícia");
         // Insere as notícias na janela principal
-        insereNoticias();
+        updateNewsTable();
     }
+    
+    /**
+     * Levanta e inicia o servidor referente a este usuário
+     * 
+     * @throws IOException
+     */
+    public void startUserServer() throws IOException {
+        //
+        NewsConfigs configs = new NewsConfigs();
+        this.userServerImpl = new UserServerImpl(this);
+        Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
+        UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
+        registry.rebind(configs.getUserServerService(), server);
+        System.out.println("Servidor do usuário no ar!");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -96,10 +127,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jUserLabel = new javax.swing.JLabel();
         jUserName = new javax.swing.JTextField();
         jTopico = new javax.swing.JButton();
+        jAtualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela inicial");
-        setPreferredSize(new java.awt.Dimension(700, 400));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -149,6 +180,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jAtualizar.setLabel("Atualizar (apenas anônimos)");
+        jAtualizar.setName("jAtualizar"); // NOI18N
+        jAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAtualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,7 +207,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addComponent(jTopico, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 168, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jUserLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -184,7 +225,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jPublicacao)
                     .addComponent(jUserLabel)
                     .addComponent(jUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTopico))
+                    .addComponent(jTopico)
+                    .addComponent(jAtualizar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -192,36 +234,38 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jAtualizar.getAccessibleContext().setAccessibleName("jAtualizar");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jInscricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscricaoActionPerformed
         // Cria janela para inscrição de tópicos
-        TelaInscricao tela = new TelaInscricao(server, username);
+        TelaInscricao tela = new TelaInscricao(newsServer, username);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-            // Insere as notícias na janela principal
-                insereNoticias();
+                System.out.println("dentro do windowClosed TelaInscricao mas não vai fazer nada aqui");
+                updateNewsTable();
             }
         });
         tela.setVisible(true);    }//GEN-LAST:event_jInscricaoActionPerformed
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
         // Cria janela para aceitar nova publicação
-        TelaPublic tela = new TelaPublic(server, username);
+        TelaPublic tela = new TelaPublic(newsServer, username);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
             // Insere as notícias na janela principal
-                insereNoticias();
+                System.out.println("dentro do windowClosed TelaPublic mas não vai fazer nada aqui");
             }
         });
         tela.setVisible(true);
     }//GEN-LAST:event_jPublicacaoActionPerformed
 
     // Insere as notícias na tabela para exibição
-    private void insereNoticias() {
+    public synchronized void updateNewsTable() {
         int numRow = modelTable.getRowCount();
         //Remove as linhas da tabela de notícias
         for(int i=numRow - 1; i>=0; i--){
@@ -229,11 +273,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
         try {
             // Busca os tópicos disponíveis
-            List<Topic> topics = server.getTopics();
+            List<Topic> topics = newsServer.getTopics();
             for (Topic t:topics){
                 // Se o tópico for válido para o usuário
-                if (topicoValido(t)){
-                    News n = server.retrieveLastNews(t);
+                if (isValidTopic(t)){
+                    News n = newsServer.retrieveLastNews(t);
                     if (n != null){
                         // Insere a linha na tabela
                         String linha [] = {t.getName(), n.getPublicationDate().toString(), n.getPublisher(), n.getTitle(), n.getContent()};
@@ -246,10 +290,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
-    // Valida o tópico para inserção na tela principal
-    private boolean topicoValido(Topic t) throws RemoteException {
+    /**
+     * Retorna {@code true} se o tópico é válido para inserção na tela principal
+     * 
+     * @param t
+     * @return boolean
+     * @throws RemoteException 
+     */
+    private boolean isValidTopic(Topic t) throws RemoteException {
         // Retorna o usuário logado no servidor
-        User logUser = server.getUserByName(username);
+        User logUser = newsServer.getUserByName(username);
         // Se entrar com usuário anônimo, todos os tópicos são válidos
         if (logUser == null)
             return true;
@@ -259,14 +309,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPesquisaActionPerformed
         // Cria janela de pesquisa
-        TelaPesquisa tela = new TelaPesquisa(server);
+        TelaPesquisa tela = new TelaPesquisa(newsServer);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jPesquisaActionPerformed
 
     private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
         // Cria janela cadastrar tópicos
-        TelaTopic tela = new TelaTopic(server);
+        TelaTopic tela = new TelaTopic(newsServer);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jTopicoActionPerformed
@@ -275,6 +325,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // Fecha o programa
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAtualizarActionPerformed
+        updateNewsTable();
+    }//GEN-LAST:event_jAtualizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -310,6 +364,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jAtualizar;
     private javax.swing.JButton jInscricao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jPesquisa;

@@ -43,7 +43,9 @@
                       <Component id="jTopico" min="-2" pref="84" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPublicacao" min="-2" pref="90" max="-2" attributes="0"/>
-                      <EmptySpace pref="184" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jAtualizar" pref="168" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jUserLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jUserName" min="-2" pref="79" max="-2" attributes="0"/>
@@ -64,6 +66,7 @@
                   <Component id="jUserLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jUserName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTopico" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jAtualizar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -152,6 +155,18 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTopicoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jAtualizar">
+      <Properties>
+        <Property name="label" type="java.lang.String" value="Atualizar (apenas an&#xf4;nimos)"/>
+        <Property name="name" type="java.lang.String" value="jAtualizar" noResource="true"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="jAtualizar"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jAtualizarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

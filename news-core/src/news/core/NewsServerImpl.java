@@ -32,7 +32,7 @@ public class NewsServerImpl implements NewsServer {
     /* Lista de usuários registrados no sistema */
     private final List<User> registeredUsers;
     /* Map associando os usuários logados e seus respectivos IPs */
-    private final Map<User, String> loggedUsers;
+    private final Map<User, UserAddress> loggedUsers;
 
     /**
      * Cria o servidor de notícias
@@ -81,10 +81,10 @@ public class NewsServerImpl implements NewsServer {
      */
     private void sendNewsToUser(News news, User user) {
         NewsConfigs configs = new NewsConfigs();
-        String ip = loggedUsers.get(user);
+        UserAddress address = loggedUsers.get(user);
         for (int i = 0; i < MAX_SENDING_ATTEMPTS; i++) {
             try {
-                Registry registry = LocateRegistry.getRegistry(ip, configs.getUserServerPort());
+                Registry registry = LocateRegistry.getRegistry(address.getIp(), address.getPort());
                 UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
                 service.retrieveNews(news);
                 // CASSEL: se atingiu 5 tentativas deve deslogar o usuário
@@ -192,12 +192,12 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public void addLoggedUser(String username, String ip) throws RemoteException {
+    public void addLoggedUser(String username, String ip, int port) throws RemoteException {
         User loggedUser = getUserByName(username);
         if (!registeredUsers.contains(loggedUser)) {
             return;
         }
-        loggedUsers.put(loggedUser, ip);
+        loggedUsers.put(loggedUser, new UserAddress(ip, port));
     }
 
     @Override

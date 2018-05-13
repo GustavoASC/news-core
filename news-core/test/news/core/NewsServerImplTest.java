@@ -167,11 +167,8 @@ public class NewsServerImplTest {
         server.addTopic(topic);
         //
         server.subscribe("Usuário não inscrito", firstTopic);
-        
-//        assertTrue(firstUser.isSubscribed(firstTopic));
-//        assertFalse(firstUser.isSubscribed(topic));
         //
-        server.addLoggedUser("Gustavo", "localhost");
+        server.addLoggedUser("Gustavo", "localhost", 1099);
         server.subscribe("Usuário não inscrito", topic); // Não deve fazer nada porque o usuário não foi adicionado ao server
         server.subscribe("Gustavo", topic);
         assertTrue(server.getUserByName("Gustavo").isSubscribed(topic));

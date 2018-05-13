@@ -29,8 +29,6 @@ public class TelaLogin extends javax.swing.JFrame {
 
     /* Servidor de notícias remoto */
     private NewsServer newsServer;
-    /* Servidor deste usuário que será invocado pelo servidor de notícias */
-    private UserServerImpl userServerImpl;
     
     public TelaLogin() {
         initComponents();
@@ -173,10 +171,13 @@ public class TelaLogin extends javax.swing.JFrame {
             User user = newsServer.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
             // Se encontrou o usuário
             if (user!= null){
-                newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp());
-                startUserServer();
-                // Ir para tela principal
+                // Cria tela principal com notícias apresentadas ao usuário
                 TelaPrincipal tela = new TelaPrincipal(newsServer, user.getUsername());
+                // Adiciona o usuário na lista de usuários logados
+                newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp(), new NewsConfigs().getUserServerPort());
+                // Inicia o servidor do usuário para receber notícias
+                tela.startUserServer();
+                // Ir para tela principal
                 tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 tela.setVisible(true);
                 // Desabilita a tela atual
@@ -195,21 +196,6 @@ public class TelaLogin extends javax.swing.JFrame {
     private String getLocalMachineIp() throws UnknownHostException {
         InetAddress ip = InetAddress.getLocalHost();
         return ip.getHostAddress();
-    }
-    
-    /**
-     * Levanta e inicia o servidor referente a este usuário
-     * 
-     * @return servidor recém levantado
-     */
-    private void startUserServer() throws IOException {
-        //
-        NewsConfigs configs = new NewsConfigs();
-        this.userServerImpl = new UserServerImpl(newsServer.getUserByName(jUsuario.getText()));
-        Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
-        UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
-        registry.rebind(configs.getUserServerService(), server);
-        System.out.println("Servidor do usuário no ar!");
     }
     
     /**

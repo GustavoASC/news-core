@@ -87,9 +87,10 @@ public interface NewsServer extends Remote {
      *
      * @param username nome do usuário que está fazendo logon
      * @param ip IP de origam do usuário
+     * @param port porta de origam do usuário
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void addLoggedUser(String username, String ip) throws RemoteException;
+    public void addLoggedUser(String username, String ip, int port) throws RemoteException;
 
     /**
      * Valida o usuário e senha

@@ -6,28 +6,32 @@
 package news.core;
 
 import java.rmi.RemoteException;
+import javax.swing.SwingUtilities;
+import tela.TelaPrincipal;
 
 /**
  * Client que receberá notícias do servidor
  */
 public class UserServerImpl implements UserServer {
 
-    /* Usuário logado no sistema */
-    private final User currentUser;
+    /* Tela principal com as notícias exibidas ao usuário */
+    private final TelaPrincipal telaPrincipal;
 
     /**
      * Cria client que receberá notícias do servidor
      *
-     * @param currentUser
+     * @param telaPrincipal
      */
-    public UserServerImpl(User currentUser) {
-        this.currentUser = currentUser;
+    public UserServerImpl(TelaPrincipal telaPrincipal) {
+        this.telaPrincipal = telaPrincipal;
     }
 
     @Override
     public void retrieveNews(News news) throws RemoteException {
-        System.out.println("Aqui no server do usuário " + currentUser.getUsername());
-        System.out.println("Recebeu notícia: " + news.getTitle());
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("Atualizando tabela de notícias...");
+            telaPrincipal.updateNewsTable();
+        });
     }
 
 }
