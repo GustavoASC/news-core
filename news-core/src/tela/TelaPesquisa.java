@@ -5,10 +5,10 @@
  */
 package tela;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -16,12 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import news.core.News;
 import news.core.NewsServer;
 import news.core.Topic;
-import news.core.User;
 
 /**
  *
@@ -35,13 +33,20 @@ public class TelaPesquisa extends javax.swing.JFrame {
     Date finalDate;
     
     private TelaPesquisa() {
+        initialDate = new Date();
+        finalDate = new Date();
         initComponents();
     }
     
     public TelaPesquisa(NewsServer server) {
+        initialDate = new Date();
+        finalDate = new Date();
         this.server = server; 
         initComponents();
+        // Inicializações para a aceitação de tela
         initTela();
+        // Insere as notícias na janela 
+        insereNoticias();
     }
         
     // Inicializações de tela para aceitação
@@ -83,15 +88,15 @@ public class TelaPesquisa extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jAreaFiltros = new javax.swing.JPanel();
         jTopicos = new javax.swing.JComboBox<>();
-        jDataInicial = new javax.swing.JTextField();
-        jDataFinal = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jFiltrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jDataInicial = new javax.swing.JFormattedTextField();
+        jDataFinal = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Tela inicial");
+        setTitle("Pesquisa de notícias");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -104,11 +109,7 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
         jAreaFiltros.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
 
-        jTopicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jDataInicial.setText("dd/mm/aaaa");
-
-        jDataFinal.setText("dd/mm/aaaa");
+        jTopicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não há tópicos disponíveis" }));
 
         jLabel2.setText("a");
 
@@ -123,25 +124,35 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
         jLabel3.setText("Tópico:");
 
+        jDataInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        jDataInicial.setText("01/01/2018");
+        jDataInicial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDataInicialActionPerformed(evt);
+            }
+        });
+
+        jDataFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        jDataFinal.setText("31/12/2018");
+
         javax.swing.GroupLayout jAreaFiltrosLayout = new javax.swing.GroupLayout(jAreaFiltros);
         jAreaFiltros.setLayout(jAreaFiltrosLayout);
         jAreaFiltrosLayout.setHorizontalGroup(
             jAreaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jAreaFiltrosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jAreaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jAreaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jAreaFiltrosLayout.createSequentialGroup()
-                        .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTopicos, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTopicos, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jFiltrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -151,14 +162,12 @@ public class TelaPesquisa extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jAreaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTopicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jAreaFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jFiltrar))
+                    .addComponent(jFiltrar)
+                    .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -168,19 +177,20 @@ public class TelaPesquisa extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jAreaFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jAreaFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jAreaFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -190,6 +200,15 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
     // Insere as notícias na tabela para exibição
     private void insereNoticias() {
+        // Pega a data inicial e final
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            initialDate = (java.util.Date)formatter.parse(jDataInicial.getText());
+            finalDate = (java.util.Date)formatter.parse(jDataFinal.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPesquisa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         int numRow = modelTable.getRowCount();
         //Remove as linhas da tabela de notícias
         for(int i=numRow - 1; i>=0; i--)
@@ -225,6 +244,10 @@ public class TelaPesquisa extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosed
+
+    private void jDataInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDataInicialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jDataInicialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,8 +286,8 @@ public class TelaPesquisa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jAreaFiltros;
-    private javax.swing.JTextField jDataFinal;
-    private javax.swing.JTextField jDataInicial;
+    private javax.swing.JFormattedTextField jDataFinal;
+    private javax.swing.JFormattedTextField jDataInicial;
     private javax.swing.JButton jFiltrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
