@@ -46,7 +46,10 @@ public class Topic implements Serializable {
      * @param news notícia que será adicionada
      */
     public void addNews(News news) {
-        // TODO: identificar se estourou o limite de notícias associadas
+        // Se já alcançou o tamanho máximo
+        if(this.news.size() == MAXIMUM_NEWS){
+           this.news.remove(0);
+        }
         this.news.add(news);
     }
 
