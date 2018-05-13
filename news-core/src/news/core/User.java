@@ -27,12 +27,12 @@ public class User implements Serializable {
     private final List<Topic> subscriptions;
 
     /**
-     * Cria usuário do sistema de notícias
+     * Cria usuário no sistema de notícias
+     * 
+     * @param username nome do usuário
+     * @param password senha
+     * @param publisher tem permissão para escrever notícias
      */
-    public User() {
-        this("");
-    }
-
     public User(String username, char[] password, boolean publisher) {
         this.username = username;
         this.password = password;

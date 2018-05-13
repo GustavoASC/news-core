@@ -5,15 +5,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import news.core.NewsConfigs;
 import news.core.NewsServer;
-import news.core.UserServer;
-import news.core.UserServerImpl;
 
 /**
  *
@@ -23,15 +20,15 @@ public class TelaStarter extends javax.swing.JFrame {
 
     /* Servidor de notícias remoto */
     private final NewsServer newsServer;
-    /* Servidor deste usuário que será invocado pelo servidor de notícias */
-    private UserServerImpl userServerImpl;
 
     /**
      * Creates new form TelaStarter
+     * 
+     * @throws IOException
+     * @throws NotBoundException
      */
     public TelaStarter() throws IOException, NotBoundException {
         newsServer = findNewsServer();
-        startUserServer();
         initComponents();
     }
 
@@ -47,22 +44,6 @@ public class TelaStarter extends javax.swing.JFrame {
         //
         Registry registry = LocateRegistry.getRegistry(configs.getNewsServerIp(), configs.getNewsServerPort());
         return (NewsServer) registry.lookup(configs.getNewsServerIp() + "/" + configs.getNewsServerService());
-    }
-
-    /**
-     * Levanta e inicia o servidor referente a este usuário
-     * 
-     * @return servidor recém levantado
-     */
-    private void startUserServer() throws IOException {
-        //
-        NewsConfigs configs = new NewsConfigs();
-        // CASSEL: aqui não é o ponto certo para levantar esse servidor... porque nem temos a instância do usuário...
-        this.userServerImpl = new UserServerImpl(null);
-        Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
-        UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
-        registry.rebind(configs.getUserServerService(), server);
-        System.out.println("Servidor do usuário no ar!");
     }
 
     /**

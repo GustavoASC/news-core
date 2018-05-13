@@ -5,13 +5,19 @@
  */
 package tela;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.WindowConstants;
+import news.core.NewsConfigs;
 import news.core.User;
 import news.core.NewsServer;
+import news.core.UserServer;
+import news.core.UserServerImpl;
 
 /**
  *
@@ -19,15 +25,18 @@ import news.core.NewsServer;
  */
 public class TelaLogin extends javax.swing.JFrame {
 
-    NewsServer server;
+    /* Servidor de notícias remoto */
+    private NewsServer newsServer;
+    /* Servidor deste usuário que será invocado pelo servidor de notícias */
+    private UserServerImpl userServerImpl;
     
     public TelaLogin() {
         initComponents();
     }
     
-    public TelaLogin(NewsServer server) {
+    public TelaLogin(NewsServer newsServer) {
         initComponents();
-        this.server = server;
+        this.newsServer = newsServer;
     }
     
     /**
@@ -159,21 +168,38 @@ public class TelaLogin extends javax.swing.JFrame {
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
         try {
             // Retorna objeto com o usuário/senha
-            User user = server.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
+            User user = newsServer.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
             // Se encontrou o usuário
-            if(user!= null){
+            if (user!= null){
+                newsServer.addLoggedUser(jUsuario.getText(), "localhost");
+                startUserServer();
                 // Ir para tela principal
-                TelaPrincipal tela = new TelaPrincipal(server, user.getUsername());
+                TelaPrincipal tela = new TelaPrincipal(newsServer, user.getUsername());
                 tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 tela.setVisible(true);
                 // Desabilita a tela atual
                 this.setVisible(false);
             }
-        } catch (RemoteException | NotBoundException ex) {
+        } catch (IOException | NotBoundException ex) {
             Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jEntrarActionPerformed
 
+    /**
+     * Levanta e inicia o servidor referente a este usuário
+     * 
+     * @return servidor recém levantado
+     */
+    private void startUserServer() throws IOException {
+        //
+        NewsConfigs configs = new NewsConfigs();
+        this.userServerImpl = new UserServerImpl(newsServer.getUserByName(jUsuario.getText()));
+        Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
+        UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
+        registry.rebind(configs.getUserServerService(), server);
+        System.out.println("Servidor do usuário no ar!");
+    }
+    
     /**
      * @param args the command line arguments
      */

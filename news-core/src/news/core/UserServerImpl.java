@@ -26,8 +26,8 @@ public class UserServerImpl implements UserServer {
 
     @Override
     public void retrieveNews(News news) throws RemoteException {
-//        currentUser
-
+        System.out.println("Aqui no server do usuário " + currentUser.getUsername());
+        System.out.println("Recebeu notícia: " + news.getTitle());
     }
 
 }

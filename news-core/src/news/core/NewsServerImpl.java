@@ -87,12 +87,16 @@ public class NewsServerImpl implements NewsServer {
                 Registry registry = LocateRegistry.getRegistry(ip, configs.getUserServerPort());
                 UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
                 service.retrieveNews(news);
-                Thread.sleep(5000);
                 // CASSEL: se atingiu 5 tentativas deve deslogar o usuário
                 break;
-            } catch (RemoteException | NotBoundException | InterruptedException ex) {
+            } catch (RemoteException | NotBoundException ex) {
                 // CASSEL: deve exibir a stack mesmo se não atingiu as N retentativas?
                 ex.printStackTrace();
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -180,11 +184,12 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public void addLoggedUser(User user, String ip) throws RemoteException {
-        if (!registeredUsers.contains(user)) {
+    public void addLoggedUser(String username, String ip) throws RemoteException {
+        User loggedUser = getUserByName(username);
+        if (!registeredUsers.contains(loggedUser)) {
             return;
         }
-        loggedUsers.put(user, ip);
+        loggedUsers.put(loggedUser, ip);
     }
 
     @Override

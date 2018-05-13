@@ -66,7 +66,7 @@ public interface NewsServer extends Remote {
     /**
      * Inscreve o usuário em um tópico
      *
-     * @param user usuário
+     * @param username nome do usuário
      * @param topic tópico onde o usuário será inscrito
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
@@ -85,11 +85,11 @@ public interface NewsServer extends Remote {
     /**
      * Efetua o logon do usuário no servidor de notícias
      *
-     * @param user usuário que está fazendo logon
+     * @param username nome do usuário que está fazendo logon
      * @param ip IP de origam do usuário
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void addLoggedUser(User user, String ip) throws RemoteException;
+    public void addLoggedUser(String username, String ip) throws RemoteException;
 
     /**
      * Valida o usuário e senha
