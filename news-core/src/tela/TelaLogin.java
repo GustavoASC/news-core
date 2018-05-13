@@ -6,6 +6,8 @@
 package tela;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -171,7 +173,7 @@ public class TelaLogin extends javax.swing.JFrame {
             User user = newsServer.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
             // Se encontrou o usuário
             if (user!= null){
-                newsServer.addLoggedUser(jUsuario.getText(), "localhost");
+                newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp());
                 startUserServer();
                 // Ir para tela principal
                 TelaPrincipal tela = new TelaPrincipal(newsServer, user.getUsername());
@@ -185,6 +187,16 @@ public class TelaLogin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jEntrarActionPerformed
 
+    /**
+     * Retorna o IP da máquina local
+     * 
+     * @return String
+     */
+    private String getLocalMachineIp() throws UnknownHostException {
+        InetAddress ip = InetAddress.getLocalHost();
+        return ip.getHostAddress();
+    }
+    
     /**
      * Levanta e inicia o servidor referente a este usuário
      * 
