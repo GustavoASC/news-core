@@ -11,6 +11,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import news.core.News;
 import news.core.Topic;
 import news.core.NewsServer;
@@ -169,8 +170,14 @@ public class TelaPublic extends javax.swing.JFrame {
         News n = new News(jTitle.getText(), username, jMensagem.getText());
         try {
             Topic topic = server.getTopicByName((String) jTopic.getSelectedItem());
-            if (topic!=null)
-                server.addNews(n, topic);
+            if (topic!=null){
+                try {
+                    server.addNews(username, n, topic);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    this.dispose();
+                }
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }

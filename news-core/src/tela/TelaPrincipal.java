@@ -332,7 +332,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
         // Cria janela cadastrar tópicos
-        TelaTopic tela = new TelaTopic(newsServer);
+        TelaTopic tela = new TelaTopic(newsServer, username);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jTopicoActionPerformed

@@ -64,12 +64,14 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public void addTopic(Topic topic) throws RemoteException {
+    public void addTopic(String username, Topic topic) throws RemoteException, Exception {
+        userIsLogged(username);
         topics.add(topic);
     }
 
     @Override
-    public void addNews(News news, Topic topic) throws RemoteException {
+    public void addNews(String username, News news, Topic topic) throws RemoteException, Exception {
+        userIsLogged(username);
         addNews(news, topic, this::sendNewsToUser);
     }
 
@@ -127,7 +129,7 @@ public class NewsServerImpl implements NewsServer {
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
     public List<News> retrievePublishedNews(String username) throws RemoteException {
-        return retrievePublishedNews(new User(username));
+        return retrievePublishedNews(this.getUserByName(username));
     }
 
     @Override
@@ -172,7 +174,8 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public void subscribe(String username, Topic topic) throws RemoteException {
+    public void subscribe(String username, Topic topic) throws RemoteException, Exception{
+        userIsLogged(username);
         // Cria objeto para o novo usuário
         User newUser = this.getUserByName(username);
         if (newUser != null) {
@@ -201,8 +204,8 @@ public class NewsServerImpl implements NewsServer {
     }
 
     @Override
-    public User validateLoginUser(String userName, char[] userPassword) throws RemoteException {
-        User user = getUserByName(userName);
+    public User validateLoginUser(String username, char[] userPassword) throws RemoteException {
+        User user = getUserByName(username);
         // Se não encontrou o usuário
         if (user == null){
             JOptionPane.showMessageDialog(null,"Usuário inválido!");
@@ -294,11 +297,17 @@ public class NewsServerImpl implements NewsServer {
 
     }
 
+     /**
+     * Classe para retornar os tópicos existentes
+     */
     @Override
     public List<Topic> getTopics() {
         return topics;
     }
 
+     /**
+     * Classe para buscar o tópico pelo nome
+     */
     @Override
     public Topic getTopicByName(String name) throws RemoteException{
         for (Topic topic: topics){
@@ -308,5 +317,14 @@ public class NewsServerImpl implements NewsServer {
         return null;
     }
 
-
+     /**
+     * Classe para verificar se o usuário está logado
+     */
+    @Override
+    public void userIsLogged(String username) throws RemoteException, Exception {
+        if (!loggedUsers.containsKey(this.getUserByName(username)))
+           throw new Exception ("Falha de sistema! Usuário não está logado.");
+    }
+    
+    
 }

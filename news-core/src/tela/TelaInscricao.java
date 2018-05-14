@@ -11,6 +11,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import news.core.NewsServer;
 import news.core.Topic;
 import news.core.User;
@@ -181,8 +182,13 @@ public class TelaInscricao extends javax.swing.JFrame {
     private void jInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInscreverActionPerformed
         try {
             Topic topic = server.getTopicByName((String) jComboInsc.getSelectedItem());
-            if (topic!=null)
-                server.subscribe(username, topic);
+            if (topic!=null){
+                try {
+                    server.subscribe(username, topic);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());                    
+                }
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -19,13 +19,15 @@ import news.core.NewsServer;
 public class TelaTopic extends javax.swing.JFrame {
 
     NewsServer server;
+    String username;
     
     public TelaTopic() {
         initComponents();
     }
     
-    public TelaTopic(NewsServer server) {
+    public TelaTopic(NewsServer server, String username) {
         this.server = server;
+        this.username = username;
         initComponents();
     }
 
@@ -99,16 +101,20 @@ public class TelaTopic extends javax.swing.JFrame {
         // Se o campo está vazio
         if (jTopic.getText().isEmpty())
             return;
-        
         try {
             Topic topic = server.getTopicByName(jTopic.getText());
+            // Se o tópico já existe
             if (topic!=null){
                 JOptionPane.showMessageDialog(null, "Tópico já existente!");
                 jTopic.setText("");
                 return;
             }
-            // Se o tópico ainda não existe
-            server.addTopic(new Topic(jTopic.getText()));
+            // Adiciona tópico ao servidor
+            try {
+                server.addTopic(username, new Topic(jTopic.getText()));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
             //Fecha a janela 
             this.dispose();
         } catch (RemoteException ex) {

@@ -20,19 +20,21 @@ public interface NewsServer extends Remote {
     /**
      * Adiciona um tópico
      *
+     * @param username
      * @param topic tópico a ser adicionado
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void addTopic(Topic topic) throws RemoteException;
+    public void addTopic(String username, Topic topic) throws RemoteException, Exception;
 
     /**
      * Adiciona uma notícia
      *
+     * @param username
      * @param news notícia a ser adicionada
      * @param topic tópico ao qual a notícia está associada
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void addNews(News news, Topic topic) throws RemoteException;
+    public void addNews(String username, News news, Topic topic) throws RemoteException, Exception;
 
     /**
      * Retorna a lista de notícias publicada pelo usuário especificado
@@ -70,7 +72,7 @@ public interface NewsServer extends Remote {
      * @param topic tópico onde o usuário será inscrito
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void subscribe(String username, Topic topic) throws RemoteException;
+    public void subscribe(String username, Topic topic) throws RemoteException, Exception;
 
     /**
      * Adiciona um usuário
@@ -127,5 +129,13 @@ public interface NewsServer extends Remote {
      * @throws RemoteException
      */
     public List<Topic> getTopics() throws RemoteException;
+
+    /**
+     * Retorna se o usuário está logado
+     *
+     * @param username nome do usuário para teste
+     * @throws java.rmi.RemoteException
+     */
+    public void userIsLogged(String username) throws RemoteException, Exception;
 
 }
