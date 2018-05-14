@@ -19,9 +19,10 @@ public interface UserServer extends Remote {
     /**
      * Recebe a lista de notícias especificada
      *
+     * @param topic
      * @param news
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public void retrieveNews(News news) throws RemoteException;
+    public void retrieveNews(String topic, News news) throws RemoteException;
 
 }

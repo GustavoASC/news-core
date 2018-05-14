@@ -27,10 +27,10 @@ public class UserServerImpl implements UserServer {
     }
 
     @Override
-    public void retrieveNews(News news) throws RemoteException {
+    public void retrieveNews(String topic, News news) throws RemoteException {
         SwingUtilities.invokeLater(() -> {
             System.out.println("Atualizando tabela de notícias...");
-            telaPrincipal.updateNewsTable();
+            telaPrincipal.updateNewsTable(topic, news);
         });
     }
 

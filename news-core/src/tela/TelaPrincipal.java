@@ -29,7 +29,7 @@ import news.core.UserServerImpl;
 
 /**
  * Tela principal com as notícias apresentadas ao usuário
- * 
+ *
  * @author Chen
  */
 public class TelaPrincipal extends javax.swing.JFrame {
@@ -42,20 +42,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private String username;
     /* Servidor deste usuário que será invocado pelo servidor de notícias */
     private UserServerImpl userServerImpl;
-    
+
     private TelaPrincipal() {
         initComponents();
     }
-    
+
     public TelaPrincipal(NewsServer server, String username) throws RemoteException, NotBoundException {
-        this.newsServer = server; 
+        this.newsServer = server;
         this.username = username;
         initComponents();
         initTela();
     }
-        
+
     // Inicializações de tela para aceitação
-    public final void initTela(){   
+    public final void initTela(){
         User logUser = null;
         try {
             // Busca o usuário
@@ -90,12 +90,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         modelTable.addColumn("Título");
         modelTable.addColumn("Notícia");
         // Insere as notícias na janela principal
-        updateNewsTable();
+        insertNewsTable();
     }
-    
+
     /**
      * Levanta e inicia o servidor referente a este usuário
-     * 
+     *
      * @throws IOException
      */
     public void startUserServer() throws IOException {
@@ -107,7 +107,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         registry.rebind(configs.getUserServerService(), server);
         System.out.println("Servidor do usuário no ar!");
     }
-    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -246,7 +246,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         tela.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 System.out.println("dentro do windowClosed TelaInscricao mas não vai fazer nada aqui");
-                updateNewsTable();
+                insertNewsTable();
             }
         });
         tela.setVisible(true);    }//GEN-LAST:event_jInscricaoActionPerformed
@@ -265,7 +265,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jPublicacaoActionPerformed
 
     // Insere as notícias na tabela para exibição
-    public synchronized void updateNewsTable() {
+    public synchronized void insertNewsTable() {
         int numRow = modelTable.getRowCount();
         //Remove as linhas da tabela de notícias
         for(int i=numRow - 1; i>=0; i--){
@@ -290,12 +290,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    // Insere as notícias na tabela para exibição
+    public synchronized void updateNewsTable(String topic, News news) {
+        int numRow = modelTable.getRowCount();
+        //Remove as linhas da tabela de notícias
+        for(int i=numRow - 1; i>=0; i--){
+            if (modelTable.getValueAt(i, 0).toString().equals(topic)){
+                modelTable.removeRow(i);
+                break;
+            }
+        }
+        // Insere a linha na tabela
+        String linha [] = {topic, news.getPublicationDate().toString(), news.getPublisher(), news.getTitle(), news.getContent()};
+        modelTable.addRow(linha);
+    }
+
+
     /**
      * Retorna {@code true} se o tópico é válido para inserção na tela principal
-     * 
+     *
      * @param t
      * @return boolean
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private boolean isValidTopic(Topic t) throws RemoteException {
         // Retorna o usuário logado no servidor
@@ -327,7 +343,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void jAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAtualizarActionPerformed
-        updateNewsTable();
+        insertNewsTable();
     }//GEN-LAST:event_jAtualizarActionPerformed
 
     /**
@@ -337,7 +353,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             // Set cross-platform Java L&F (also called "Metal")

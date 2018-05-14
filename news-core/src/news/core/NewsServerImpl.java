@@ -79,14 +79,14 @@ public class NewsServerImpl implements NewsServer {
      * @param news notícia que será enviada
      * @param user usuário que receberá a notícia
      */
-    private void sendNewsToUser(News news, User user) {
+    private void sendNewsToUser(String topic, News news, User user) {
         NewsConfigs configs = new NewsConfigs();
         UserAddress address = loggedUsers.get(user);
         for (int i = 0; i < MAX_SENDING_ATTEMPTS; i++) {
             try {
                 Registry registry = LocateRegistry.getRegistry(address.getIp(), address.getPort());
                 UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
-                service.retrieveNews(news);
+                service.retrieveNews(topic, news);
                 // CASSEL: se atingiu 5 tentativas deve deslogar o usuário
                 break;
             } catch (RemoteException | NotBoundException ex) {
@@ -116,7 +116,7 @@ public class NewsServerImpl implements NewsServer {
         }
         loggedUsers.keySet().parallelStream()
                    .filter(user -> user.isSubscribed(topic))
-                   .forEach(user -> dispatcher.sendNewsToUser(news, user));
+                   .forEach(user -> dispatcher.sendNewsToUser(topic.getName(), news, user));
     }
 
     /**
@@ -220,7 +220,7 @@ public class NewsServerImpl implements NewsServer {
     @Override
     public User getUserByName(String username) throws RemoteException {
         for (User u:registeredUsers){
-            if (u.getUsername().equalsIgnoreCase(username)) 
+            if (u.getUsername().equalsIgnoreCase(username))
                 return u;
         }
         return null;
@@ -234,10 +234,11 @@ public class NewsServerImpl implements NewsServer {
         /**
          * Envia via RMI a notícia para o usuário especificado
          *
+         * @param topic nome do tópico
          * @param news notícia que será enviada
          * @param user usuário que receberá a notícia
          */
-        public void sendNewsToUser(News news, User user);
+        public void sendNewsToUser(String topic, News news, User user);
 
     }
 
@@ -297,7 +298,7 @@ public class NewsServerImpl implements NewsServer {
     public List<Topic> getTopics() {
         return topics;
     }
-    
+
     @Override
     public Topic getTopicByName(String name) throws RemoteException{
         for (Topic topic: topics){
@@ -306,6 +307,6 @@ public class NewsServerImpl implements NewsServer {
         }
         return null;
     }
-    
+
 
 }
