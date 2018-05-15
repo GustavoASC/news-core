@@ -339,6 +339,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTopicoActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        try {
+            newsServer.removeLoggedUser(username);
+        } catch (RemoteException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // Fecha o programa
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed

@@ -86,7 +86,7 @@ public interface NewsServer extends Remote {
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
     public void addUser(String name, char[] senha, boolean finalidade) throws RemoteException;
-    
+
     /**
      * Efetua o logon do usuário no servidor de notícias
      *
@@ -108,7 +108,7 @@ public interface NewsServer extends Remote {
     public User validateLoginUser(String userName, char[] userPassword) throws RemoteException;
 
     /**
-     * Busca o usuário a partir do nome de usuário 
+     * Busca o usuário a partir do nome de usuário
      *
      * @param username
      * @return usuário
@@ -140,5 +140,12 @@ public interface NewsServer extends Remote {
      * @throws java.rmi.RemoteException
      */
     public void userIsLogged(String username) throws RemoteException, Exception;
+
+    /**
+     * Remove o usuário da lista de logados
+     * @param username
+     * @throws RemoteException
+     */
+    public void removeLoggedUser(String username) throws RemoteException;
 
 }

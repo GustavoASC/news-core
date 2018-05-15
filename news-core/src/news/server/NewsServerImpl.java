@@ -335,5 +335,13 @@ public class NewsServerImpl implements NewsServer {
            throw new Exception ("Falha de sistema! Usuário não está logado.");
     }
 
+     /**
+     * Classe para verificar se o usuário está logado
+     */
+    @Override
+    public void removeLoggedUser(String username) throws RemoteException{
+        loggedUsers.remove(this.getUserByName(username));
+    }
+
 
 }
