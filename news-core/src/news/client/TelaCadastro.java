@@ -6,6 +6,8 @@
 package news.client;
 
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import news.server.NewsServer;
 
 /**
@@ -13,13 +15,13 @@ import news.server.NewsServer;
  * @author Chen
  */
 public class TelaCadastro extends javax.swing.JFrame {
-  
+
     NewsServer server;
-    
+
     public TelaCadastro() {
         initComponents();
     }
-    
+
     TelaCadastro(NewsServer server) {
         initComponents();
         this.server = server;
@@ -163,11 +165,9 @@ public class TelaCadastro extends javax.swing.JFrame {
             // Desabilita a tela atual
             this.setVisible(false);
         } catch (RemoteException ex) {
-            
-            // CASSEL: coloquei esse try-catch para compilar o RemoteException, mas
-            // de repente precisa exibir uma mensagem amigável ao usuário
-            ex.printStackTrace();
+            Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_jCriarCadActionPerformed
 
     private void jFinalidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinalidadeActionPerformed
@@ -181,7 +181,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

@@ -97,10 +97,12 @@ public class NewsServerImpl implements NewsServer {
                 Registry registry = LocateRegistry.getRegistry(address.getIp(), address.getPort());
                 UserServer service = (UserServer) registry.lookup(configs.getUserServerService());
                 service.retrieveNews(topic, news);
-                // CASSEL: se atingiu 5 tentativas deve deslogar o usuário
                 break;
             } catch (RemoteException | NotBoundException ex) {
-                // CASSEL: deve exibir a stack mesmo se não atingiu as N retentativas?
+                // Se atingiu o limite de tentativas
+                if (i == MAX_SENDING_ATTEMPTS - 1) {
+                    loggedUsers.remove(user);
+                }
                 ex.printStackTrace();
                 try {
                     Thread.sleep(5000);
@@ -190,7 +192,6 @@ public class NewsServerImpl implements NewsServer {
             newUser.subscribe(topic);
             // Atualiza o registro
             registeredUsers.set(registeredUsers.indexOf(this.getUserByName(username)), newUser);
-            // TODO: Falta atualizar o hashmap
         }
     }
 
@@ -333,6 +334,6 @@ public class NewsServerImpl implements NewsServer {
         if (!loggedUsers.containsKey(this.getUserByName(username)))
            throw new Exception ("Falha de sistema! Usuário não está logado.");
     }
-    
-    
+
+
 }
