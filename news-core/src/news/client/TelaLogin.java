@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import news.core.Setup;
 import news.core.User;
@@ -166,13 +168,19 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
+        User user = null;
+        // Retorna objeto com o usuário/senha
         try {
-            // Retorna objeto com o usuário/senha
-            User user = newsServer.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
-            // Se encontrou o usuário
-            if (user!= null){
-                // Cria tela principal com notícias apresentadas ao usuário
-                TelaPrincipal tela = new TelaPrincipal(newsServer, user.getUsername());
+            user = newsServer.validateLoginUser(jUsuario.getText(), jPassword.getPassword());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        // Se encontrou o usuário
+        if (user != null) {
+            // Cria tela principal com notícias apresentadas ao usuário
+            TelaPrincipal tela;
+            try {
+                tela = new TelaPrincipal(newsServer, user.getUsername());
                 // Adiciona o usuário na lista de usuários logados
                 newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp(), new Setup().getUserServerPort());
                 // Inicia o servidor do usuário para receber notícias
@@ -182,10 +190,16 @@ public class TelaLogin extends javax.swing.JFrame {
                 tela.setVisible(true);
                 // Desabilita a tela atual
                 this.setVisible(false);
+            } catch (RemoteException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException | NotBoundException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }                               
     }//GEN-LAST:event_jEntrarActionPerformed
 
     /**
