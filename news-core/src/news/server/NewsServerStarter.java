@@ -55,10 +55,13 @@ public class NewsServerStarter {
         Setup configs = new Setup();
         //
         BackupServer backupServer = findBackupServer();
-        BackupData backup = backupServer.restoreBackup();
-        //
-        newsServer = new NewsServerImpl(backup.getTopics(), backup.getUsers());
-        newsServer.startBackupManagement(backupServer);
+        if (backupServer != null) {
+            BackupData backup = backupServer.restoreBackup();
+            newsServer = new NewsServerImpl(backup.getTopics(), backup.getUsers());
+            newsServer.startBackupManagement(backupServer);
+        } else {
+            newsServer = new NewsServerImpl();
+        }
         //
         Registry registry = LocateRegistry.createRegistry(configs.getNewsServerPort());
         NewsServer server = (NewsServer) UnicastRemoteObject.exportObject(newsServer, 0);
@@ -70,14 +73,16 @@ public class NewsServerStarter {
      * Busca a instância do servidor de backup via RMI
      *
      * @return instância encontrada
-     * @throws IOException se não conseguir levantar o servidor
-     * @throws NotBoundException se não conseguir levantar o servidor
      */
-    private BackupServer findBackupServer() throws IOException, NotBoundException {
-        Setup configs = new Setup();
-        Registry registry = LocateRegistry.getRegistry(configs.getBackupServerIp(), configs.getBackupServerPort());
-        BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerIp() + "/" + configs.getBackupServerService());
-        return backup;
+    private BackupServer findBackupServer() {
+        try {
+            Setup configs = new Setup();
+            Registry registry = LocateRegistry.getRegistry(configs.getBackupServerIp(), configs.getBackupServerPort());
+            BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerIp() + "/" + configs.getBackupServerService());
+            return backup;
+        } catch (IOException | NotBoundException ex) {
+            return null;
+        }
     }
 
 }
