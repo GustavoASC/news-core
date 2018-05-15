@@ -65,7 +65,7 @@ public class NewsServerStarter {
         //
         Registry registry = LocateRegistry.createRegistry(configs.getNewsServerPort());
         NewsServer server = (NewsServer) UnicastRemoteObject.exportObject(newsServer, 0);
-        registry.rebind(configs.getNewsServerIp() + "/" + configs.getNewsServerService(), server);
+        registry.rebind(configs.getNewsServerService(), server);
         System.out.println("Servidor no ar!");
     }
 
@@ -78,7 +78,7 @@ public class NewsServerStarter {
         try {
             Setup configs = new Setup();
             Registry registry = LocateRegistry.getRegistry(configs.getBackupServerIp(), configs.getBackupServerPort());
-            BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerIp() + "/" + configs.getBackupServerService());
+            BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerService());
             return backup;
         } catch (IOException | NotBoundException ex) {
             return null;

@@ -43,7 +43,7 @@ public class UserServerStarter extends javax.swing.JFrame {
         Setup configs = new Setup();
         //
         Registry registry = LocateRegistry.getRegistry(configs.getNewsServerIp(), configs.getNewsServerPort());
-        return (NewsServer) registry.lookup(configs.getNewsServerIp() + "/" + configs.getNewsServerService());
+        return (NewsServer) registry.lookup(configs.getNewsServerService());
     }
 
     /**

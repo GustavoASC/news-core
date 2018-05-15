@@ -51,7 +51,7 @@ public class BackupServerStarter {
         this.serverImpl = new BackupServerImpl();
         Registry registry = LocateRegistry.createRegistry(configs.getBackupServerPort());
         BackupServer server = (BackupServer) UnicastRemoteObject.exportObject(serverImpl, 0);
-        registry.rebind(configs.getBackupServerIp() + "/" + configs.getBackupServerService(), server);
+        registry.rebind(configs.getBackupServerService(), server);
         System.out.println("Servidor de backup no ar!");
     }
 
