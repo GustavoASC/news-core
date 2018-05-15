@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.client;
 
 import java.rmi.RemoteException;
 import javax.swing.SwingUtilities;
-import tela.TelaPrincipal;
+import news.core.News;
 
 /**
  * Client que receberá notícias do servidor

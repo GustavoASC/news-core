@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import news.core.NewsServer;
+import news.server.NewsServer;
 import news.core.Topic;
 import news.core.User;
 
@@ -190,7 +190,7 @@ public class TelaInscricao extends javax.swing.JFrame {
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPublicacao.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_jInscreverActionPerformed

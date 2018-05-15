@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -20,12 +20,12 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import news.core.News;
-import news.core.NewsConfigs;
-import news.core.NewsServer;
+import news.core.Setup;
+import news.server.NewsServer;
 import news.core.Topic;
 import news.core.User;
-import news.core.UserServer;
-import news.core.UserServerImpl;
+import news.client.UserServer;
+import news.client.UserServerImpl;
 
 /**
  * Tela principal com as notícias apresentadas ao usuário
@@ -100,7 +100,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public void startUserServer() throws IOException {
         //
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         this.userServerImpl = new UserServerImpl(this);
         Registry registry = LocateRegistry.createRegistry(configs.getUserServerPort());
         UserServer server = (UserServer) UnicastRemoteObject.exportObject(userServerImpl, 0);
@@ -253,7 +253,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPublicacaoActionPerformed
         // Cria janela para aceitar nova publicação
-        TelaPublic tela = new TelaPublic(newsServer, username);
+        TelaPublicacao tela = new TelaPublicacao(newsServer, username);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
@@ -332,7 +332,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jTopicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTopicoActionPerformed
         // Cria janela cadastrar tópicos
-        TelaTopic tela = new TelaTopic(newsServer, username);
+        TelaTopicos tela = new TelaTopicos(newsServer, username);
         tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tela.setVisible(true);
     }//GEN-LAST:event_jTopicoActionPerformed

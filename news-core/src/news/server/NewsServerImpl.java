@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.server;
 
+import news.client.UserServer;
+import news.backup.BackupServer;
+import news.core.BackupData;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -19,6 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import news.core.News;
+import news.core.Setup;
+import news.core.Topic;
+import news.core.User;
+import news.core.UserAddress;
 
 /**
  * Servidor de notícias
@@ -82,7 +90,7 @@ public class NewsServerImpl implements NewsServer {
      * @param user usuário que receberá a notícia
      */
     private void sendNewsToUser(String topic, News news, User user) {
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         UserAddress address = loggedUsers.get(user);
         for (int i = 0; i < MAX_SENDING_ATTEMPTS; i++) {
             try {

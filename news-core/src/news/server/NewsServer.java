@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
+import news.core.News;
+import news.core.Topic;
+import news.core.User;
 
 /**
  * Interface representando um servidor de notícias

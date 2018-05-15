@@ -3,29 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import news.core.Topic;
-import news.core.NewsServer;
+import news.server.NewsServer;
 
 /**
  *
  * @author Chen
  */
-public class TelaTopic extends javax.swing.JFrame {
+public class TelaTopicos extends javax.swing.JFrame {
 
     NewsServer server;
     String username;
     
-    public TelaTopic() {
+    public TelaTopicos() {
         initComponents();
     }
     
-    public TelaTopic(NewsServer server, String username) {
+    public TelaTopicos(NewsServer server, String username) {
         this.server = server;
         this.username = username;
         initComponents();
@@ -118,7 +118,7 @@ public class TelaTopic extends javax.swing.JFrame {
             //Fecha a janela 
             this.dispose();
         } catch (RemoteException ex) {
-            Logger.getLogger(TelaTopic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaTopicos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jAdicionarActionPerformed
 
@@ -139,14 +139,18 @@ public class TelaTopic extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaTopic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaTopicos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaTopic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaTopicos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaTopic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaTopicos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaTopic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaTopicos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -155,7 +159,7 @@ public class TelaTopic extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaTopic().setVisible(true);
+                new TelaTopicos().setVisible(true);
             }
         });
     }

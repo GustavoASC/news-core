@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import news.core.Topic;
+import news.core.User;
 
 /**
  * Dados que são manipulados pelo servidor de backup

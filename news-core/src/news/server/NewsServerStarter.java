@@ -3,21 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.server;
 
+import news.backup.BackupServer;
+import news.core.BackupData;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import news.core.Setup;
 
 /**
  * Classe responsável por iniciar o servidor de notícias e o servidor de backup
  *
  * @author 0145022
  */
-public class Starter {
+public class NewsServerStarter {
 
     /* Instância do servidor de notícias */
     private NewsServerImpl newsServer;
@@ -27,7 +30,7 @@ public class Starter {
      */
     public static void main(String[] args) {
         try {
-            new Starter().startNewsServer();
+            new NewsServerStarter().startNewsServer();
             while (true) {
                 try {
                     Thread.sleep(1000);
@@ -49,7 +52,7 @@ public class Starter {
      */
     private void startNewsServer() throws IOException, NotBoundException {
         //
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         //
         BackupServer backupServer = findBackupServer();
         BackupData backup = backupServer.restoreBackup();
@@ -71,7 +74,7 @@ public class Starter {
      * @throws NotBoundException se não conseguir levantar o servidor
      */
     private BackupServer findBackupServer() throws IOException, NotBoundException {
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         Registry registry = LocateRegistry.getRegistry(configs.getBackupServerIp(), configs.getBackupServerPort());
         BackupServer backup = (BackupServer) registry.lookup(configs.getBackupServerIp() + "/" + configs.getBackupServerService());
         return backup;

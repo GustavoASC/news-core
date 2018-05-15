@@ -5,6 +5,7 @@
  */
 package news.core;
 
+import news.backup.BackupServerImpl;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.LinkedList;

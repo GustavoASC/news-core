@@ -1,4 +1,4 @@
-package tela;
+package news.client;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -9,14 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import news.core.NewsConfigs;
-import news.core.NewsServer;
+import news.core.Setup;
+import news.server.NewsServer;
 
 /**
  *
  * @author Chen
  */
-public class TelaStarter extends javax.swing.JFrame {
+public class UserServerStarter extends javax.swing.JFrame {
 
     /* Servidor de notícias remoto */
     private final NewsServer newsServer;
@@ -27,7 +27,7 @@ public class TelaStarter extends javax.swing.JFrame {
      * @throws IOException
      * @throws NotBoundException
      */
-    public TelaStarter() throws IOException, NotBoundException {
+    public UserServerStarter() throws IOException, NotBoundException {
         newsServer = findNewsServer();
         initComponents();
     }
@@ -40,7 +40,7 @@ public class TelaStarter extends javax.swing.JFrame {
      * @throws NotBoundException
      */
     private NewsServer findNewsServer() throws IOException, NotBoundException {
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         //
         Registry registry = LocateRegistry.getRegistry(configs.getNewsServerIp(), configs.getNewsServerPort());
         return (NewsServer) registry.lookup(configs.getNewsServerIp() + "/" + configs.getNewsServerService());
@@ -88,16 +88,14 @@ public class TelaStarter extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap(75, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jAnonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jAnonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,7 +140,7 @@ public class TelaStarter extends javax.swing.JFrame {
             tela.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             tela.setVisible(true);
         } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserServerStarter.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Desabilita a tela atual
         this.setVisible(false);
@@ -161,25 +159,26 @@ public class TelaStarter extends javax.swing.JFrame {
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserServerStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserServerStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserServerStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserServerStarter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new TelaStarter().setVisible(true);
+                    new UserServerStarter().setVisible(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UserServerStarter.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NotBoundException ex) {
-                    Logger.getLogger(TelaStarter.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UserServerStarter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

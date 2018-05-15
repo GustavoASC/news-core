@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.rmi.RemoteException;
 import java.text.DateFormat;
@@ -18,7 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import news.core.News;
-import news.core.NewsServer;
+import news.server.NewsServer;
 import news.core.Topic;
 
 /**

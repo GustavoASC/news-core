@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.backup;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import news.core.Setup;
 
 /**
  * Classe para iniciar e levantar o servidor de backup
@@ -45,7 +46,7 @@ public class BackupServerStarter {
      * @throws RemoteException se não conseguir levantar o servidor
      */
     private void startBackupServer() throws IOException {
-        NewsConfigs configs = new NewsConfigs();
+        Setup configs = new Setup();
         //
         this.serverImpl = new BackupServerImpl();
         Registry registry = LocateRegistry.createRegistry(configs.getBackupServerPort());

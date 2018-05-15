@@ -15,7 +15,7 @@ import java.util.Properties;
  * 
  * @author Gustavo
  */
-public class NewsConfigs {
+public class Setup {
     
     /* Nome do arquivo de propriedades */
     private static final String PROPERTIES_NAME = "news-configs.properties";

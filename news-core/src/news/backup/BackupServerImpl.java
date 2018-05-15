@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.backup;
 
+import news.core.BackupData;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

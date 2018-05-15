@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package news.core;
+package news.client;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import news.core.News;
 
 /**
  * Operações ofeceridas pelo cliente e que serão chamadas pelo servidor de

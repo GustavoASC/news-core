@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -14,22 +14,22 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import news.core.News;
 import news.core.Topic;
-import news.core.NewsServer;
+import news.server.NewsServer;
 
 /**
  *
  * @author Chen
  */
-public class TelaPublic extends javax.swing.JFrame {
+public class TelaPublicacao extends javax.swing.JFrame {
 
     NewsServer server;
     String username;
     
-    public TelaPublic() {
+    public TelaPublicacao() {
         initComponents();
     }
 
-    TelaPublic(NewsServer server, String username) {
+    TelaPublicacao(NewsServer server, String username) {
         this.server = server; 
         this.username = username;
         initComponents();
@@ -179,7 +179,7 @@ public class TelaPublic extends javax.swing.JFrame {
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(TelaPublic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaPublicacao.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_jPublicarActionPerformed
@@ -207,19 +207,20 @@ public class TelaPublic extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPublic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPublicacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPublic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPublicacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPublic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPublicacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPublic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaPublicacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new TelaPublic().setVisible(true);
+            new TelaPublicacao().setVisible(true);
         });
     }
 

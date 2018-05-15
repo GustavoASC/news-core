@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tela;
+package news.client;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -15,11 +15,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.WindowConstants;
-import news.core.NewsConfigs;
+import news.core.Setup;
 import news.core.User;
-import news.core.NewsServer;
-import news.core.UserServer;
-import news.core.UserServerImpl;
+import news.server.NewsServer;
+import news.client.UserServer;
+import news.client.UserServerImpl;
 
 /**
  *
@@ -174,7 +174,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 // Cria tela principal com notícias apresentadas ao usuário
                 TelaPrincipal tela = new TelaPrincipal(newsServer, user.getUsername());
                 // Adiciona o usuário na lista de usuários logados
-                newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp(), new NewsConfigs().getUserServerPort());
+                newsServer.addLoggedUser(jUsuario.getText(), getLocalMachineIp(), new Setup().getUserServerPort());
                 // Inicia o servidor do usuário para receber notícias
                 tela.startUserServer();
                 // Ir para tela principal
