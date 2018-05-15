@@ -105,7 +105,7 @@ public interface NewsServer extends Remote {
      * @return usuário
      * @throws RemoteException se ocorrer algum erro durante a comunicação RMI
      */
-    public User validateLoginUser(String userName, char[] userPassword) throws RemoteException;
+    public User validateLoginUser(String userName, char[] userPassword) throws RemoteException, Exception;
 
     /**
      * Busca o usuário a partir do nome de usuário

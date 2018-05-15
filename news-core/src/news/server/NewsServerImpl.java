@@ -212,18 +212,16 @@ public class NewsServerImpl implements NewsServer {
         loggedUsers.put(loggedUser, new UserAddress(ip, port));
     }
 
-    @Override
-    public User validateLoginUser(String username, char[] userPassword) throws RemoteException {
+      @Override
+    public User validateLoginUser(String username, char[] userPassword) throws RemoteException, Exception {
         User user = getUserByName(username);
         // Se não encontrou o usuário
-        if (user == null){
-            JOptionPane.showMessageDialog(null,"Usuário inválido!");
-            return null;
+        if (user == null) {
+            throw new Exception("Usuário inválido!");
         }
         // Se a senha não confere
-        if (!Arrays.equals(user.getPassword(), userPassword)){
-            JOptionPane.showMessageDialog(null,"Senha inválida!");
-            return null;
+        if (!Arrays.equals(user.getPassword(), userPassword)) {
+            throw new Exception("Senha inválida!");
         }
         // Retorna o usuário váldo
         return user;
