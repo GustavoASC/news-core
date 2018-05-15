@@ -62,6 +62,11 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel3.setText("Confirmar senha");
 
         jFinalidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Leitura", "Publicação" }));
+        jFinalidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFinalidadeActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Finalidade");
 
@@ -164,6 +169,10 @@ public class TelaCadastro extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_jCriarCadActionPerformed
+
+    private void jFinalidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinalidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFinalidadeActionPerformed
 
     /**
      * @param args the command line arguments
