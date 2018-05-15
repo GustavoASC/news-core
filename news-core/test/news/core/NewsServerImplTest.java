@@ -28,7 +28,7 @@ public class NewsServerImplTest {
         topic.addNews(news);
         //
         NewsServerImpl server = new NewsServerImpl();
-        server.addTopic(topic);
+        server.addTopic("Gustavo", topic);
         //
         News lastNews;
         lastNews = server.retrieveLastNews(topic);
@@ -61,7 +61,7 @@ public class NewsServerImplTest {
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Gustavo Cassel"));
         //
         NewsServerImpl server = new NewsServerImpl();
-        server.addTopic(topic);
+        server.addTopic("Gustavo", topic);
         //
         List<Topic> availableTopics;
         //
@@ -71,7 +71,7 @@ public class NewsServerImplTest {
         //
         Topic secondTopic = new Topic(" ");
         secondTopic.addNews(new News("Título da segunda notícia", new Date(2016 + 1900, 0, 13), "Gãs"));
-        server.addTopic(secondTopic);
+        server.addTopic("Gustavo", secondTopic);
         //
         availableTopics = server.getTopics();
         assertEquals(2, availableTopics.size());
@@ -93,7 +93,7 @@ public class NewsServerImplTest {
         topic.addNews(new News("Título de teste", new Date(2018 + 1900, 0, 13), "Edilse"));
         //
         NewsServerImpl server = new NewsServerImpl();
-        server.addTopic(topic);
+        server.addTopic("Gustavo", topic);
         //
         List<News> publishedNews;
         //
@@ -123,7 +123,7 @@ public class NewsServerImplTest {
         topic.addNews(third);
         //
         NewsServerImpl server = new NewsServerImpl();
-        server.addTopic(topic);
+        server.addTopic("Gustavo", topic);
         //
         List<News> filteredNews;
         filteredNews = server.retrieveNews(topic.getName(), new Date(2018 + 1900, 0, 12), new Date(2018 + 1900, 0, 16));
@@ -165,7 +165,7 @@ public class NewsServerImplTest {
         NewsServerImpl server = new NewsServerImpl();
         server.addUser("Usuário não inscrito", null, true);
         server.addUser("Gustavo", null, true);
-        server.addTopic(topic);
+        server.addTopic("Gustavo", topic);
         //
         server.subscribe("Usuário não inscrito", firstTopic);
         //
@@ -174,17 +174,6 @@ public class NewsServerImplTest {
         server.subscribe("Gustavo", topic);
         assertTrue(server.getUserByName("Gustavo").isSubscribed(topic));
         //
-        server.addNews(news, topic, (News news1, User user1) -> {
-            assertEquals("User{username=Gustavo, password=null, publisher=false, subscriptions=[Topic{name=null, associatedNews=[News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}]}], ip=null, port=0}", user1.toString());
-            assertEquals("News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}", news1.toString());
-        });
-        server.addNews(news, topic, (News news1, User user1) -> {
-            assertEquals("User{username=Gustavo, password=null, publisher=false, subscriptions=[Topic{name=null, associatedNews=[News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}, News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}]}], ip=null, port=0}", user1.toString());
-            assertEquals("News{title=Título de teste, content=null, publicationDate=Tue Jan 13 00:00:00 BRST 5818, publisher=User{username=Gustavo Cassel, password=null, publisher=false, subscriptions=[], ip=null, port=0}}", news1.toString());
-        });
-        server.addNews(news, firstTopic, (News news1, User user1) -> {
-            fail("Não deve cair aqui porque o tópico não foi adicionado ao server");
-        });
     }
     
 
